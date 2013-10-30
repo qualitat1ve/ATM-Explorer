@@ -1,8 +1,6 @@
-# http://www.gnu.org/software/automake
+
 
 Makefile.in
-
-# http://www.gnu.org/software/autoconf
 
 /autom4te.cache
 /aclocal.m4
@@ -15,3 +13,12 @@ Makefile.in
 .gradle
 /local.properties
 .DS_Store
+
+ant.properties
+.idea*/
+/gen
+proguard-project.txt
+build.xml
+local.properties
+ATMExplorer.iml
+
