@@ -1,5 +1,4 @@
 
-
 Makefile.in
 
 /autom4te.cache
@@ -20,5 +19,5 @@ ant.properties
 proguard-project.txt
 build.xml
 local.properties
-ATMExplorer.iml
+*.iml
 
