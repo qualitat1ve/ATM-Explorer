@@ -20,4 +20,5 @@ proguard-project.txt
 build.xml
 local.properties
 *.iml
+/out
 
