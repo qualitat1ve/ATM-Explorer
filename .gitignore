@@ -22,3 +22,12 @@ local.properties
 *.iml
 /out
 
+#Temporary files
+*~
+*.tmp
+
+#Eclipse files
+.classpath
+.settings
+.project
+bin
