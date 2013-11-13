@@ -1,0 +1,3 @@
+[submodule "maps/yandex"]
+	path = maps/yandex
+	url = https://github.com/yandexmobile/yandexmapkit-android.git
