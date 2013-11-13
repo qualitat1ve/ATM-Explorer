@@ -12,11 +12,19 @@
             android:background="@android:color/white"/>
     <ListView android:id="@+id/left_drawer"
               android:layout_width="200dp"
-              android:layout_height="match_parent"
+              android:layout_height="400dp"
               android:layout_gravity="start"
               android:choiceMode="none"
               android:divider="@android:color/black"
               android:dividerHeight="1dp"
               android:background="@android:color/holo_blue_dark"/>
+
+    <ru.yandex.yandexmapkit.MapView
+            android:id="@+id/map"
+            android:layout_width="fill_parent"
+            android:layout_height="400dp"
+            android:apiKey="QdQGT-c8GsdULaB3nbABt2dYq3U~YjFITF0Nyowg3FHavCrG1mMNPFCjtlHPEoe9ED0Onl4jJG4ytOa2mzwpBRqp4PGArCGQ~TrK~nTzS6A="
+            android:layout_weight="1"
+            />
 
 </android.support.v4.widget.DrawerLayout>
