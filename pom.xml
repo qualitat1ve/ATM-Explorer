@@ -33,6 +33,12 @@
             <version>18.0.0</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.android.gms</groupId>
+            <artifactId>google-play-services</artifactId>
+            <version>4030530</version>
+            <type>apklib</type>
+        </dependency>
     </dependencies>
     <build>
         <finalName>${project.artifactId}</finalName>
