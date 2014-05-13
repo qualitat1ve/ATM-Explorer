@@ -1,4 +1,4 @@
-package com.ATMExplorer;
+package com.atmexplorer;
 
 import android.view.View;
 import android.view.ViewGroup;
