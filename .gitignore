@@ -16,6 +16,7 @@ Makefile.in
 ant.properties
 .idea*/
 /gen
+/gen-external-apklibs
 proguard-project.txt
 build.xml
 local.properties
