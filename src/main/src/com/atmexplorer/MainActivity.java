@@ -3,7 +3,7 @@ package com.atmexplorer;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class ATMExplorerActivity extends Activity {
+public class MainActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
