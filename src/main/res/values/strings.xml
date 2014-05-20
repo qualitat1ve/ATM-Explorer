@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ATMExplorer</string>
+    <string name="navigation_item_title_list">List mode</string>
+    <string name="navigation_item_title_map">Map mode</string>
 </resources>
