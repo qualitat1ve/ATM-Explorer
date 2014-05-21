@@ -3,4 +3,6 @@
     <string name="app_name">ATMExplorer</string>
     <string name="navigation_item_title_list">List mode</string>
     <string name="navigation_item_title_map">Map mode</string>
+    <string name="action_search">Search</string>
+    <string name="action_help">Help</string>
 </resources>

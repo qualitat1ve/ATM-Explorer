@@ -1,6 +1,7 @@
 package com.atmexplorer.adapter;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +47,7 @@ public class NavigationAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.navigation_item_list, null);
+            convertView = inflater.inflate(R.layout.navigation_list_item, null);
         }
 
         mItemIcon = (ImageView) convertView.findViewById(R.id.navigationItemIcon);
@@ -56,5 +57,9 @@ public class NavigationAdapter extends BaseAdapter {
         mItemTitle.setText(mItemsList.get(position).getItemTitle());
 
         return convertView;
+    }
+
+    public Fragment getItemsFragment(int position) {
+        return mItemsList.get(position).getFragment();
     }
 }
