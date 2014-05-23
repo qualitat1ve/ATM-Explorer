@@ -62,4 +62,6 @@ public class NavigationAdapter extends BaseAdapter {
     public Fragment getItemsFragment(int position) {
         return mItemsList.get(position).getFragment();
     }
+
+
 }

@@ -3,15 +3,17 @@ package com.atmexplorer;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import com.atmexplorer.adapter.NavigationAdapter;
 import com.atmexplorer.model.SpinnerNavigationItem;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-
 import java.util.ArrayList;
 
 public class MainActivity extends Activity implements ActionBar.OnNavigationListener {
@@ -19,10 +21,12 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     private ActionBar mActionBar;
     private ArrayList<SpinnerNavigationItem> mNavigationItemList;
     private NavigationAdapter mNavigationAdapter;
-    private DrawerLayout mDrawerMenu;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private CharSequence mDrawerTitle;
     private ATMListFragment mATMListFragment;
     private MapFragment mMapFragment;
-    private GoogleMap mMap;
+    private View mDrawerMenu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,10 +41,34 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
             fragmentTransaction.add(R.id.fragment_container, mATMListFragment);
             fragmentTransaction.commit();
         }
-
         setUpActionBar();
 
-        mDrawerMenu = (DrawerLayout) findViewById(R.id.drawer_layout);
+        setUpDrawer();
+    }
+
+    private void setUpDrawer() {
+        mDrawerMenu = findViewById(R.id.left_drawer);
+        mDrawerTitle = getResources().getString(R.string.drawer_open_title);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
+                R.string.drawer_open_title, R.string.drawer_close_title) {
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                mActionBar.setDisplayShowTitleEnabled(false);
+                mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+                invalidateOptionsMenu();
+            }
+
+            public void onDrawerOpened(View view) {
+                super.onDrawerOpened(view);
+                mActionBar.setDisplayShowTitleEnabled(true);
+                mActionBar.setTitle(mDrawerTitle);
+                mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+                invalidateOptionsMenu();
+            }
+        };
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
     private void setUpActionBar() {
@@ -58,6 +86,8 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         mNavigationAdapter = new NavigationAdapter(getApplicationContext(), mNavigationItemList);
 
         mActionBar.setListNavigationCallbacks(mNavigationAdapter, this);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setHomeButtonEnabled(true);
     }
 
     @Override
@@ -72,5 +102,30 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerMenu);
+        menu.findItem(R.id.action_search).setVisible(!isDrawerOpen);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 }

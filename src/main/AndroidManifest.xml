@@ -8,12 +8,11 @@
             android:targetSdkVersion="19"
             />
     <application android:label="@string/app_name"
-                 android:logo="@drawable/atm_logo"
                  android:icon="@drawable/ic_launcher">
         <uses-library android:name="com.google.android.maps"/>
         <activity android:name="MainActivity"
                   android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-                  android:parentActivityName=".MainActivity"
+                  android:parentActivityName="com.atmexplorer.MainActivity"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>`
