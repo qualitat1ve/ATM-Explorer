@@ -13,12 +13,13 @@
             android:background="@android:color/white">
     </FrameLayout>
 
-    <FrameLayout
+    <RelativeLayout
             android:id="@+id/left_drawer"
             android:layout_width="@dimen/left_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="#ffff">
-    </FrameLayout>
+
+    </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>

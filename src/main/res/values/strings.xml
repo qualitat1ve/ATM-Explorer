@@ -7,4 +7,5 @@
     <string name="action_help">Help</string>
     <string name="drawer_open_title">ATM info</string>
     <string name="drawer_close_title">ATM explorer</string>
+    <string name="description_text">Information</string>
 </resources>

@@ -1,9 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:text="Item"
-          android:gravity="center_vertical"
-          android:minHeight="45dp"
-          />
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:padding="@dimen/list_view_item_padding">
+
+    <LinearLayout
+            android:id="@+id/logo_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/logo_layout_padding"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="@dimen/logo_layout_margin_right"
+            android:background="@android:color/darker_gray">
+
+        <ImageView
+                android:id="@+id/atm_logo"
+                android:layout_width="@dimen/logo_img_width"
+                android:layout_height="@dimen/logo_img_height"/>
+    </LinearLayout>
+
+    <!--ATM's address -->
+    <TextView
+            style="@style/CustomTextAppearance"
+            android:id="@+id/atm_address"
+            android:layout_alignTop="@id/logo_layout"
+            android:layout_toRightOf="@id/logo_layout"/>
+
+    <!-- ATM's bank name -->
+    <TextView
+            style="@style/CustomTextAppearance.Small"
+            android:id="@+id/atm_bank_name"
+            android:layout_below="@+id/atm_address"
+            android:layout_toRightOf="@+id/logo_layout"
+            android:layout_marginTop="@dimen/atm_bank_name_text_margin_top"/>
+
+    <!-- Distance to customer -->
+    <TextView
+            style="@style/CustomTextAppearance.Small"
+            android:id="@+id/distance"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/atm_address"
+            android:layout_marginRight="@dimen/distance_margin_right"
+            android:gravity="right"
+            android:text="100m"/>
+
+</RelativeLayout>

@@ -11,12 +11,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Gravity;
 import com.atmexplorer.adapter.NavigationAdapter;
 import com.atmexplorer.model.SpinnerNavigationItem;
 import com.google.android.gms.maps.MapFragment;
 import java.util.ArrayList;
 
-public class MainActivity extends Activity implements ActionBar.OnNavigationListener {
+public class MainActivity extends Activity implements ActionBar.OnNavigationListener, ATMListFragment.OnItemSelectedListener {
 
     private ActionBar mActionBar;
     private ArrayList<SpinnerNavigationItem> mNavigationItemList;
@@ -27,11 +28,13 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     private ATMListFragment mATMListFragment;
     private MapFragment mMapFragment;
     private View mDrawerMenu;
+    private int mActionBarIconId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
 
         mMapFragment = MapFragment.newInstance();
         mATMListFragment = new ATMListFragment();
@@ -41,8 +44,8 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
             fragmentTransaction.add(R.id.fragment_container, mATMListFragment);
             fragmentTransaction.commit();
         }
-        setUpActionBar();
 
+        setUpActionBar();
         setUpDrawer();
     }
 
@@ -54,6 +57,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
                 R.string.drawer_open_title, R.string.drawer_close_title) {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
+                mActionBar.setIcon(getResources().getDrawable(R.drawable.ic_launcher));
                 mActionBar.setDisplayShowTitleEnabled(false);
                 mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
                 invalidateOptionsMenu();
@@ -62,6 +66,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
             public void onDrawerOpened(View view) {
                 super.onDrawerOpened(view);
                 mActionBar.setDisplayShowTitleEnabled(true);
+                mActionBar.setIcon(getResources().getDrawable(mActionBarIconId));
                 mActionBar.setTitle(mDrawerTitle);
                 mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
                 invalidateOptionsMenu();
@@ -127,5 +132,12 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onItemSelected(int iconId, String bankName) {
+        mActionBarIconId = iconId;
+        mDrawerTitle = bankName;
+        mDrawerLayout.openDrawer(Gravity.LEFT);
     }
 }
