@@ -4,15 +4,19 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Gravity;
 import com.atmexplorer.adapter.NavigationAdapter;
+import com.atmexplorer.database.DataBaseAdapter;
+import com.atmexplorer.database.Utility;
 import com.atmexplorer.model.SpinnerNavigationItem;
 import com.google.android.gms.maps.MapFragment;
 import java.util.ArrayList;
@@ -47,6 +51,20 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
         setUpActionBar();
         setUpDrawer();
+
+        DataBaseAdapter mDbHelper = new DataBaseAdapter(this);
+        mDbHelper.createDatabase();
+        mDbHelper.open();
+
+        //Sample for getting data
+//        Cursor testdata = mDbHelper.getAllStreetData();
+//        while(testdata.moveToNext()) {
+//            int index = testdata.getColumnIndex("street");
+//            Log.i("data", testdata.getString(index));
+//
+//        }
+
+        mDbHelper.close();
     }
 
     private void setUpDrawer() {
