@@ -15,6 +15,15 @@ import android.util.Log;
 public class DataBaseAdapter {
     protected static final String TAG = "DataAdapter";
 
+    public static final String KEY_ADDRESS_REGION = "region";
+    public static final String KEY_ADDRESS_CITY = "city";
+    public static final String KEY_ADDRESS_STREET = "street";
+    public static final String KEY_BANK_NAME = "name";
+    public static final String KEY_OPERATION_TIME = "mode";
+    public static final String KEY_LOCATION = "location";
+    public static final String KEY_TYPE = "type";
+    private static final String TABLE_NAME = "atms";
+
     private final Context mContext;
     private SQLiteDatabase mDb;
     private DataBaseHelper mDbHelper;
@@ -46,24 +55,12 @@ public class DataBaseAdapter {
         return this;
     }
 
+    public Cursor getAllData() {
+        return mDb.query(TABLE_NAME, null, null, null, null, null, null);
+    }
+
     public void close() {
         mDbHelper.close();
     }
-
-    public Cursor getAllStreetData() {
-        try {
-            String sql = "SELECT   street  FROM atms ORDER BY street";
-
-            Cursor mCur = mDb.rawQuery(sql, null);
-            if (mCur != null) {
-                mCur.moveToNext();
-            }
-            return mCur;
-        } catch (SQLException mSQLException) {
-            Log.e(TAG, "getAllStreetData >>" + mSQLException.toString());
-            throw mSQLException;
-        }
-    }
-
 }
 

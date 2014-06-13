@@ -1,7 +1,8 @@
 package com.atmexplorer.model;
 
 /**
- * Created by m.kukushkin on 21.05.2014.
+ * @author m.kukushkin (maks.kukushkin@gmail.com)
+ * @deprecated
  */
 public class ATMItem {
     private String mDescription;

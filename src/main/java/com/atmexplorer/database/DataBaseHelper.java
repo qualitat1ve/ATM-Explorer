@@ -17,15 +17,15 @@ import android.util.Log;
  * @brief DataBase helper for work wih db
  */
 public class DataBaseHelper extends SQLiteOpenHelper {
-    private static String TAG = "DataBaseHelper"; // Tag just for the LogCat window
+    private static String TAG = "DataBaseHelper";
     //destination path (location) of our database on device
     private static String DB_PATH = "";
-    private static String DB_NAME = "atm_db";// Database name
+    private static String DB_NAME = "atm_db";
     private SQLiteDatabase mDataBase;
     private final Context mContext;
 
     public DataBaseHelper(Context context) {
-        super(context, DB_NAME, null, 1);// 1? its Database Version
+        super(context, DB_NAME, null, 1);
         DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
         this.mContext = context;
     }
@@ -38,7 +38,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             this.getReadableDatabase();
             this.close();
             try {
-                //Copy the database from assests
                 copyDataBase();
                 Log.e(TAG, "createDatabase database created");
             } catch (IOException mIOException) {
@@ -50,7 +49,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //Check that the database exists here: /data/data/your package/databases/Da Name
     private boolean checkDataBase() {
         File dbFile = new File(DB_PATH + DB_NAME);
-        //Log.v("dbFile", dbFile + "   "+ dbFile.exists());
         return dbFile.exists();
     }
 
@@ -86,13 +84,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase arg0) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO Auto-generated method stub
-
     }
 
 }
