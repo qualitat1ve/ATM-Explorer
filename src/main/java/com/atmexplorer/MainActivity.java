@@ -158,4 +158,12 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         mDrawerTitle = bankName;
         mDrawerLayout.openDrawer(Gravity.LEFT);
     }
+
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(mDrawerMenu)) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+        } else {
+            super.onBackPressed();
+        }
+    }
 }
