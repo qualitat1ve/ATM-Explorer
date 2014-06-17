@@ -43,8 +43,10 @@
             style="@style/CustomTextAppearance.Small"
             android:id="@+id/distance"
             android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             android:layout_alignTop="@+id/atm_address"
             android:layout_marginRight="@dimen/distance_margin_right"
+            android:layout_marginBottom="@dimen/distance_margin_bottom"
             android:gravity="right"
             android:text="100m"/>
 

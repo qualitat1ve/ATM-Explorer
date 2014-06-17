@@ -8,10 +8,14 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.EditText;
+import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import com.atmexplorer.adapter.ATMItemAdapter;
 import com.atmexplorer.database.DataBaseAdapter;
@@ -24,9 +28,28 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
     private OnItemSelectedListener mCallback;
     private DataBaseAdapter mDataBase;
     private ATMItemAdapter mItemAdapter;
+    private EditText mFilter;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        return inflater.inflate(R.layout.atm_list_fragment_layout, null);
+        View view = inflater.inflate(R.layout.atm_list_fragment_layout, null);
+        mFilter = (EditText) view.findViewById(R.id.text_filter);
+        mFilter.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                mItemAdapter.getFilter().filter(charSequence);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        return view;
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -37,9 +60,17 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
         mDataBase.open();
 
         mItemAdapter = new ATMItemAdapter(getActivity().getApplicationContext(), null);
+        mItemAdapter.setFilterQueryProvider(new FilterQueryProvider() {
+            @Override
+            public Cursor runQuery(CharSequence charSequence) {
+                return mDataBase.filterByString(charSequence.toString());
+            }
+        });
+
         setListAdapter(mItemAdapter);
 
         getLoaderManager().initLoader(0, null, this);
+
     }
 
     public void onAttach(Activity activity) {

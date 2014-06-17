@@ -12,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Gravity;
+import android.widget.SearchView;
+import android.widget.Toast;
 import com.atmexplorer.adapter.NavigationAdapter;
 import com.atmexplorer.model.SpinnerNavigationItem;
 import com.google.android.gms.maps.MapFragment;
@@ -69,8 +71,12 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
             public void onDrawerOpened(View view) {
                 super.onDrawerOpened(view);
                 mActionBar.setDisplayShowTitleEnabled(true);
-                mActionBar.setIcon(getResources().getDrawable(mActionBarIconId));
-                mActionBar.setTitle(mDrawerTitle);
+                if (mActionBarIconId == 0) {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.empty_drawer_message), Toast.LENGTH_SHORT).show();
+                } else {
+                    mActionBar.setIcon(getResources().getDrawable(mActionBarIconId));
+                    mActionBar.setTitle(mDrawerTitle);
+                }
                 mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
                 invalidateOptionsMenu();
             }

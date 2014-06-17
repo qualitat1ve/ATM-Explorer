@@ -8,4 +8,5 @@
     <string name="drawer_open_title">ATM info</string>
     <string name="drawer_close_title">ATM explorer</string>
     <string name="description_text">Information</string>
+    <string name="empty_drawer_message">There is nothing to show</string>
 </resources>

@@ -59,6 +59,11 @@ public class DataBaseAdapter {
         return mDb.query(TABLE_NAME, null, null, null, null, null, null);
     }
 
+    public Cursor filterByString(String constraint) {
+        String []selection = new String [] {"%" + constraint + "%", "%" + constraint + "%"};
+        return mDb.rawQuery("SELECT * FROM atms WHERE street like ? COLLATE NOCASE OR city like ? COLLATE NOCASE", selection);
+    }
+
     public void close() {
         mDbHelper.close();
     }
