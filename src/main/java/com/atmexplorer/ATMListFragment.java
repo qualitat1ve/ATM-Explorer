@@ -19,6 +19,7 @@ import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import com.atmexplorer.adapter.ATMItemAdapter;
 import com.atmexplorer.database.DataBaseAdapter;
+import com.atmexplorer.database.FilterCursorWrapper;
 
 /**
  * Created by m.kukushkin on 20.05.2014.
@@ -63,7 +64,10 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
         mItemAdapter.setFilterQueryProvider(new FilterQueryProvider() {
             @Override
             public Cursor runQuery(CharSequence charSequence) {
-                return mDataBase.filterByString(charSequence.toString());
+                Cursor cursor = mDataBase.getAllData();
+                return new FilterCursorWrapper(cursor, charSequence.toString(),
+                        cursor.getColumnIndex(DataBaseAdapter.KEY_ADDRESS_CITY),
+                        cursor.getColumnIndex(DataBaseAdapter.KEY_ADDRESS_STREET));
             }
         });
 

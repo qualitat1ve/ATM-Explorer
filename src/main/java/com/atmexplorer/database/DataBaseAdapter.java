@@ -61,7 +61,7 @@ public class DataBaseAdapter {
 
     public Cursor filterByString(String constraint) {
         String []selection = new String [] {"%" + constraint + "%", "%" + constraint + "%"};
-        return mDb.rawQuery("SELECT * FROM atms WHERE street like ? COLLATE NOCASE OR city like ? COLLATE NOCASE", selection);
+        return mDb.rawQuery("SELECT * FROM atms WHERE street like ? OR city like ?", selection);
     }
 
     public void close() {
