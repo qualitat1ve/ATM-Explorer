@@ -12,18 +12,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Gravity;
-import android.widget.SearchView;
 import android.widget.Toast;
 import com.atmexplorer.adapter.NavigationAdapter;
 import com.atmexplorer.model.SpinnerNavigationItem;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.ArrayList;
 
 /**
- * @author m.kukushkin (maks.kukushkin@gmail.com)
+ * @author Maks Kukushkin (maks.kukushkin@gmail.com)
  */
 
-public class MainActivity extends Activity implements ActionBar.OnNavigationListener, ATMListFragment.OnItemSelectedListener {
+public class MainActivity extends Activity implements ActionBar.OnNavigationListener,
+        ATMListFragment.OnItemSelectedListener, GoogleMapFragment.OnMapReadyListener {
 
     private ActionBar mActionBar;
     private ArrayList<SpinnerNavigationItem> mNavigationItemList;
@@ -33,16 +39,20 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     private CharSequence mDrawerTitle;
     private ATMListFragment mATMListFragment;
     private MapFragment mMapFragment;
+    private GoogleMap mGoogleMap;
     private View mDrawerMenu;
     private int mActionBarIconId;
+    private LocationTracker mLocationTracker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        mMapFragment = MapFragment.newInstance();
+        mMapFragment = new GoogleMapFragment(this);
+        mMapFragment.setRetainInstance(true);
         mATMListFragment = new ATMListFragment();
+        mLocationTracker = new LocationTracker(getApplicationContext());
 
         if (savedInstanceState == null) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -52,6 +62,21 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
         setUpActionBar();
         setUpDrawer();
+    }
+
+    private void setUpGoogleMap() {
+        mGoogleMap = mMapFragment.getMap();
+        if (mGoogleMap == null) return;
+        double latitude = mLocationTracker.getLatitude();
+        double longitude = mLocationTracker.getLongitude();
+
+        MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title(getResources().
+                getString(R.string.google_map_user_position));
+        mGoogleMap.addMarker(marker);
+
+        CameraPosition position = new CameraPosition.Builder().target(new LatLng(latitude, longitude)).
+                zoom(GoogleMapFragment.ZOOM_LEVEL).build();
+        mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(position));
     }
 
     private void setUpDrawer() {
@@ -156,5 +181,10 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onMapReady() {
+        setUpGoogleMap();
     }
 }

@@ -15,7 +15,8 @@ import com.atmexplorer.model.SpinnerNavigationItem;
 import java.util.ArrayList;
 
 /**
- * Created by m.kukushkin on 20.05.2014.
+ * @author Maks Kukushkin (maks.kukushkin@gmail.com)
+ * @brief adapter which should bind data from ArrayList with ListView
  */
 public class NavigationAdapter extends BaseAdapter {
     private ImageView mItemIcon;
@@ -62,6 +63,4 @@ public class NavigationAdapter extends BaseAdapter {
     public Fragment getItemsFragment(int position) {
         return mItemsList.get(position).getFragment();
     }
-
-
 }

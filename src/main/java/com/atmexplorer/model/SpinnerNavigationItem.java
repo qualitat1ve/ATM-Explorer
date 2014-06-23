@@ -3,7 +3,8 @@ package com.atmexplorer.model;
 import android.app.Fragment;
 
 /**
- * Created by m.kukushkin on 20.05.2014.
+ * @author Maks Kukushkin (maks.kukushkin@gmail.com)
+ * @brief bean for ActionBar navigation item
  */
 public class SpinnerNavigationItem {
     private String mItemTitle;

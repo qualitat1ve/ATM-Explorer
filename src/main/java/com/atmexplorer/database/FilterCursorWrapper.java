@@ -4,10 +4,11 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 
 /**
- * @author ramzes642 (https://gist.github.com/ramzes642/5400792)
+ * @author Maks Kukushkin (maks.kukushkin@gmail.com)
  * @brief FilterCursorWrapper class creates a compatible cursor that uses a filter argument to quick search ListView
- * in android. It can be useful when you need unicode case insensetive "like" search, but you don't want to rebuild
+ * in android. It can be useful when you need unicode case insensitive "like" search, but you don't want to rebuild
  * android's sqlite with icu support.
+ * (https://gist.github.com/ramzes642/5400792)
  */
 public class FilterCursorWrapper extends CursorWrapper{
     private String mFilter;

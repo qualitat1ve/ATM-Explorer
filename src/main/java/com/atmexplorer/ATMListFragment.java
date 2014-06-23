@@ -22,7 +22,8 @@ import com.atmexplorer.database.DataBaseAdapter;
 import com.atmexplorer.database.FilterCursorWrapper;
 
 /**
- * Created by m.kukushkin on 20.05.2014.
+ * @author Maks Kukushkin (maks.kukushkin@gmail.com)
+ * @brief class should display list of ATM
  */
 public class ATMListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 

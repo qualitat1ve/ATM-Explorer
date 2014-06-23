@@ -12,7 +12,8 @@ import com.atmexplorer.R;
 import com.atmexplorer.database.DataBaseAdapter;
 
 /**
- * @author m.kukushkin (maks.kukushkin@gmail.com)
+ * @author Maks Kukushkin (maks.kukushkin@gmail.com)
+ * @brief adapter which should bind data from database with ListView
  */
 public class ATMItemAdapter extends CursorAdapter {
     private Context mContext;
