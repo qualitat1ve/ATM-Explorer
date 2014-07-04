@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.atmexplorer.R;
 import com.atmexplorer.model.SpinnerNavigationItem;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Maks Kukushkin (maks.kukushkin@gmail.com)
@@ -21,10 +21,10 @@ import java.util.ArrayList;
 public class NavigationAdapter extends BaseAdapter {
     private ImageView mItemIcon;
     private TextView mItemTitle;
-    private ArrayList<SpinnerNavigationItem> mItemsList;
+    private List<SpinnerNavigationItem> mItemsList;
     private Context mContext;
 
-    public NavigationAdapter(Context context, ArrayList<SpinnerNavigationItem> itemsList) {
+    public NavigationAdapter(Context context, List<SpinnerNavigationItem> itemsList) {
         mContext = context;
         mItemsList = itemsList;
     }
@@ -46,7 +46,8 @@ public class NavigationAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
+        View view = convertView;
+        if (view == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.navigation_list_item, null);
         }
@@ -57,7 +58,7 @@ public class NavigationAdapter extends BaseAdapter {
         mItemTitle = (TextView) convertView.findViewById(R.id.navigationItemTitle);
         mItemTitle.setText(mItemsList.get(position).getItemTitle());
 
-        return convertView;
+        return view;
     }
 
     public Fragment getItemsFragment(int position) {

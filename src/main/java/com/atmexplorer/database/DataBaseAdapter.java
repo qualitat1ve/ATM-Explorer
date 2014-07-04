@@ -33,26 +33,15 @@ public class DataBaseAdapter {
         mDbHelper = new DataBaseHelper(mContext);
     }
 
-    public DataBaseAdapter createDatabase() throws SQLException {
-        try {
-            mDbHelper.createDataBase();
-        } catch (IOException mIOException) {
-            Log.e(TAG, mIOException.toString() + "  UnableToCreateDatabase");
-            throw new Error("UnableToCreateDatabase");
-        }
-        return this;
+    public void createDatabase() {
+        mDbHelper.createDataBase();
     }
 
-    public DataBaseAdapter open() throws SQLException {
-        try {
-            mDbHelper.openDataBase();
-            mDbHelper.close();
-            mDb = mDbHelper.getReadableDatabase();
-        } catch (SQLException mSQLException) {
-            Log.e(TAG, "open >>" + mSQLException.toString());
-            throw mSQLException;
-        }
-        return this;
+    public void open() {
+        //TODO: refactor: are you sure you want to open database just to close it in next line?
+        mDbHelper.openDataBase();
+        mDbHelper.close();
+        mDb = mDbHelper.getReadableDatabase();
     }
 
     public Cursor getAllData() {

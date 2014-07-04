@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.atmexplorer.database.FilterCursorWrapper;
  */
 public class ATMListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private final String LOG_TAG = this.getClass().getSimpleName();
     private OnItemSelectedListener mCallback;
     private DataBaseAdapter mDataBase;
     private ATMItemAdapter mItemAdapter;
@@ -38,7 +40,7 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
         mFilter.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
+                //unused callback
             }
 
             @Override
@@ -48,7 +50,7 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                //unused callback
             }
         });
         return view;
@@ -84,7 +86,8 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
         try {
             mCallback = (OnItemSelectedListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + "must implement OnItemSelectedListener");
+            Log.e(LOG_TAG, activity.toString() + "must implement OnItemSelectedListener");
+            throw e;
         }
     }
 
@@ -108,7 +111,7 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
 
     @Override
     public void onLoaderReset(Loader loader) {
-
+        //unused callback
     }
 
     public interface OnItemSelectedListener {

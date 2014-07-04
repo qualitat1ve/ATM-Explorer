@@ -29,8 +29,7 @@ public class ATMItemAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.list_view_item_layout, viewGroup, false);
-        return view;
+        return LayoutInflater.from(mContext).inflate(R.layout.list_view_item_layout, viewGroup, false);
     }
 
     @Override

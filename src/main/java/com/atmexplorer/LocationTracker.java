@@ -74,22 +74,22 @@ public class LocationTracker extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-
+        //unused callback
     }
 
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
-
+        //unused callback
     }
 
     @Override
     public void onProviderEnabled(String s) {
-
+        //unused callback
     }
 
     @Override
     public void onProviderDisabled(String s) {
-
+        //unused callback
     }
 
     @Override

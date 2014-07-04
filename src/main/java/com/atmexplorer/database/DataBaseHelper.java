@@ -30,19 +30,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         this.mContext = context;
     }
 
-    public void createDataBase() throws IOException {
+    public void createDataBase() {
         //If database not exists copy it from the assets
-
         boolean mDataBaseExist = checkDataBase();
         if (!mDataBaseExist) {
             this.getReadableDatabase();
             this.close();
-            try {
-                copyDataBase();
-                Log.e(TAG, "createDatabase database created");
-            } catch (IOException mIOException) {
-                throw new Error("ErrorCopyingDataBase");
-            }
+            copyDataBase();
+            Log.e(TAG, "createDatabase database created");
         }
     }
 
@@ -53,22 +48,29 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     //Copy the database from assets
-    private void copyDataBase() throws IOException {
-        InputStream mInput = mContext.getAssets().open(DB_NAME);
-        String outFileName = DB_PATH + DB_NAME;
-        OutputStream mOutput = new FileOutputStream(outFileName);
+    private void copyDataBase() {
         byte[] mBuffer = new byte[1024];
         int mLength;
-        while ((mLength = mInput.read(mBuffer)) > 0) {
-            mOutput.write(mBuffer, 0, mLength);
+        try {
+            InputStream mInput = mContext.getAssets().open(DB_NAME);
+            String outFileName = DB_PATH + DB_NAME;
+            OutputStream mOutput = new FileOutputStream(outFileName);
+            try {
+                while ((mLength = mInput.read(mBuffer)) > 0) {
+                    mOutput.write(mBuffer, 0, mLength);
+                }
+            } finally {
+                mOutput.flush();
+                mOutput.close();
+                mInput.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        mOutput.flush();
-        mOutput.close();
-        mInput.close();
     }
 
     //Open the database, so we can query it
-    public boolean openDataBase() throws SQLException {
+    public boolean openDataBase() {
         String mPath = DB_PATH + DB_NAME;
         mDataBase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.CREATE_IF_NECESSARY);
         return mDataBase != null;
@@ -83,12 +85,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase arg0) {
-        // TODO Auto-generated method stub
+        // unused callback
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // TODO Auto-generated method stub
+        // unused callback
     }
 
 }
