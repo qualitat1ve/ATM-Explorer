@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.content.Context;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -65,7 +64,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 mInput.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Failed to copy DataBase from assets", e);
         }
     }
 
@@ -78,8 +77,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public synchronized void close() {
-        if (mDataBase != null)
+        if (mDataBase != null) {
             mDataBase.close();
+        }
         super.close();
     }
 

@@ -49,7 +49,7 @@ public class NavigationAdapter extends BaseAdapter {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.navigation_list_item, null);
+            view = inflater.inflate(R.layout.navigation_list_item, null);
         }
 
         mItemIcon = (ImageView) convertView.findViewById(R.id.navigationItemIcon);

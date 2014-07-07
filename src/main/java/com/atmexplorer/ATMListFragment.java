@@ -28,7 +28,7 @@ import com.atmexplorer.database.FilterCursorWrapper;
  */
 public class ATMListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private final String LOG_TAG = this.getClass().getSimpleName();
+    private final String LOG_TAG = "ATMListFragment";
     private OnItemSelectedListener mCallback;
     private DataBaseAdapter mDataBase;
     private ATMItemAdapter mItemAdapter;
