@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Maks Kukushkin (maks.kukushkin@gmail.com)
@@ -32,7 +33,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         ATMListFragment.OnItemSelectedListener, GoogleMapFragment.OnMapReadyListener {
 
     private ActionBar mActionBar;
-    private ArrayList<SpinnerNavigationItem> mNavigationItemList;
+    private List<SpinnerNavigationItem> mNavigationItemList;
     private NavigationAdapter mNavigationAdapter;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -66,7 +67,9 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
     private void setUpGoogleMap() {
         mGoogleMap = mMapFragment.getMap();
-        if (mGoogleMap == null) return;
+        if (mGoogleMap == null) {
+            return;
+        }
         double latitude = mLocationTracker.getLatitude();
         double longitude = mLocationTracker.getLongitude();
 

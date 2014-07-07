@@ -17,70 +17,72 @@ public class FilterCursorWrapper extends CursorWrapper{
     private int mCount = 0;
     private int mPosition = 0;
 
-    public FilterCursorWrapper(Cursor cursor,String filter,int column1, int column2) {
+    public FilterCursorWrapper(Cursor cursor, String filter, int column1, int column2) {
         super(cursor);
-        this.mFilter = filter.toLowerCase();
-        this.mColumn = new int[] {column1, column2};
-        if (this.mFilter.isEmpty()) {
+        mFilter = filter.toLowerCase();
+        mColumn = new int[] {column1, column2};
+        if (mFilter.isEmpty()) {
             mCount = super.getCount();
-            this.mIndex = new int[this.mCount];
-            for (int i = 0; i < this.mCount; i++) {
+            mIndex = new int[mCount];
+            for (int i = 0; i < mCount; i++) {
                 super.moveToPosition(i);
-                if (this.getString(this.mColumn[0]).toLowerCase().contains(this.mFilter) ||
-                        this.getString(this.mColumn[1]).toLowerCase().contains(this.mFilter))
-                    this.mIndex[this.mPosition++] = i;
+                if (getString(mColumn[0]).toLowerCase().contains(mFilter) ||
+                        getString(mColumn[1]).toLowerCase().contains(mFilter)) {
+                    mIndex[mPosition++] = i;
+                }
             }
-            this.mCount = this.mPosition;
-            this.mPosition = 0;
+            mCount = mPosition;
+            mPosition = 0;
             super.moveToFirst();
         } else {
-            this.mCount = super.getCount();
-            this.mIndex = new int[this.mCount];
-            for (int i = 0; i < this.mCount; i++) {
-                this.mIndex[i] = i;
+            mCount = super.getCount();
+            mIndex = new int[mCount];
+            for (int i = 0; i < mCount; i++) {
+                mIndex[i] = i;
             }
         }
     }
 
     @Override
     public boolean move(int offset) {
-        return this.moveToPosition(this.mPosition + offset);
+        return moveToPosition(mPosition + offset);
     }
 
     @Override
     public boolean moveToNext() {
-        return this.moveToPosition(this.mPosition + 1);
+        return moveToPosition(mPosition + 1);
     }
 
     @Override
     public boolean moveToPrevious() {
-        return this.moveToPosition(this.mPosition - 1);
+        return moveToPosition(mPosition - 1);
     }
 
     @Override
     public boolean moveToFirst() {
-        return this.moveToPosition(0);
+        return moveToPosition(0);
     }
 
     @Override
     public boolean moveToLast() {
-        return this.moveToPosition(this.mCount - 1);
+        return moveToPosition(mCount - 1);
     }
 
     @Override
     public boolean moveToPosition(int position) {
-        if (position >= this.mCount || position < 0)
+        if (position >= mCount || position < 0) {
             return false;
-        return super.moveToPosition(this.mIndex[position]);
+        }
+        return super.moveToPosition(mIndex[position]);
     }
 
     @Override
     public int getCount() {
-        return this.mCount;
+        return mCount;
     }
 
     @Override
     public int getPosition() {
-        return this.mPosition;
+        return mPosition;
     }
 }

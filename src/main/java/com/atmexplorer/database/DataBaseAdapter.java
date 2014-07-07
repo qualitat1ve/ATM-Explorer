@@ -1,14 +1,12 @@
 package com.atmexplorer.database;
 
-import java.io.IOException;
+import com.atmexplorer.model.DataProvider;
+
 import java.util.List;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-import com.atmexplorer.model.DataProvider;
 import com.atmexplorer.model.dao.BankDao;
 import com.atmexplorer.model.dao.BankDaoImpl;
 import com.atmexplorer.model.dao.CashMachineDao;
@@ -20,7 +18,7 @@ import com.atmexplorer.model.dao.CityDaoImpl;
  * @author Oleksandr Stetsko (alexandr.stetsko@gmail.com)
  * @brief DataBase Adapter
  */
-public class DataBaseAdapter implements DataProvider{
+public class DataBaseAdapter implements DataProvider {
     protected static final String TAG = "DataAdapter";
 
     public static final String KEY_ADDRESS_REGION = "region";
@@ -50,26 +48,15 @@ public class DataBaseAdapter implements DataProvider{
         mCityDao = new CityDaoImpl(mDbHelper, CITY_TABLE_NAME);
     }
 
-    public DataBaseAdapter createDatabase() throws SQLException {
-        try {
-            mDbHelper.createDataBase();
-        } catch (IOException mIOException) {
-            Log.e(TAG, mIOException.toString() + "  UnableToCreateDatabase");
-            throw new Error("UnableToCreateDatabase");
-        }
-        return this;
+    public void createDatabase() {
+        mDbHelper.createDataBase();
     }
 
-    public DataBaseAdapter open() throws SQLException {
-        try {
-            mDbHelper.openDataBase();
-            mDbHelper.close();
-            mDb = mDbHelper.getReadableDatabase();
-        } catch (SQLException mSQLException) {
-            Log.e(TAG, "open >>" + mSQLException.toString());
-            throw mSQLException;
-        }
-        return this;
+    public void open() {
+        //TODO: refactor: are you sure you want to open database just to close it in next line?
+        mDbHelper.openDataBase();
+        mDbHelper.close();
+        mDb = mDbHelper.getReadableDatabase();
     }
 
     public Cursor getAllData() {
