@@ -8,7 +8,8 @@ import java.util.List;
  */
 public final class Should {
 
-    private Should() {}
+    private Should() {
+    }
 
     public static void runInThread(long threadId, String message) {
         if(Thread.currentThread().getId() != threadId) {
