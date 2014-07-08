@@ -12,4 +12,7 @@
     <string name="filtering_string">Enter a string to filter</string>
     <string name="google_map_user_position">I\'m here</string>
     <string name="unable_location_service_message">Location service unavailable</string>
+
+    <!--<SQL raw queries>-->
+    <string name="select_add">SELECT Bank.name, City.name, Atm.address FROM Atm INNER JOIN Bank ON Bank._id=Atm.id_bank INNER JOIN City ON City._id=Atm.id_city</string>
 </resources>

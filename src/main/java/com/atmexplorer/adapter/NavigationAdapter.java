@@ -52,10 +52,10 @@ public class NavigationAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.navigation_list_item, null);
         }
 
-        mItemIcon = (ImageView) convertView.findViewById(R.id.navigationItemIcon);
+        mItemIcon = (ImageView) view.findViewById(R.id.navigationItemIcon);
         mItemIcon.setImageResource(mItemsList.get(position).getIconId());
 
-        mItemTitle = (TextView) convertView.findViewById(R.id.navigationItemTitle);
+        mItemTitle = (TextView) view.findViewById(R.id.navigationItemTitle);
         mItemTitle.setText(mItemsList.get(position).getItemTitle());
 
         return view;

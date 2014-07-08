@@ -34,9 +34,9 @@ public class ATMItemAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        String addressCity = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseAdapter.KEY_ADDRESS_CITY));
+        String addressCity = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseAdapter.KEY_ADDRESS_STREET));
         String addressStreet = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseAdapter.KEY_ADDRESS_STREET));
-        String bankName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseAdapter.KEY_BANK_NAME));
+        String bankName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseAdapter.KEY_ADDRESS_STREET));
 
         //TODO: remove hardcoded logo
         mBankLogo = (ImageView) view.findViewById(R.id.atm_logo);

@@ -69,7 +69,7 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
             public Cursor runQuery(CharSequence charSequence) {
                 Cursor cursor = mDataBase.getAllData();
                 return new FilterCursorWrapper(cursor, charSequence.toString(),
-                        cursor.getColumnIndex(DataBaseAdapter.KEY_ADDRESS_CITY),
+                        cursor.getColumnIndex(DataBaseAdapter.KEY_ADDRESS_STREET),
                         cursor.getColumnIndex(DataBaseAdapter.KEY_ADDRESS_STREET));
             }
         });

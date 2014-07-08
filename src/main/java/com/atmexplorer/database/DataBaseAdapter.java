@@ -23,14 +23,14 @@ public class DataBaseAdapter implements DataProvider {
 
     public static final String KEY_ADDRESS_REGION = "region";
     public static final String KEY_ADDRESS_CITY = "city";
-    public static final String KEY_ADDRESS_STREET = "street";
+    public static final String KEY_ADDRESS_STREET = "address";
     public static final String KEY_BANK_NAME = "name";
     public static final String KEY_OPERATION_TIME = "mode";
     public static final String KEY_LOCATION = "location";
     public static final String KEY_TYPE = "type";
-    private static final String ATM_TABLE_NAME = "atms";
-    private static final String CITY_TABLE_NAME = "cities";
-    private static final String BANK_TABLE_NAME = "banks";
+    private static final String ATM_TABLE_NAME = "Atm";
+    private static final String CITY_TABLE_NAME = "City";
+    private static final String BANK_TABLE_NAME = "Bank";
     private CashMachineDao mCashMachineDao;
     private BankDao mBankDao;
     private CityDao mCityDao;
