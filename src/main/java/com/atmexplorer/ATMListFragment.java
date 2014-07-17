@@ -3,10 +3,7 @@ package com.atmexplorer;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.app.LoaderManager;
-import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Loader;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,24 +11,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
 import android.widget.EditText;
-import android.widget.FilterQueryProvider;
 import android.widget.ListView;
-import com.atmexplorer.adapter.ATMItemAdapter;
+import com.atmexplorer.adapter.ATMItemListAdapter;
 import com.atmexplorer.database.DataBaseAdapter;
-import com.atmexplorer.database.FilterCursorWrapper;
+import com.atmexplorer.model.ATMItem;
+
+import java.util.List;
 
 /**
  * @author Maks Kukushkin (maks.kukushkin@gmail.com)
  * @brief class should display list of ATM
  */
-public class ATMListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ATMListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<List<ATMItem>> {
 
     private static final String LOG_TAG = ATMListFragment.class.getSimpleName();
-    private OnItemSelectedListener mCallback;
-    private DataBaseAdapter mDataBase;
-    private ATMItemAdapter mItemAdapter;
+    private OnItemSelectedListener mOnItemSelectedListener;
+    private DataBaseAdapter mDataBaseAdapter;
+    private ATMItemListAdapter mItemAdapter;
     private EditText mFilter;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -45,7 +42,8 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                mItemAdapter.getFilter().filter(charSequence);
+                //TODO: implement filter inside adapter
+//                mItemAdapter.getFilter().filter(charSequence);
             }
 
             @Override
@@ -58,33 +56,20 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        mDataBase = new DataBaseAdapter(getActivity());
-        mDataBase.createDatabase();
-        mDataBase.open();
-
-        mItemAdapter = new ATMItemAdapter(getActivity().getApplicationContext(), null);
-        mItemAdapter.setFilterQueryProvider(new FilterQueryProvider() {
-            @Override
-            public Cursor runQuery(CharSequence charSequence) {
-                Cursor cursor = mDataBase.getAllData();
-                return new FilterCursorWrapper(cursor, charSequence.toString(),
-                        cursor.getColumnIndex(DataBaseAdapter.KEY_ADDRESS_STREET),
-                        cursor.getColumnIndex(DataBaseAdapter.KEY_ADDRESS_STREET));
-            }
-        });
-
+        mDataBaseAdapter = new DataBaseAdapter(getActivity());
+        mDataBaseAdapter.createDatabase();
+        mDataBaseAdapter.open();
+        mItemAdapter = new ATMItemListAdapter(getActivity().getApplicationContext());
         setListAdapter(mItemAdapter);
 
         getLoaderManager().initLoader(0, null, this);
-
     }
 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
         try {
-            mCallback = (OnItemSelectedListener) activity;
+            mOnItemSelectedListener = (OnItemSelectedListener) activity;
         } catch (ClassCastException e) {
             Log.e(LOG_TAG, activity.toString() + "must implement OnItemSelectedListener");
             throw e;
@@ -94,24 +79,29 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
 
-        //TODO: remove hardcoded image resource
-        Cursor cursor = ((CursorAdapter)listView.getAdapter()).getCursor();
-        mCallback.onItemSelected(R.drawable.credit_agricole, cursor.getString(cursor.getColumnIndex(DataBaseAdapter.KEY_BANK_NAME)));
+        //TODO: remove unused items
+        ATMItem item = (ATMItem) listView.getSelectedItem();
+        ATMItem item2 = (ATMItem) listView.getAdapter().getItem(position);
+        ATMItem item3 = (ATMItem) listView.getItemAtPosition(position);
+        Log.i("item", "item ID = " + item.getAddress());
+        Log.i("item", "item2 ID = " + item2.getAddress());
+        Log.i("item", "item3 ID = " + item3.getAddress());
+        mOnItemSelectedListener.onItemSelected(item.getIconId(), item.getBankName());
     }
 
     @Override
-    public Loader onCreateLoader(int i, Bundle bundle) {
-        return new CustomCursorLoader(getActivity().getApplicationContext(), mDataBase);
+    public Loader<List<ATMItem>> onCreateLoader(int i, Bundle bundle) {
+        return new CustomATMLoader(getActivity().getApplicationContext(), mDataBaseAdapter);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        mItemAdapter.swapCursor(cursor);
+    public void onLoadFinished(Loader<List<ATMItem>> listLoader, List<ATMItem> atmItems) {
+        mItemAdapter.setData(atmItems);
     }
 
     @Override
-    public void onLoaderReset(Loader loader) {
-        //unused callback
+    public void onLoaderReset(Loader<List<ATMItem>> listLoader) {
+        mItemAdapter.cleatData();
     }
 
     public interface OnItemSelectedListener {
@@ -120,19 +110,6 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
 
     public void onDestroy() {
         super.onDestroy();
-        mDataBase.close();
-    }
-
-    static class CustomCursorLoader extends CursorLoader {
-        private DataBaseAdapter mDataBaseAdapter;
-
-        public CustomCursorLoader(Context context, DataBaseAdapter dataBase) {
-            super(context);
-            mDataBaseAdapter = dataBase;
-        }
-
-        public Cursor loadInBackground() {
-            return mDataBaseAdapter.getAllData();
-        }
+        mDataBaseAdapter.close();
     }
 }
