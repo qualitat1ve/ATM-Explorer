@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,9 @@ import android.widget.ListView;
 import com.atmexplorer.adapter.ATMItemListAdapter;
 import com.atmexplorer.database.DataBaseAdapter;
 import com.atmexplorer.model.ATMItem;
+import com.atmexplorer.utils.GeoUtils;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -90,6 +93,15 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
     @Override
     public void onLoadFinished(Loader<List<ATMItem>> listLoader, List<ATMItem> atmItems) {
         mItemAdapter.setData(atmItems);
+        for (ATMItem item : atmItems) {
+            try {
+                Pair<Double, Double> value = GeoUtils.getInstance(getActivity().getBaseContext()).getCoordinates(item.getFullAddress());
+                Log.i("geo", "value " + value.first + " second " + value.second);
+            } catch (IOException e) {
+                Log.e("geo", "error " + e);
+            }
+        }
+
     }
 
     @Override

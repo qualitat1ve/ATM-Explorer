@@ -13,6 +13,8 @@ public class ATMItem {
     private String mBankName;
     private int mDistance;
     private int mIconId;
+    private double mLatitude;
+    private double mLongitude;
 
     public ATMItem() {}
 
@@ -81,5 +83,21 @@ public class ATMItem {
 
     public String getFullAddress() {
         return mCity + ", " + mAddress;
+    }
+
+    public double getLatitude() {
+        return mLatitude;
+    }
+
+    public void setLatitude(double latitude) {
+        mLatitude = latitude;
+    }
+
+    public double getLongitude() {
+        return mLongitude;
+    }
+
+    public void setLongitude(double longitude) {
+        mLongitude = longitude;
     }
 }
