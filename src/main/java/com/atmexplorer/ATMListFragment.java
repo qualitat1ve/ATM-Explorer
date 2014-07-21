@@ -78,14 +78,7 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
 
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
-
-        //TODO: remove unused items
-        ATMItem item = (ATMItem) listView.getSelectedItem();
-        ATMItem item2 = (ATMItem) listView.getAdapter().getItem(position);
-        ATMItem item3 = (ATMItem) listView.getItemAtPosition(position);
-        Log.i("item", "item ID = " + item.getAddress());
-        Log.i("item", "item2 ID = " + item2.getAddress());
-        Log.i("item", "item3 ID = " + item3.getAddress());
+        ATMItem item = (ATMItem) listView.getItemAtPosition(position);
         mOnItemSelectedListener.onItemSelected(item.getIconId(), item.getBankName());
     }
 
