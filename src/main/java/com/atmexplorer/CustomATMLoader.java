@@ -73,6 +73,7 @@ public class CustomATMLoader extends AsyncTaskLoader<List<ATMItem>> {
 
     public void onCanceled(List<ATMItem> itemsList){
         super.onCanceled(itemsList);
+        releaseData(itemsList);
     }
 
     private void releaseData(Object data) {

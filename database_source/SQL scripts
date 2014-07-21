@@ -1,5 +1,5 @@
 Create Atm table:
-CREATE TABLE "Atm" ("_id" INTEGER PRIMARY KEY  NOT NULL ,"id_bank" NTEGER NOT NULL  DEFAULT (null) ,"id_city" INTEGER NOT NULL  DEFAULT (null) ,"address" VARCHAR NOT NULL ,"time" VARCHAR,"position" VARCHAR,"description" VARCHAR, FOREIGN KEY(id_bank) REFERENCES Bank(_id), FOREIGN KEY(id_city) REFERENCES City(_id))
+CREATE TABLE "Atm" ("_id" INTEGER PRIMARY KEY  NOT NULL ,"id_bank" NTEGER NOT NULL  DEFAULT (null) ,"id_city" INTEGER NOT NULL  DEFAULT (null) ,"address" VARCHAR NOT NULL ,"time" VARCHAR,"position" VARCHAR,"description" VARCHAR, "latitude" DOUBLE, "longitude" DOUBLE, "comment" VARCHAR, FOREIGN KEY(id_bank) REFERENCES Bank(_id), FOREIGN KEY(id_city) REFERENCES City(_id))
 
 
 
