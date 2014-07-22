@@ -93,15 +93,19 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
     @Override
     public void onLoadFinished(Loader<List<ATMItem>> listLoader, List<ATMItem> atmItems) {
         mItemAdapter.setData(atmItems);
+    }
+
+    private void fillCoordinates(List<ATMItem> atmItems) {
         for (ATMItem item : atmItems) {
             try {
                 Pair<Double, Double> value = GeoUtils.getInstance(getActivity().getBaseContext()).getCoordinates(item.getFullAddress());
-                Log.i("geo", "value " + value.first + " second " + value.second);
+                item.setLatitude(value.first);
+                item.setLongitude(value.second);
+                Log.i("geo", "ID = " + item.getId() + "; lat " + value.first + " long " + value.second);
             } catch (IOException e) {
                 Log.e("geo", "error " + e);
             }
         }
-
     }
 
     @Override

@@ -13,12 +13,14 @@ public class ATMItem {
     private String mBankName;
     private int mDistance;
     private int mIconId;
+    private int mId;
     private double mLatitude;
     private double mLongitude;
 
     public ATMItem() {}
 
-    public ATMItem(String city, String address, String bankName, int iconId) {
+    public ATMItem(int id, String city, String address, String bankName, int iconId) {
+        mId = id;
         mCity = city;
         mAddress = address;
         mBankName = bankName;
@@ -99,5 +101,13 @@ public class ATMItem {
 
     public void setLongitude(double longitude) {
         mLongitude = longitude;
+    }
+
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
     }
 }

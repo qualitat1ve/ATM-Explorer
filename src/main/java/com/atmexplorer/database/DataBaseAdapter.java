@@ -1,5 +1,6 @@
 package com.atmexplorer.database;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import com.atmexplorer.R;
 import com.atmexplorer.model.ATMItem;
@@ -25,6 +26,7 @@ import com.atmexplorer.model.entity.Persistent;
 public class DataBaseAdapter implements DataProvider {
     protected static final String TAG = "DataAdapter";
 
+    public static final String KEY_ID = "_id";
     public static final String KEY_CITY_NAME = "name";
     public static final String KEY_ADDRESS = "address";
     public static final String KEY_BANK_NAME = "bank_name";
@@ -32,6 +34,9 @@ public class DataBaseAdapter implements DataProvider {
     public static final String KEY_OPERATION_TIME = "time";
     public static final String KEY_POSITION = "position";
     public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_LATITUDE = "latitude";
+    public static final String KEY_LONGITUDE = "longitude";
+    public static final String KEY_COMMENT = "comment";
     private static final String ATM_TABLE_NAME = "Atm";
     private static final String CITY_TABLE_NAME = "City";
     private static final String BANK_TABLE_NAME = "Bank";
@@ -57,10 +62,8 @@ public class DataBaseAdapter implements DataProvider {
     }
 
     public void open() {
-        //TODO: refactor: are you sure you want to open database just to close it in next line?
         mDbHelper.openDataBase();
-        mDbHelper.close();
-        mDb = mDbHelper.getReadableDatabase();
+        mDb = mDbHelper.getWritableDatabase();
     }
 
     public List<ATMItem> getAllData() {
@@ -77,17 +80,32 @@ public class DataBaseAdapter implements DataProvider {
         return null;
     }
 
+    /**
+     * Method updates ATM's coordinates according to their address.
+     * Should be used once after installation of application.
+     * @param item ATMItem
+     */
+    public void updateCoordinates(ATMItem item) {
+        mDb = mDbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_LATITUDE, item.getLatitude());
+        values.put(KEY_LONGITUDE, item.getLongitude());
+        mDb.update(ATM_TABLE_NAME, values, "_id = ?", new String[] {String.valueOf(item.getId())});
+        close();
+    }
+
     private List<ATMItem> prepareDataToShow() {
         mATMList = new ArrayList<ATMItem>();
         Cursor cursor = mDb.rawQuery(mContext.getResources().getString(R.string.sql_select_all), null);
         if (cursor.moveToFirst()) {
             do {
+                int atmId = cursor.getInt(cursor.getColumnIndex(KEY_ID));
                 String bankName = cursor.getString(cursor.getColumnIndex(KEY_BANK_NAME));
                 String cityName = cursor.getString(cursor.getColumnIndex(KEY_CITY_NAME));
                 String address = cursor.getString(cursor.getColumnIndex(KEY_ADDRESS));
                 String bankLogo = cursor.getString(cursor.getColumnIndex(KEY_BANK_LOGO));
                 int logoId = mContext.getResources().getIdentifier(bankLogo, "drawable", mContext.getPackageName());
-                ATMItem item = new ATMItem(cityName, address, bankName, logoId);
+                ATMItem item = new ATMItem(atmId, cityName, address, bankName, logoId);
                 mATMList.add(item);
             } while (cursor.moveToNext());
         }
