@@ -1,5 +1,7 @@
 package com.atmexplorer.model;
 
+import android.location.Location;
+
 /**
  * @author Maks Kukushkin (maks.kukushkin@gmail.com)
  * @brief bean class to keep up ListFragment's elements
@@ -19,12 +21,14 @@ public class ATMItem {
 
     public ATMItem() {}
 
-    public ATMItem(int id, String city, String address, String bankName, int iconId) {
+    public ATMItem(int id, String city, String address, String bankName, int iconId, double latitude, double longitude) {
         mId = id;
         mCity = city;
         mAddress = address;
         mBankName = bankName;
         mIconId = iconId;
+        mLatitude = latitude;
+        mLongitude = longitude;
     }
 
     public String getDescription() {
@@ -109,5 +113,13 @@ public class ATMItem {
 
     public void setId(int id) {
         mId = id;
+    }
+
+    public Location getLocation() {
+        // provider name isn't necessary
+        Location location = new Location("");
+        location.setLatitude(mLatitude);
+        location.setLongitude(mLongitude);
+        return location;
     }
 }

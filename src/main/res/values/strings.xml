@@ -14,5 +14,5 @@
     <string name="unable_location_service_message">Location service unavailable</string>
 
     <!--<SQL raw queries>-->
-    <string name="sql_select_all">SELECT Atm._id, Bank.bank_name, City.name, Atm.address, Bank.logo FROM Atm INNER JOIN Bank ON Bank._id=Atm.id_bank INNER JOIN City ON City._id=Atm.id_city</string>
+    <string name="sql_select_all">SELECT Atm._id, Bank.bank_name, City.name, Atm.address, Bank.logo, Atm.latitude, Atm.longitude FROM Atm INNER JOIN Bank ON Bank._id=Atm.id_bank INNER JOIN City ON City._id=Atm.id_city</string>
 </resources>

@@ -3,6 +3,7 @@ package com.atmexplorer;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
 import android.text.Editable;
@@ -33,6 +34,7 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
     private DataBaseAdapter mDataBaseAdapter;
     private ATMItemListAdapter mItemAdapter;
     private EditText mFilter;
+    private Context mContext;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.atm_list_fragment_layout, null);
@@ -59,10 +61,11 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mContext = getActivity().getApplicationContext();
         mDataBaseAdapter = new DataBaseAdapter(getActivity());
         mDataBaseAdapter.createDatabase();
         mDataBaseAdapter.open();
-        mItemAdapter = new ATMItemListAdapter(getActivity().getApplicationContext());
+        mItemAdapter = new ATMItemListAdapter(mContext, ((MainActivity) getActivity()).getLocationTracker());
         setListAdapter(mItemAdapter);
 
         getLoaderManager().initLoader(0, null, this);
@@ -87,7 +90,7 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
 
     @Override
     public Loader<List<ATMItem>> onCreateLoader(int i, Bundle bundle) {
-        return new CustomATMLoader(getActivity().getApplicationContext(), mDataBaseAdapter);
+        return new CustomATMLoader(mContext, mDataBaseAdapter);
     }
 
     @Override

@@ -52,8 +52,8 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
         mMapFragment = new GoogleMapFragment(this);
         mMapFragment.setRetainInstance(true);
-        mATMListFragment = new ATMListFragment();
         mLocationTracker = new LocationTracker(getApplicationContext());
+        mATMListFragment = new ATMListFragment();
 
         if (savedInstanceState == null) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -130,6 +130,10 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         mActionBar.setListNavigationCallbacks(mNavigationAdapter, this);
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
+    }
+
+    public LocationTracker getLocationTracker() {
+        return mLocationTracker;
     }
 
     @Override

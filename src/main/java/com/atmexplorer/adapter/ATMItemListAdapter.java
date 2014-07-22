@@ -1,17 +1,21 @@
 package com.atmexplorer.adapter;
 
 import android.content.Context;
+import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
 import com.atmexplorer.model.ATMItem;
 import com.atmexplorer.utils.Should;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -25,9 +29,13 @@ public class ATMItemListAdapter extends BaseAdapter {
     private List<ATMItem> mATMList = new ArrayList<ATMItem>();
     private TextView mDistance;
     private ViewHolder mViewHolder;
+    private LocationTracker mLocationTracker;
+    private Location mCurrentLocation;
 
-    public ATMItemListAdapter(Context context) {
+    public ATMItemListAdapter(Context context, LocationTracker locationTracker) {
         mContext = context;
+        mLocationTracker = locationTracker;
+        mCurrentLocation = locationTracker.getLocation();
     }
 
     @Override
@@ -47,6 +55,7 @@ public class ATMItemListAdapter extends BaseAdapter {
 
     public void setData(List<ATMItem> list) {
         Should.beNotNull(list, LOG_TAG + "; ATM list should be not null!");
+        Collections.sort(list, new DistanceComparator());
         mATMList = list;
         notifyDataSetChanged();
     }
@@ -65,6 +74,7 @@ public class ATMItemListAdapter extends BaseAdapter {
             mViewHolder.addressHolder = (TextView) convertedView.findViewById(R.id.atm_address);
             mViewHolder.bankLogoHolder = (ImageView) convertedView.findViewById(R.id.atm_logo);
             mViewHolder.bankNameHolder = (TextView) convertedView.findViewById(R.id.atm_bank_name);
+            mViewHolder.distanceView = (TextView) convertedView.findViewById(R.id.distance);
             convertedView.setTag(mViewHolder);
         } else {
             mViewHolder = (ViewHolder) convertedView.getTag();
@@ -76,6 +86,7 @@ public class ATMItemListAdapter extends BaseAdapter {
         mViewHolder.bankLogoHolder.setImageResource(item.getIconId());
         mViewHolder.bankNameHolder.setText(item.getBankName());
         mViewHolder.addressHolder.setText(item.getFullAddress());
+        mViewHolder.distanceView.setText(String.valueOf(mCurrentLocation.distanceTo(item.getLocation())));
 
         return convertedView;
     }
@@ -84,5 +95,16 @@ public class ATMItemListAdapter extends BaseAdapter {
         ImageView bankLogoHolder;
         TextView bankNameHolder;
         TextView addressHolder;
+        TextView distanceView;
+    }
+
+    private class DistanceComparator implements Comparator<ATMItem> {
+        @Override
+        public int compare(ATMItem atmItem, ATMItem atmItem2) {
+            Location itemLocation = atmItem.getLocation();
+            Location itemLocation2 = atmItem2.getLocation();
+
+            return (int)(mCurrentLocation.distanceTo(itemLocation) - mCurrentLocation.distanceTo(itemLocation2));
+        }
     }
 }

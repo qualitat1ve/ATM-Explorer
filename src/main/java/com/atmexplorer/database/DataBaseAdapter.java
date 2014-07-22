@@ -100,12 +100,14 @@ public class DataBaseAdapter implements DataProvider {
         if (cursor.moveToFirst()) {
             do {
                 int atmId = cursor.getInt(cursor.getColumnIndex(KEY_ID));
+                double latitude = cursor.getDouble(cursor.getColumnIndex(KEY_LATITUDE));
+                double longitude = cursor.getDouble(cursor.getColumnIndex(KEY_LONGITUDE));
                 String bankName = cursor.getString(cursor.getColumnIndex(KEY_BANK_NAME));
                 String cityName = cursor.getString(cursor.getColumnIndex(KEY_CITY_NAME));
                 String address = cursor.getString(cursor.getColumnIndex(KEY_ADDRESS));
                 String bankLogo = cursor.getString(cursor.getColumnIndex(KEY_BANK_LOGO));
                 int logoId = mContext.getResources().getIdentifier(bankLogo, "drawable", mContext.getPackageName());
-                ATMItem item = new ATMItem(atmId, cityName, address, bankName, logoId);
+                ATMItem item = new ATMItem(atmId, cityName, address, bankName, logoId, latitude, longitude);
                 mATMList.add(item);
             } while (cursor.moveToNext());
         }
