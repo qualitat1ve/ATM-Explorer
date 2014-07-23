@@ -76,8 +76,7 @@ public class DataBaseAdapter implements DataProvider {
 
     @Override
     public List<Persistent> getListData() {
-        //TODO: remove stub
-        return null;
+        throw new RuntimeException("Unsupported operation");
     }
 
     /**

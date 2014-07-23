@@ -48,7 +48,6 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
                 //TODO: implement filter inside adapter
-//                mItemAdapter.getFilter().filter(charSequence);
             }
 
             @Override
@@ -104,9 +103,9 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
                 Pair<Double, Double> value = GeoUtils.getInstance(getActivity().getBaseContext()).getCoordinates(item.getFullAddress());
                 item.setLatitude(value.first);
                 item.setLongitude(value.second);
-                Log.i("geo", "ID = " + item.getId() + "; lat " + value.first + " long " + value.second);
+                Log.i(LOG_TAG, "ID = " + item.getId() + "; lat " + value.first + " long " + value.second);
             } catch (IOException e) {
-                Log.e("geo", "error " + e);
+                Log.e(LOG_TAG, "Something went wrong with coordinates ", e);
             }
         }
     }

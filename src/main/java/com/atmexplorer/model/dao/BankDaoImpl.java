@@ -5,6 +5,7 @@ import android.database.Cursor;
 import com.atmexplorer.database.DataBaseHelper;
 import com.atmexplorer.model.entity.Bank;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +35,7 @@ public class BankDaoImpl extends BaseDao<Bank> implements BankDao {
 
     @Override
     protected List<Bank> afterReadingMultiple(Cursor cursor) {
-        return null;
+        List<Bank> list = new ArrayList<Bank>();
+        return list;
     }
 }

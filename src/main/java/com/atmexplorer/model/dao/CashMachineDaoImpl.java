@@ -5,6 +5,7 @@ import android.database.Cursor;
 import com.atmexplorer.database.DataBaseHelper;
 import com.atmexplorer.model.entity.CashMachine;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +35,7 @@ public class CashMachineDaoImpl extends BaseDao<CashMachine> implements CashMach
 
     @Override
     protected List<CashMachine> afterReadingMultiple(Cursor cursor) {
-        return null;
+        List<CashMachine> list = new ArrayList<CashMachine>();
+        return list;
     }
 }

@@ -19,7 +19,9 @@ public class ATMItem {
     private double mLatitude;
     private double mLongitude;
 
-    public ATMItem() {}
+    public ATMItem() {
+
+    }
 
     public ATMItem(int id, String city, String address, String bankName, int iconId, double latitude, double longitude) {
         mId = id;

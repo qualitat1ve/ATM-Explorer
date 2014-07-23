@@ -1,6 +1,8 @@
 package com.atmexplorer.utils;
 
 import android.os.Environment;
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,7 +15,10 @@ import java.nio.channels.FileChannel;
  * @brief Provide some support operations
  */
 public class Utils {
-    private Utils() {}
+    public static final String LOG_TAG = Utils.class.getSimpleName();
+    private Utils() {
+
+    }
 
     /**
      * Round to certain number of decimals
@@ -46,7 +51,7 @@ public class Utils {
             source.close();
             destination.close();
         } catch(IOException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, "Export database can't be finished successfully", e);
         }
     }
 }

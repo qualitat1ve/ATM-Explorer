@@ -5,6 +5,7 @@ import android.database.Cursor;
 import com.atmexplorer.database.DataBaseHelper;
 import com.atmexplorer.model.entity.City;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +35,7 @@ public class CityDaoImpl extends BaseDao<City> implements CityDao {
 
     @Override
     protected List<City> afterReadingMultiple(Cursor cursor) {
-        return null;
+        List<City> list = new ArrayList<City>();
+        return list;
     }
 }

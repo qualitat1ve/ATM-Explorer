@@ -54,12 +54,13 @@ public class ATMItemListAdapter extends BaseAdapter {
 
     public void setData(List<ATMItem> list) {
         Should.beNotNull(list, LOG_TAG + "; ATM list should be not null!");
-        LinkedList<Pair<ATMItem, Float>> sortedList = new LinkedList<Pair<ATMItem, Float>>();
-        for (ATMItem item : list)
+        List<Pair<ATMItem, Float>> sortedList = new LinkedList<Pair<ATMItem, Float>>();
+        for (ATMItem item : list) {
             sortedList.add(new Pair<ATMItem, Float>(item, mCurrentLocation.distanceTo(item.getLocation())));
+        }
         Collections.sort(sortedList, new DistanceComparator());
         mATMList = new ArrayList<ATMItem>(sortedList.size());
-        for (Pair<ATMItem, Float> pair : sortedList){
+        for (Pair<ATMItem, Float> pair : sortedList) {
             mATMList.add(pair.first);
         }
         notifyDataSetChanged();
