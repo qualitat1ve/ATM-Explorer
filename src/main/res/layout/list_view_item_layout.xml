@@ -15,7 +15,7 @@
             android:padding="@dimen/logo_layout_padding"
             android:layout_alignParentLeft="true"
             android:layout_marginRight="@dimen/logo_layout_margin_right"
-            android:background="@android:color/darker_gray">
+            android:background="@android:color/white">
 
         <ImageView
                 android:id="@+id/atm_logo"
