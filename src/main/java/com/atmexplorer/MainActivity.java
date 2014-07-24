@@ -90,7 +90,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
                 R.string.drawer_open_title, R.string.drawer_close_title) {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                mActionBar.setIcon(getResources().getDrawable(R.drawable.ic_launcher));
+                mActionBar.setIcon(getResources().getDrawable(R.drawable.ic_logo));
                 mActionBar.setDisplayShowTitleEnabled(false);
                 mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
                 invalidateOptionsMenu();
