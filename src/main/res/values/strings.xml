@@ -9,7 +9,6 @@
     <string name="drawer_close_title">ATM explorer</string>
     <string name="description_text">Information</string>
     <string name="empty_drawer_message">There is nothing to show</string>
-    <string name="filtering_string">Enter a string to filter</string>
     <string name="google_map_user_position">I\'m here</string>
     <string name="unable_location_service_message">Location service unavailable</string>
     <string name="distance_meter">m</string>

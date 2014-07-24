@@ -4,13 +4,6 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <EditText
-            android:id="@+id/text_filter"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/text_filter_height"
-            android:inputType="text"
-            android:hint="@string/filtering_string"
-            android:textSize="@dimen/custom_text_size_big"/>
     <ListView
             android:id="@id/android:list"
             android:layout_below="@+id/text_filter"

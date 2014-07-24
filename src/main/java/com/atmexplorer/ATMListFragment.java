@@ -34,29 +34,11 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
     private static final String LOG_TAG = ATMListFragment.class.getSimpleName();
     private DataBaseAdapter mDataBaseAdapter;
     private ATMItemListAdapter mItemAdapter;
-    private EditText mFilter;
     private Context mContext;
     private List<ATMItem> mSelectedItems = new ArrayList<ATMItem>();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.atm_list_fragment_layout, null);
-        mFilter = (EditText) view.findViewById(R.id.text_filter);
-        mFilter.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                //unused callback
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                //TODO: implement filter inside adapter
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                //unused callback
-            }
-        });
         return view;
     }
 
