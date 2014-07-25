@@ -20,5 +20,8 @@
     <dimen name="default_text_size">15sp</dimen>
     <dimen name="custom_text_size_big">20sp</dimen>
     <dimen name="custom_text_size_small">10sp</dimen>
+    <!--Sizes of components in Drawer-->
+    <dimen name="btn_show_width">120dp</dimen>
+    <dimen name="btn_show_height">80dp</dimen>
 
 </resources>

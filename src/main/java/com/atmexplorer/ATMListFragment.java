@@ -84,7 +84,7 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
         ATMItem item = (ATMItem) listView.getItemAtPosition(position);
-        mOnItemSelectedListener.onItemSelected(item.getIconId(), item.getBankName());
+        mOnItemSelectedListener.onItemSelected(item);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
     }
 
     public interface OnItemSelectedListener {
-        public void onItemSelected(int iconId, String bankName);
+        public void onItemSelected(final ATMItem item);
     }
 
     public void onDestroy() {

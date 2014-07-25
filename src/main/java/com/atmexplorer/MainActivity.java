@@ -12,8 +12,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Gravity;
+import android.widget.Button;
 import android.widget.Toast;
 import com.atmexplorer.adapter.NavigationAdapter;
+import com.atmexplorer.model.ATMItem;
 import com.atmexplorer.model.SpinnerNavigationItem;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -40,10 +42,10 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     private CharSequence mDrawerTitle;
     private ATMListFragment mATMListFragment;
     private MapFragment mMapFragment;
-    private GoogleMap mGoogleMap;
     private View mDrawerMenu;
     private int mActionBarIconId;
     private LocationTracker mLocationTracker;
+    private ATMItem mSeclectedItem;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         mMapFragment.setRetainInstance(true);
         mLocationTracker = new LocationTracker(getApplicationContext());
         mATMListFragment = new ATMListFragment();
+        Button mapButton = (Button)findViewById(R.id.show_on_map);
 
         if (savedInstanceState == null) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -63,19 +66,37 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
         setUpActionBar();
         setUpDrawer();
+
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawerLayout.closeDrawers();
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, mMapFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
     }
 
     private void setUpGoogleMap() {
-        mGoogleMap = mMapFragment.getMap();
+        GoogleMap mGoogleMap = mMapFragment.getMap();
         if (mGoogleMap == null) {
             return;
         }
         double latitude = mLocationTracker.getLatitude();
         double longitude = mLocationTracker.getLongitude();
 
-        MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title(getResources().
-                getString(R.string.google_map_user_position));
-        mGoogleMap.addMarker(marker);
+
+        if(mSeclectedItem!=null) {
+            MarkerOptions marker = new MarkerOptions().position(new LatLng(mSeclectedItem.getLatitude(), mSeclectedItem.getLongitude())).
+                    title(mSeclectedItem.getBankName() + ", " + mSeclectedItem.getAddress());
+            mGoogleMap.addMarker(marker);
+        }
+
+        mGoogleMap.setMyLocationEnabled(true);
+        mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mGoogleMap.getUiSettings().setCompassEnabled(true);
 
         CameraPosition position = new CameraPosition.Builder().target(new LatLng(latitude, longitude)).
                 zoom(GoogleMapFragment.ZOOM_LEVEL).build();
@@ -176,10 +197,11 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     }
 
     @Override
-    public void onItemSelected(int iconId, String bankName) {
-        mActionBarIconId = iconId;
-        mDrawerTitle = bankName;
+    public void onItemSelected(final ATMItem item) {
+        mActionBarIconId = item.getIconId();
+        mDrawerTitle = item.getBankName();
         mDrawerLayout.openDrawer(Gravity.LEFT);
+        mSeclectedItem = item;
     }
 
     public void onBackPressed() {
