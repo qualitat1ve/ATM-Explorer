@@ -31,8 +31,7 @@ import java.util.List;
  * @author Maks Kukushkin (maks.kukushkin@gmail.com)
  */
 
-public class MainActivity extends Activity implements ActionBar.OnNavigationListener,
-        ATMListFragment.OnItemSelectedListener, GoogleMapFragment.OnMapReadyListener {
+public class MainActivity extends Activity implements ActionBar.OnNavigationListener, GoogleMapFragment.OnMapReadyListener {
 
     private ActionBar mActionBar;
     private List<SpinnerNavigationItem> mNavigationItemList;
@@ -45,7 +44,6 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     private View mDrawerMenu;
     private int mActionBarIconId;
     private LocationTracker mLocationTracker;
-    private ATMItem mSeclectedItem;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +55,6 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         mLocationTracker = new LocationTracker(getApplicationContext());
         mATMListFragment = new ATMListFragment();
         Button mapButton = (Button)findViewById(R.id.show_on_map);
-
         if (savedInstanceState == null) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             fragmentTransaction.add(R.id.fragment_container, mATMListFragment);
@@ -87,10 +84,9 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         double latitude = mLocationTracker.getLatitude();
         double longitude = mLocationTracker.getLongitude();
 
-
-        if(mSeclectedItem!=null) {
-            MarkerOptions marker = new MarkerOptions().position(new LatLng(mSeclectedItem.getLatitude(), mSeclectedItem.getLongitude())).
-                    title(mSeclectedItem.getBankName() + ", " + mSeclectedItem.getAddress());
+        for (ATMItem item : mATMListFragment.getSelectedItems()) {
+            MarkerOptions marker = new MarkerOptions().position(new LatLng(item.getLatitude(), item.getLongitude())).
+                    title(item.getBankName() + ", " + item.getAddress());
             mGoogleMap.addMarker(marker);
         }
 
@@ -194,14 +190,6 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public void onItemSelected(final ATMItem item) {
-        mActionBarIconId = item.getIconId();
-        mDrawerTitle = item.getBankName();
-        mDrawerLayout.openDrawer(Gravity.LEFT);
-        mSeclectedItem = item;
     }
 
     public void onBackPressed() {

@@ -100,7 +100,7 @@ public class ATMItemListAdapter extends BaseAdapter {
         return convertedView;
     }
 
-    private static class ViewHolder {
+    public static class ViewHolder {
         ImageView bankLogoHolder;
         TextView bankNameHolder;
         TextView addressHolder;

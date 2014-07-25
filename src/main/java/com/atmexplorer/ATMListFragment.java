@@ -5,6 +5,7 @@ import android.app.ListFragment;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Loader;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +22,7 @@ import com.atmexplorer.model.ATMItem;
 import com.atmexplorer.utils.GeoUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,13 +32,13 @@ import java.util.List;
 public class ATMListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<List<ATMItem>> {
 
     private static final String LOG_TAG = ATMListFragment.class.getSimpleName();
-    private OnItemSelectedListener mOnItemSelectedListener;
     private DataBaseAdapter mDataBaseAdapter;
     private ATMItemListAdapter mItemAdapter;
     private EditText mFilter;
     private Context mContext;
+    private List<ATMItem> mSelectedItems = new ArrayList<ATMItem>();
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.atm_list_fragment_layout, null);
         mFilter = (EditText) view.findViewById(R.id.text_filter);
         mFilter.addTextChangedListener(new TextWatcher() {
@@ -66,25 +68,21 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
         mDataBaseAdapter.open();
         mItemAdapter = new ATMItemListAdapter(mContext, ((MainActivity) getActivity()).getLocationTracker());
         setListAdapter(mItemAdapter);
-
         getLoaderManager().initLoader(0, null, this);
     }
 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        try {
-            mOnItemSelectedListener = (OnItemSelectedListener) activity;
-        } catch (ClassCastException e) {
-            Log.e(LOG_TAG, activity.toString() + "must implement OnItemSelectedListener");
-            throw e;
-        }
     }
 
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
-        ATMItem item = (ATMItem) listView.getItemAtPosition(position);
-        mOnItemSelectedListener.onItemSelected(item);
+        ATMItem item = (ATMItem) getListView().getItemAtPosition(position);
+        if (!mSelectedItems.contains(item)) {
+            mSelectedItems.add(item);
+        } else {
+            mSelectedItems.remove(item);
+        }
     }
 
     @Override
@@ -115,12 +113,13 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
         mItemAdapter.cleatData();
     }
 
-    public interface OnItemSelectedListener {
-        public void onItemSelected(final ATMItem item);
-    }
-
     public void onDestroy() {
         super.onDestroy();
         mDataBaseAdapter.close();
     }
+
+    public final List<ATMItem> getSelectedItems() {
+        return mSelectedItems;
+    }
+
 }
