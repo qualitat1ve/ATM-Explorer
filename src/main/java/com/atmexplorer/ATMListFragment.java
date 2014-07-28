@@ -74,7 +74,7 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
 
     @Override
     public void onLoadFinished(Loader<List<ATMItem>> listLoader, List<ATMItem> atmItems) {
-        mItemAdapter.setData(atmItems);
+        mItemAdapter.setData(atmItems, false);
     }
 
     private void fillCoordinates(List<ATMItem> atmItems) {
@@ -90,9 +90,17 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
         }
     }
 
+    public void doSearch(String query) {
+        mItemAdapter.setData(mDataBaseAdapter.getFilteredData(query), true);
+    }
+
     @Override
     public void onLoaderReset(Loader<List<ATMItem>> listLoader) {
         mItemAdapter.cleatData();
+    }
+
+    public void onBackPressed() {
+        mItemAdapter.releaseSearchResult();
     }
 
     public void onDestroy() {

@@ -3,6 +3,9 @@ package com.atmexplorer;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -13,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Gravity;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.Toast;
 import com.atmexplorer.adapter.NavigationAdapter;
 import com.atmexplorer.model.ATMItem;
@@ -44,6 +48,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     private View mDrawerMenu;
     private int mActionBarIconId;
     private LocationTracker mLocationTracker;
+    private boolean isSearchActive;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -149,6 +154,18 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         mActionBar.setHomeButtonEnabled(true);
     }
 
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            doSearch(query);
+        }
+    }
+
+    private void doSearch(String query) {
+        mATMListFragment.doSearch(query);
+        isSearchActive = true;
+    }
+
     public LocationTracker getLocationTracker() {
         return mLocationTracker;
     }
@@ -164,6 +181,29 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                if (isSearchActive) {
+                    ATMListFragment fragment = (ATMListFragment) getFragmentManager().findFragmentById(R.id.fragment_container);
+                    fragment.onBackPressed();
+                }
+                return true;
+            }
+        });
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -178,6 +218,10 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void onNewIntent(Intent intent) {
+        handleIntent(intent);
     }
 
     @Override

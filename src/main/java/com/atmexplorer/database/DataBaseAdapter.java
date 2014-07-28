@@ -67,7 +67,14 @@ public class DataBaseAdapter implements DataProvider {
     }
 
     public List<ATMItem> getAllData() {
-        return prepareDataToShow();
+        Cursor cursor = mDb.rawQuery(mContext.getResources().getString(R.string.sql_select_all), null);
+        return prepareDataToShow(cursor);
+    }
+
+    public List<ATMItem> getFilteredData(String constraint) {
+        String[] selection = new String[]{"%" + constraint + "%"};
+        Cursor cursor = mDb.rawQuery(mContext.getString(R.string.sql_filter_by_address), selection);
+        return prepareDataToShow(cursor);
     }
 
     public void close() {
@@ -93,9 +100,8 @@ public class DataBaseAdapter implements DataProvider {
         close();
     }
 
-    private List<ATMItem> prepareDataToShow() {
+    private List<ATMItem> prepareDataToShow(Cursor cursor) {
         mATMList = new ArrayList<ATMItem>();
-        Cursor cursor = mDb.rawQuery(mContext.getResources().getString(R.string.sql_select_all), null);
         if (cursor.moveToFirst()) {
             do {
                 int atmId = cursor.getInt(cursor.getColumnIndex(KEY_ID));

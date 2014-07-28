@@ -14,7 +14,9 @@
     <string name="distance_meter">m</string>
     <string name="btn_show_text">Show on map</string>
     <string name="btn_show_all_text">Show all on map</string>
+    <string name="search_hint">Search address</string>
 
     <!--<SQL raw queries>-->
     <string name="sql_select_all">SELECT Atm._id, Bank.bank_name, City.name, Atm.address, Bank.logo, Atm.latitude, Atm.longitude FROM Atm INNER JOIN Bank ON Bank._id=Atm.id_bank INNER JOIN City ON City._id=Atm.id_city</string>
+    <string name="sql_filter_by_address">SELECT Atm._id, Bank.bank_name, City.name, Atm.address, Bank.logo, Atm.latitude, Atm.longitude FROM Atm INNER JOIN Bank ON Bank._id=Atm.id_bank INNER JOIN City ON City._id=Atm.id_city WHERE Atm.address LIKE ?</string>
 </resources>

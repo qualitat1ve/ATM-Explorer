@@ -29,6 +29,7 @@ public class ATMItemListAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<ATMItem> mATMList = new ArrayList<ATMItem>();
+    private List<ATMItem> mTempList = new ArrayList<ATMItem>();
     private ViewHolder mViewHolder;
     private Location mCurrentLocation;
 
@@ -52,9 +53,12 @@ public class ATMItemListAdapter extends BaseAdapter {
         return i;
     }
 
-    public void setData(List<ATMItem> list) {
+    public void setData(List<ATMItem> list, boolean requiredSaving) {
         Should.beNotNull(list, LOG_TAG + "; ATM list should be not null!");
-        List<Pair<ATMItem, Float>> sortedList = new LinkedList<Pair<ATMItem, Float>>();
+        if(requiredSaving){
+            saveMainContent();
+        }
+        LinkedList<Pair<ATMItem, Float>> sortedList = new LinkedList<Pair<ATMItem, Float>>();
         for (ATMItem item : list) {
             sortedList.add(new Pair<ATMItem, Float>(item, mCurrentLocation.distanceTo(item.getLocation())));
         }
@@ -63,6 +67,17 @@ public class ATMItemListAdapter extends BaseAdapter {
         for (Pair<ATMItem, Float> pair : sortedList) {
             mATMList.add(pair.first);
         }
+        notifyDataSetChanged();
+    }
+
+    private void saveMainContent() {
+        mTempList.addAll(mATMList);
+    }
+
+    public void releaseSearchResult() {
+        mATMList.clear();
+        mATMList.addAll(mTempList);
+        mTempList.clear();
         notifyDataSetChanged();
     }
 
