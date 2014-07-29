@@ -108,6 +108,15 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
         mDataBaseAdapter.close();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(getListView()!=null) {
+            getListView().clearChoices();
+            getSelectedItems().clear();
+        }
+    }
+
     public final List<ATMItem> getSelectedItems() {
         return mSelectedItems;
     }

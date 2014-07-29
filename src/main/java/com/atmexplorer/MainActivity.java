@@ -174,6 +174,17 @@ public class MainActivity extends Activity implements GoogleMapFragment.OnMapRea
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+        switch (item.getItemId()) {
+            case R.id.action_show_id:
+                mActionBar.hide();
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, mMapFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                break;
+            default:
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -194,6 +205,9 @@ public class MainActivity extends Activity implements GoogleMapFragment.OnMapRea
     }
 
     public void onBackPressed() {
+        if(!mActionBar.isShowing()){
+            mActionBar.show();
+        }
         if (mDrawerLayout.isDrawerOpen(mDrawerMenu)) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
         } else {
