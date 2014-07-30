@@ -27,6 +27,12 @@
                        android:resource="@xml/searchable"/>
         </activity>
 
+        <provider
+                android:name=".AddressSuggestionProvider"
+                android:authorities="com.atmexplorer.AddressSuggestionProvider">
+
+        </provider>
+
         <meta-data
                 android:name="com.google.android.gms.version"
                 android:value="@integer/google_play_services_version"/>

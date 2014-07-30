@@ -1,12 +1,16 @@
 package com.atmexplorer.database;
 
+import android.app.SearchManager;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
+import android.provider.BaseColumns;
 import com.atmexplorer.R;
 import com.atmexplorer.model.ATMItem;
 import com.atmexplorer.model.DataProvider;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
@@ -48,6 +52,7 @@ public class DataBaseAdapter implements DataProvider {
     private final Context mContext;
     private SQLiteDatabase mDb;
     private DataBaseHelper mDbHelper;
+    private static final HashMap<String,String> mColumnMap = buildColumnMap();
 
     public DataBaseAdapter(Context context) {
         this.mContext = context;
@@ -86,6 +91,33 @@ public class DataBaseAdapter implements DataProvider {
         throw new RuntimeException("Unsupported operation");
     }
 
+    public final Cursor getAddress(String rowId, String[] columns) {
+        String selection = "rowId = ?";
+        String[] selectionArgs = new String[]{rowId};
+        return query(selection, selectionArgs, columns);
+    }
+
+    public final Cursor getWordMatches(String query, String[] columns) {
+        String selection = KEY_ADDRESS + " LIKE ?";
+        String[] selectionArgs = new String[] {"%" + query + "%"};
+        return query(selection, selectionArgs, columns);
+    }
+
+    private Cursor query(String selection, String[] selectionArgs, String[] columns) {
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        builder.setTables(ATM_TABLE_NAME);
+        builder.setProjectionMap(mColumnMap);
+
+        Cursor cursor = builder.query(mDbHelper.getReadableDatabase(), columns, selection, selectionArgs, null, null, null);
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) {
+            cursor.close();
+            return null;
+        }
+        return cursor;
+    }
+
     /**
      * Method updates ATM's coordinates according to their address.
      * Should be used once after installation of application.
@@ -117,6 +149,15 @@ public class DataBaseAdapter implements DataProvider {
             } while (cursor.moveToNext());
         }
         return mATMList;
+    }
+
+    private static HashMap<String, String> buildColumnMap() {
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put(KEY_ADDRESS, KEY_ADDRESS + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_1);
+        map.put(BaseColumns._ID, "rowid AS " + BaseColumns._ID);
+        map.put(SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID, "rowid AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID);
+        map.put(SearchManager.SUGGEST_COLUMN_SHORTCUT_ID, "rowid AS " + SearchManager.SUGGEST_COLUMN_SHORTCUT_ID);
+        return map;
     }
 }
 
