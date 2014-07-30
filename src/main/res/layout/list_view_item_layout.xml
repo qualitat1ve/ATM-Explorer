@@ -11,6 +11,7 @@
             android:id="@+id/logo_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:padding="@dimen/logo_layout_padding"
             android:layout_alignParentLeft="true"
             android:layout_marginRight="@dimen/logo_layout_margin_right"

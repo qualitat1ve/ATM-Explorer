@@ -13,6 +13,7 @@
     <string name="google_map_user_position">I\'m here</string>
     <string name="unable_location_service_message">Location service unavailable</string>
     <string name="distance_meter">m</string>
+    <string name="distance_kilometer">km</string>
     <string name="btn_show_text">Show on map</string>
     <string name="btn_show_all_text">Show all on map</string>
     <string name="search_hint">Search address</string>

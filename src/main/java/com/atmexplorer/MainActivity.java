@@ -175,7 +175,7 @@ public class MainActivity extends Activity implements GoogleMapFragment.OnMapRea
             return true;
         }
         switch (item.getItemId()) {
-            case R.id.action_show_id:
+            case R.id.action_show_on_map:
                 mActionBar.hide();
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, mMapFragment);

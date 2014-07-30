@@ -121,8 +121,14 @@ public class ATMItemListAdapter extends BaseAdapter {
         mViewHolder.bankNameHolder.setText(item.getBankName());
         mViewHolder.addressHolder.setText(item.getFullAddress());
         float distance = mCurrentLocation.distanceTo(item.getLocation());
-        float newDistance = Utils.round(distance,1);
-        String dist = newDistance + " "  + mContext.getResources().getString(R.string.distance_meter);
+        String dist;
+        if (distance < 1000) {
+            int newDistance = (int)distance;
+            dist = newDistance + " "  + mContext.getResources().getString(R.string.distance_meter);
+        } else {
+            float newDistance = Utils.round(distance / 1000,1);
+            dist = newDistance + " "  + mContext.getResources().getString(R.string.distance_kilometer);
+        }
         mViewHolder.distanceView.setText(dist);
 
         return convertedView;
