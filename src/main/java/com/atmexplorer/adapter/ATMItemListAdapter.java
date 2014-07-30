@@ -1,7 +1,9 @@
 package com.atmexplorer.adapter;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.atmexplorer.ATMListFragment;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
 import com.atmexplorer.model.ATMItem;
@@ -32,10 +35,12 @@ public class ATMItemListAdapter extends BaseAdapter {
     private List<ATMItem> mTempList = new ArrayList<ATMItem>();
     private ViewHolder mViewHolder;
     private Location mCurrentLocation;
+    private ATMListFragment.DetailMode mMode;
 
-    public ATMItemListAdapter(Context context, LocationTracker locationTracker) {
+    public ATMItemListAdapter(Context context, LocationTracker locationTracker, ATMListFragment.DetailMode mode) {
         mContext = context;
         mCurrentLocation = locationTracker.getLocation();
+        mMode = mode;
     }
 
     @Override
@@ -96,6 +101,14 @@ public class ATMItemListAdapter extends BaseAdapter {
             mViewHolder.bankLogoHolder = (ImageView) convertedView.findViewById(R.id.atm_logo);
             mViewHolder.bankNameHolder = (TextView) convertedView.findViewById(R.id.atm_bank_name);
             mViewHolder.distanceView = (TextView) convertedView.findViewById(R.id.distance);
+            mViewHolder.detailView  = convertedView.findViewById(R.id.detail_id);
+            mViewHolder.detailView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.i("detail", "click");
+                    mMode.activate();
+                }
+            });
             convertedView.setTag(mViewHolder);
         } else {
             mViewHolder = (ViewHolder) convertedView.getTag();
@@ -120,6 +133,7 @@ public class ATMItemListAdapter extends BaseAdapter {
         TextView bankNameHolder;
         TextView addressHolder;
         TextView distanceView;
+        View detailView;
     }
 
     private class DistanceComparator implements Comparator<Pair<ATMItem, Float> > {

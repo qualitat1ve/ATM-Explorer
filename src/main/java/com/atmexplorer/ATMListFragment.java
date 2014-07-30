@@ -1,6 +1,7 @@
 package com.atmexplorer;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.app.LoaderManager;
 import android.content.Context;
@@ -48,7 +49,8 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
         mDataBaseAdapter = new DataBaseAdapter(getActivity());
         mDataBaseAdapter.createDatabase();
         mDataBaseAdapter.open();
-        mItemAdapter = new ATMItemListAdapter(mContext, ((MainActivity) getActivity()).getLocationTracker());
+        DetailMode mode = new DetailMode();
+        mItemAdapter = new ATMItemListAdapter(mContext, ((MainActivity) getActivity()).getLocationTracker(), mode);
         setListAdapter(mItemAdapter);
         getLoaderManager().initLoader(0, null, this);
     }
@@ -121,4 +123,14 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
         return mSelectedItems;
     }
 
+
+    public class DetailMode {
+        public void activate() {
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.replace(R.id.fragment_container, new DetailFragment());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
+    }
 }
