@@ -1,42 +1,51 @@
-package com.atmexplorer;
+package com.atmexplorer.mode;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
+import android.app.Fragment;
 import android.app.ListFragment;
 import android.app.LoaderManager;
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ListView;
+import com.atmexplorer.CustomATMLoader;
+import com.atmexplorer.DataManager;
+import com.atmexplorer.LocationTracker;
+import com.atmexplorer.R;
 import com.atmexplorer.adapter.ATMItemListAdapter;
 import com.atmexplorer.database.DataBaseAdapter;
 import com.atmexplorer.model.ATMItem;
 import com.atmexplorer.utils.GeoUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Maks Kukushkin (maks.kukushkin@gmail.com)
  * @brief class should display list of ATM
  */
-public class ATMListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<List<ATMItem>> {
+public class ListMode extends ListFragment implements LoaderManager.LoaderCallbacks<List<ATMItem>>, Mode {
 
-    private static final String LOG_TAG = ATMListFragment.class.getSimpleName();
+    private static final String LOG_TAG = ListMode.class.getSimpleName();
     private DataBaseAdapter mDataBaseAdapter;
     private ATMItemListAdapter mItemAdapter;
     private Context mContext;
-    private List<ATMItem> mSelectedItems = new ArrayList<ATMItem>();
+    private LocationTracker mLocationTracker;
+    private DataManager mDataManager;
+    private ModesManager.ModeChangeRequester mModeChangeRequester;
+
+    public ListMode(DataManager dataManager, LocationTracker locationTracker, ModesManager.ModeChangeRequester modeChangeRequester) {
+        mLocationTracker = locationTracker;
+        mDataManager = dataManager;
+        mModeChangeRequester = modeChangeRequester;
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.atm_list_fragment_layout, null);
@@ -49,8 +58,7 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
         mDataBaseAdapter = new DataBaseAdapter(getActivity());
         mDataBaseAdapter.createDatabase();
         mDataBaseAdapter.open();
-        DetailMode mode = new DetailMode();
-        mItemAdapter = new ATMItemListAdapter(mContext, ((MainActivity) getActivity()).getLocationTracker(), mode);
+        mItemAdapter = new ATMItemListAdapter(mContext, mLocationTracker, new DetailClickListener());
         setListAdapter(mItemAdapter);
         getLoaderManager().initLoader(0, null, this);
     }
@@ -62,10 +70,10 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
         ATMItem item = (ATMItem) getListView().getItemAtPosition(position);
-        if (!mSelectedItems.contains(item)) {
-            mSelectedItems.add(item);
-        } else {
-            mSelectedItems.remove(item);
+        if(!mDataManager.contains(item)) {
+            mDataManager.addItem(item);
+        }else{
+            mDataManager.removeItem(item);
         }
     }
 
@@ -115,22 +123,36 @@ public class ATMListFragment extends ListFragment implements LoaderManager.Loade
         super.onResume();
         if(getListView()!=null) {
             getListView().clearChoices();
-            getSelectedItems().clear();
+            mDataManager.clearAll();
         }
     }
 
-    public final List<ATMItem> getSelectedItems() {
-        return mSelectedItems;
+    @Override
+    public void onChangeState(ActiveState state) {
+    }
+
+    @Override
+    public Fragment getModeFragment() {
+        return this;
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        handleIntent(intent);
     }
 
 
-    public class DetailMode {
-        public void activate() {
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.replace(R.id.fragment_container, new DetailFragment());
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            doSearch(query);
+        }
+    }
+
+    public class DetailClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            mModeChangeRequester.onModeChange(ModesManager.ModeIndex.DETAIL);
         }
     }
 }

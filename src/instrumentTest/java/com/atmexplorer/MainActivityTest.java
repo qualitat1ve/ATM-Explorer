@@ -12,10 +12,10 @@ import android.test.ActivityInstrumentationTestCase;
  * -e class com.atmexplorer.MainActivityTest \
  * com.atmexplorer.tests/android.test.InstrumentationTestRunner
  */
-public class MainActivityTest extends ActivityInstrumentationTestCase<MainActivity> {
+public class MainActivityTest extends ActivityInstrumentationTestCase<AtmExplorer> {
 
     public MainActivityTest() {
-        super("com.atmexplorer", MainActivity.class);
+        super("com.atmexplorer", AtmExplorer.class);
     }
 
 }

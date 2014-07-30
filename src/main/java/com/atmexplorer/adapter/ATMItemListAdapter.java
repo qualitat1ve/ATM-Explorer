@@ -1,6 +1,5 @@
 package com.atmexplorer.adapter;
 
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.location.Location;
 import android.util.Log;
@@ -11,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.atmexplorer.ATMListFragment;
+import com.atmexplorer.mode.ListMode;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
 import com.atmexplorer.model.ATMItem;
@@ -35,12 +34,12 @@ public class ATMItemListAdapter extends BaseAdapter {
     private List<ATMItem> mTempList = new ArrayList<ATMItem>();
     private ViewHolder mViewHolder;
     private Location mCurrentLocation;
-    private ATMListFragment.DetailMode mMode;
+    private View.OnClickListener mOnClickListener;
 
-    public ATMItemListAdapter(Context context, LocationTracker locationTracker, ATMListFragment.DetailMode mode) {
+    public ATMItemListAdapter(Context context, LocationTracker locationTracker, View.OnClickListener onClickListener) {
         mContext = context;
         mCurrentLocation = locationTracker.getLocation();
-        mMode = mode;
+        mOnClickListener = onClickListener;
     }
 
     @Override
@@ -102,13 +101,7 @@ public class ATMItemListAdapter extends BaseAdapter {
             mViewHolder.bankNameHolder = (TextView) convertedView.findViewById(R.id.atm_bank_name);
             mViewHolder.distanceView = (TextView) convertedView.findViewById(R.id.distance);
             mViewHolder.detailView  = convertedView.findViewById(R.id.detail_id);
-            mViewHolder.detailView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.i("detail", "click");
-                    mMode.activate();
-                }
-            });
+            mViewHolder.detailView.setOnClickListener(mOnClickListener);
             convertedView.setTag(mViewHolder);
         } else {
             mViewHolder = (ViewHolder) convertedView.getTag();
