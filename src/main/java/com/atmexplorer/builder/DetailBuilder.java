@@ -1,6 +1,7 @@
 package com.atmexplorer.builder;
 
 
+import android.view.View;
 import com.atmexplorer.DataManager;
 import com.atmexplorer.mode.DetailMode;
 import com.atmexplorer.mode.Mode;
@@ -12,12 +13,12 @@ import com.atmexplorer.mode.ModesManager;
  */
 public class DetailBuilder extends  ModeBuilder {
 
-    public DetailBuilder(DataManager dataManager, ModesManager.ModeChangeRequester modeChangeRequester) {
-        super(dataManager, modeChangeRequester);
+    public DetailBuilder(View rootView, DataManager dataManager, ModesManager.ModeChangeRequester modeChangeRequester) {
+        super(rootView, dataManager, modeChangeRequester);
     }
 
     @Override
     public Mode build() {
-        return new DetailMode();
+        return new DetailMode(mRootView, mDataManager, mModeChangeRequester);
     }
 }

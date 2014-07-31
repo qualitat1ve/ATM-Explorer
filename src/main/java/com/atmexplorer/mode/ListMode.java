@@ -58,7 +58,7 @@ public class ListMode extends ListFragment implements LoaderManager.LoaderCallba
         mDataBaseAdapter = new DataBaseAdapter(getActivity());
         mDataBaseAdapter.createDatabase();
         mDataBaseAdapter.open();
-        mItemAdapter = new ATMItemListAdapter(mContext, mLocationTracker, new DetailClickListener());
+        mItemAdapter = new ATMItemListAdapter(mContext, mLocationTracker);
         setListAdapter(mItemAdapter);
         getLoaderManager().initLoader(0, null, this);
     }
@@ -69,12 +69,9 @@ public class ListMode extends ListFragment implements LoaderManager.LoaderCallba
 
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
-        ATMItem item = (ATMItem) getListView().getItemAtPosition(position);
-        if(!mDataManager.contains(item)) {
-            mDataManager.addItem(item);
-        }else{
-            mDataManager.removeItem(item);
-        }
+        ATMItem item = (ATMItem) getListAdapter().getItem(position);
+        mDataManager.setCurrentItem(item);
+        mModeChangeRequester.onModeChange(ModesManager.ModeIndex.DETAIL);
     }
 
     @Override
@@ -146,13 +143,6 @@ public class ListMode extends ListFragment implements LoaderManager.LoaderCallba
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             doSearch(query);
-        }
-    }
-
-    public class DetailClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            mModeChangeRequester.onModeChange(ModesManager.ModeIndex.DETAIL);
         }
     }
 }

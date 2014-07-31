@@ -9,6 +9,6 @@
             android:layout_below="@+id/text_filter"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:choiceMode="multipleChoice"
+            android:choiceMode="singleChoice"
             android:fastScrollEnabled="true"/>
 </RelativeLayout>

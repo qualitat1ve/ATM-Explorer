@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.view.MenuItem;
+import android.view.View;
 import com.atmexplorer.DataManager;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
@@ -41,20 +42,25 @@ public class ModesManager {
         LocationTracker locationTracker =  new LocationTracker(activity.getApplicationContext());
         ModeChangeRequester modeChangeRequester = new ModeChangeRequester();
 
-        ListModeBuilder listModeBuilder =  new ListModeBuilder(dataManager, locationTracker, modeChangeRequester);
+        View rootView  = activity.findViewById(R.id.fragment_container);
+
+        ListModeBuilder listModeBuilder =  new ListModeBuilder(rootView, dataManager, locationTracker, modeChangeRequester);
         mModes[ModeIndex.LIST.index()] = listModeBuilder.build();
 
-        MapModeBuilder mapModeBuilder =  new MapModeBuilder(dataManager, activity.getApplicationContext(), locationTracker, modeChangeRequester);
+        MapModeBuilder mapModeBuilder =  new MapModeBuilder(rootView, dataManager, activity.getApplicationContext(), locationTracker, modeChangeRequester);
         mModes[ModeIndex.MAP.index()] = mapModeBuilder.build();
         mActiveMode = mModes[mDefaultModeIndex];
 
-        DetailBuilder detailBuilder =  new DetailBuilder(dataManager, modeChangeRequester);
+        DetailBuilder detailBuilder =  new DetailBuilder(rootView, dataManager, modeChangeRequester);
         mModes[ModeIndex.DETAIL.index()] = detailBuilder.build();
 
         activateDefaultMode();
     }
 
     public void activate(ModeIndex modeId) {
+        mActiveMode.onChangeState(Mode.ActiveState.INACTIVE);
+        mActiveMode = mModes[modeId.index()];
+        mActiveMode.onChangeState(Mode.ActiveState.ACTIVE);
         FragmentTransaction fragmentTransaction = mActivity.getFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.replace(R.id.fragment_container, mModes[modeId.index()].getModeFragment());
@@ -77,17 +83,6 @@ public class ModesManager {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.action_show_on_map:
-                mActionBar.hide();
-                Mode mode = mModes[ModeIndex.MAP.index()];
-                mode.onChangeState(Mode.ActiveState.ACTIVE);
-                activate(ModeIndex.MAP);
-                break;
-            default:
-                break;
-        }
         return false;
     }
 

@@ -14,8 +14,10 @@
     <dimen name="atm_bank_name_text_margin_top">1dp</dimen>
     <dimen name="distance_margin_right">5dp</dimen>
     <dimen name="distance_margin_bottom">2dp</dimen>
-    <dimen name="detail_width">75dp</dimen>
-    <dimen name="detail_height">60dp</dimen>
+    <dimen name="detail_logo_width">60dp</dimen>
+    <dimen name="detail_logo_height">60dp</dimen>
+    <dimen name="detail_address_height">80dp</dimen>
+    <dimen name="detail_show_height">40dp</dimen>
 
     <!--Text sizes-->
     <dimen name="default_text_size">15sp</dimen>

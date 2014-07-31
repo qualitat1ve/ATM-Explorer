@@ -12,6 +12,7 @@ import java.util.List;
 public class DataManager {
 
     private List<ATMItem> mItems = new ArrayList<ATMItem>();
+    private ATMItem mCurrentItem = null;
 
     public void addItem(ATMItem item) {
         mItems.add(item);
@@ -27,6 +28,14 @@ public class DataManager {
 
     public void clearAll() {
         mItems.clear();
+    }
+
+    public void setCurrentItem(ATMItem item) {
+        mCurrentItem = item;
+    }
+
+    public final ATMItem getCurrentItem() {
+        return mCurrentItem;
     }
 
     public final List<ATMItem> getItems (){

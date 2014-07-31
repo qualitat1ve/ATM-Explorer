@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.atmexplorer.DataManager;
 import com.atmexplorer.LocationTracker;
+import com.atmexplorer.R;
 import com.atmexplorer.model.ATMItem;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -65,22 +66,21 @@ public class MapMode extends MapFragment implements Mode {
             return;
         }
 
-        double latitude = mLocationTracker.getLatitude();
-        double longitude = mLocationTracker.getLongitude();
-
-        for (ATMItem item : mDataManager.getItems()) {
-            MarkerOptions marker = new MarkerOptions().position(new LatLng(item.getLatitude(), item.getLongitude())).
-                    title(item.getBankName() + ", " + item.getAddress());
+        ATMItem currentItem = mDataManager.getCurrentItem();
+        if(currentItem !=null) {
+            MarkerOptions marker = new MarkerOptions().position(new LatLng(currentItem.getLatitude(), currentItem.getLongitude())).
+                    title(currentItem.getBankName() + ", " + currentItem.getAddress());
             mGoogleMap.addMarker(marker);
+            CameraPosition position = new CameraPosition.Builder().target(new LatLng(currentItem.getLatitude(), currentItem.getLongitude())).
+                    zoom(MapMode.ZOOM_LEVEL).build();
+            mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(position));
         }
 
         mGoogleMap.setMyLocationEnabled(true);
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
         mGoogleMap.getUiSettings().setCompassEnabled(true);
 
-        CameraPosition position = new CameraPosition.Builder().target(new LatLng(latitude, longitude)).
-                zoom(MapMode.ZOOM_LEVEL).build();
-        mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(position));
+
     }
 
     @Override

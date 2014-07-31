@@ -1,6 +1,7 @@
 package com.atmexplorer.builder;
 
 import android.content.Context;
+import android.view.View;
 import com.atmexplorer.DataManager;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.mode.MapMode;
@@ -25,8 +26,8 @@ public class MapModeBuilder extends  ModeBuilder implements MapMode.OnMapReadyLi
     private DataManager mDataManager;
 
 
-    public MapModeBuilder(DataManager dataManager, Context context, LocationTracker locationTracker, ModesManager.ModeChangeRequester modeChangeRequester) {
-        super(dataManager, modeChangeRequester);
+    public MapModeBuilder(View rootView, DataManager dataManager, Context context, LocationTracker locationTracker, ModesManager.ModeChangeRequester modeChangeRequester) {
+        super(rootView, dataManager, modeChangeRequester);
         mContext = context;
         mLocationTracker = locationTracker;
         mDataManager = dataManager;

@@ -4,8 +4,157 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-    <TextView android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:text="@string/detail_message"/>
+                android:layout_height="match_parent"
+                android:background="@android:color/darker_gray">
+    <RelativeLayout    android:id="@+id/bank_title_id"
+                       android:orientation="vertical"
+                       android:layout_width="fill_parent"
+                       android:layout_height="@dimen/detail_logo_height"
+                       android:layout_alignParentLeft="true"
+                       android:layout_alignParentTop="true"
+                       android:layout_margin="3dp"
+                       android:background="@android:color/white">
+        <ImageView
+                   android:id="@+id/logo_id"
+                   android:layout_alignParentLeft="true"
+                   android:layout_alignParentTop="true"
+                   android:layout_width="@dimen/detail_logo_width"
+                   android:layout_height="@dimen/detail_logo_height"
+                   android:layout_margin="5dp"
+                   />
+        <TextView android:id="@+id/bank_id"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_toRightOf="@+id/logo_id"
+                  android:layout_centerVertical="true"
+                  android:paddingLeft="15dp"
+                  style="@android:style/TextAppearance.DeviceDefault.Medium"
+                  android:text="@string/detail_message"/>
+    </RelativeLayout>
+
+    <RelativeLayout    android:id="@+id/bank_address_title_id"
+                       android:orientation="horizontal"
+                       android:layout_width="fill_parent"
+                       android:layout_height="@dimen/detail_address_height"
+                       android:layout_alignParentLeft="true"
+                       android:layout_below="@+id/bank_title_id"
+                       android:layout_marginLeft="3dp"
+                       android:layout_marginRight="3dp"
+                       android:layout_marginBottom="3dp"
+                       android:background="@android:color/white">
+        <ImageView
+                android:id="@+id/address_logo_id"
+                android:layout_alignParentLeft="true"
+                android:layout_width="@dimen/detail_logo_width"
+                android:layout_height="@dimen/detail_logo_height"
+                android:layout_margin="5dp"
+                android:src="@drawable/address_icon"
+                />
+        <TextView android:id="@+id/address_desc"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:paddingLeft="5dp"
+                  android:paddingTop="10dp"
+                  android:layout_toRightOf="@+id/address_logo_id"
+                  style="@android:style/TextAppearance.DeviceDefault.Large"
+                  android:text="simple address"/>
+    </RelativeLayout>
+
+    <LinearLayout    android:id="@+id/show_title_id"
+                       android:orientation="horizontal"
+                       android:layout_width="fill_parent"
+                       android:layout_height="@dimen/detail_show_height"
+                       android:layout_alignParentLeft="true"
+                       android:layout_below="@+id/bank_address_title_id"
+                       android:layout_marginLeft="3dp"
+                       android:layout_marginRight="3dp"
+                       android:layout_marginBottom="3dp"
+                       android:background="@android:color/darker_gray">
+
+        <TextView android:id="@+id/show_map_id"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:paddingLeft="5dp"
+                  android:textStyle="bold"
+                  android:gravity="center"
+                  android:layout_weight="1"
+                  android:layout_gravity="center_vertical"
+                  android:text="Show on map"
+                  android:background="@drawable/view_selector" />
+
+        <TextView android:id="@+id/navigation_id"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:layout_marginLeft="1dp"
+                  android:textStyle="bold"
+                  android:gravity="center"
+                  android:layout_weight="1"
+                  android:layout_gravity="center_vertical"
+                  android:text="Navigation"
+                  android:background="@android:color/white"/>
+
+    </LinearLayout>
+
+    <RelativeLayout    android:id="@+id/opermode_title_id"
+                       android:orientation="vertical"
+                       android:layout_width="fill_parent"
+                       android:layout_height="@dimen/detail_address_height"
+                       android:layout_alignParentLeft="true"
+                       android:layout_below="@+id/show_title_id"
+                       android:layout_marginLeft="3dp"
+                       android:layout_marginRight="3dp"
+                       android:layout_marginBottom="3dp"
+                       android:background="@android:color/white">
+        <TextView android:id="@+id/opermode_title"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:paddingLeft="5dp"
+                  android:paddingTop="25dp"
+                  android:textStyle="bold"
+                  android:text="Operation mode:"/>
+        <TextView android:id="@+id/opermode_desc"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@+id/opermode_title"
+                  android:paddingLeft="5dp"
+                  android:paddingTop="15dp"
+                  android:text="All time"/>
+    </RelativeLayout>
+
+    <RelativeLayout    android:id="@+id/place_title_id"
+                       android:orientation="vertical"
+                       android:layout_width="fill_parent"
+                       android:layout_height="@dimen/detail_address_height"
+                       android:layout_alignParentLeft="true"
+                       android:layout_below="@+id/opermode_title_id"
+                       android:layout_marginLeft="3dp"
+                       android:layout_marginRight="3dp"
+                       android:layout_marginBottom="3dp"
+                       android:background="@android:color/white">
+        <TextView android:id="@+id/place_title"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:paddingLeft="5dp"
+                  android:paddingTop="25dp"
+                  android:textStyle="bold"
+                  android:text="Place:"/>
+        <TextView android:id="@+id/place_desc"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@+id/place_title"
+                  android:paddingLeft="5dp"
+                  android:paddingTop="15dp"
+                  android:text="Near shop"/>
+    </RelativeLayout>
+
+    <RelativeLayout    android:id="@+id/other_title_id"
+                       android:orientation="vertical"
+                       android:layout_width="fill_parent"
+                       android:layout_height="fill_parent"
+                       android:layout_alignParentLeft="true"
+                       android:layout_below="@+id/place_title_id"
+                       android:layout_marginLeft="3dp"
+                       android:layout_marginRight="3dp"
+                       android:background="@android:color/white"/>
+
 </RelativeLayout>

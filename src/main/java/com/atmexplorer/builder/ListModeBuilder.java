@@ -1,5 +1,6 @@
 package com.atmexplorer.builder;
 
+import android.view.View;
 import com.atmexplorer.DataManager;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.mode.ListMode;
@@ -16,8 +17,8 @@ public class ListModeBuilder extends  ModeBuilder {
     private ListMode mATMListFragment = null;
     private LocationTracker mLocationTracker;
 
-    public ListModeBuilder(DataManager dataManager, LocationTracker locationTracker, ModesManager.ModeChangeRequester modeChangeRequester) {
-        super(dataManager, modeChangeRequester);
+    public ListModeBuilder(View rootView, DataManager dataManager, LocationTracker locationTracker, ModesManager.ModeChangeRequester modeChangeRequester) {
+        super(rootView, dataManager, modeChangeRequester);
         mLocationTracker = locationTracker;
     }
 

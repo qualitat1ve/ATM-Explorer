@@ -2,7 +2,6 @@ package com.atmexplorer.adapter;
 
 import android.content.Context;
 import android.location.Location;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +9,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.atmexplorer.mode.ListMode;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
 import com.atmexplorer.model.ATMItem;
 import com.atmexplorer.utils.Should;
 import com.atmexplorer.utils.Utils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,12 +33,11 @@ public class ATMItemListAdapter extends BaseAdapter {
     private List<ATMItem> mTempList = new ArrayList<ATMItem>();
     private ViewHolder mViewHolder;
     private Location mCurrentLocation;
-    private View.OnClickListener mOnClickListener;
 
-    public ATMItemListAdapter(Context context, LocationTracker locationTracker, View.OnClickListener onClickListener) {
+
+    public ATMItemListAdapter(Context context, LocationTracker locationTracker) {
         mContext = context;
         mCurrentLocation = locationTracker.getLocation();
-        mOnClickListener = onClickListener;
     }
 
     @Override
@@ -100,8 +98,6 @@ public class ATMItemListAdapter extends BaseAdapter {
             mViewHolder.bankLogoHolder = (ImageView) convertedView.findViewById(R.id.atm_logo);
             mViewHolder.bankNameHolder = (TextView) convertedView.findViewById(R.id.atm_bank_name);
             mViewHolder.distanceView = (TextView) convertedView.findViewById(R.id.distance);
-            mViewHolder.detailView  = convertedView.findViewById(R.id.detail_id);
-            mViewHolder.detailView.setOnClickListener(mOnClickListener);
             convertedView.setTag(mViewHolder);
         } else {
             mViewHolder = (ViewHolder) convertedView.getTag();
@@ -132,7 +128,6 @@ public class ATMItemListAdapter extends BaseAdapter {
         TextView bankNameHolder;
         TextView addressHolder;
         TextView distanceView;
-        View detailView;
     }
 
     private class DistanceComparator implements Comparator<Pair<ATMItem, Float> > {
