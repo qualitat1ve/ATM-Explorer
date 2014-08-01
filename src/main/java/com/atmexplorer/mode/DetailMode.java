@@ -2,6 +2,7 @@ package com.atmexplorer.mode;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +14,7 @@ import com.atmexplorer.DataManager;
 import com.atmexplorer.R;
 import com.atmexplorer.model.ATMItem;
 
-import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -36,11 +37,26 @@ public class DetailMode extends Fragment implements Mode {
         mBankNameView = (TextView)mDetailView.findViewById(R.id.bank_id);
         mBankLogo     = (ImageView)mDetailView.findViewById(R.id.logo_id);
         mAddressView  = (TextView)mDetailView.findViewById(R.id.address_desc);
+
         TextView mShowMap      = (TextView)mDetailView.findViewById(R.id.show_map_id);
         mShowMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 modeChangeRequester.onModeChange(ModesManager.ModeIndex.MAP);
+            }
+        });
+
+        TextView mNavigation = (TextView)mDetailView.findViewById(R.id.navigation_id);
+        mNavigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", mDataManager.getCurrentItem().getLatitude(),
+                        mDataManager.getCurrentItem().getLongitude(),
+                        mDataManager.getCurrentItem().getBankName()+", "+
+                                mDataManager.getCurrentItem().getAddress());
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                startActivity(intent);
             }
         });
     }

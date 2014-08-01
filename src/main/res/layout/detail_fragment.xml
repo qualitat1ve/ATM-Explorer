@@ -91,7 +91,7 @@
                   android:layout_weight="1"
                   android:layout_gravity="center_vertical"
                   android:text="Navigation"
-                  android:background="@android:color/white"/>
+                  android:background="@drawable/view_selector"/>
 
     </LinearLayout>
 
