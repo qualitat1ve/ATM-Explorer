@@ -23,14 +23,18 @@ import java.util.Locale;
  */
 public class DetailMode extends Fragment implements Mode {
 
-    private  DataManager mDataManager = null;
+    private enum MapType {
+        Google, Yandex;
+    }
 
+    private  DataManager mDataManager = null;
     private View mDetailView;
     private ImageView mBankLogo;
     private TextView mBankNameView;
     private TextView mAddressView;
     private TextView mOperMode;
     private TextView mExtraDetail;
+    private MapType mMapType = MapType.Google;
 
     public DetailMode(View rootView, DataManager dataManager, final ModesManager.ModeChangeRequester modeChangeRequester) {
         mDataManager = dataManager;
@@ -54,12 +58,20 @@ public class DetailMode extends Fragment implements Mode {
         mNavigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", mDataManager.getCurrentItem().getLatitude(),
-                        mDataManager.getCurrentItem().getLongitude(),
-                        mDataManager.getCurrentItem().getBankName() + ", " +
-                                mDataManager.getCurrentItem().getAddress());
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                Intent intent = null;
+                if (mMapType == MapType.Google) {
+                    String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", mDataManager.getCurrentItem().getLatitude(),
+                            mDataManager.getCurrentItem().getLongitude(),
+                            mDataManager.getCurrentItem().getBankName() + ", " +
+                                    mDataManager.getCurrentItem().getAddress());
+                    intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                    intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                } else {
+                    intent = new Intent("ru.yandex.yandexnavi.action.BUILD_ROUTE_ON_MAP");
+                    intent.setPackage("ru.yandex.yandexnavi");
+                    intent.putExtra("lat_to", mDataManager.getCurrentItem().getLatitude());
+                    intent.putExtra("lon_to", mDataManager.getCurrentItem().getLongitude());
+                }
                 startActivity(intent);
             }
         });
