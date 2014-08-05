@@ -29,6 +29,8 @@ public class DetailMode extends Fragment implements Mode {
     private ImageView mBankLogo;
     private TextView mBankNameView;
     private TextView mAddressView;
+    private TextView mOperMode;
+    private TextView mExtraDetail;
 
     public DetailMode(View rootView, DataManager dataManager, final ModesManager.ModeChangeRequester modeChangeRequester) {
         mDataManager = dataManager;
@@ -37,6 +39,8 @@ public class DetailMode extends Fragment implements Mode {
         mBankNameView = (TextView)mDetailView.findViewById(R.id.bank_id);
         mBankLogo     = (ImageView)mDetailView.findViewById(R.id.logo_id);
         mAddressView  = (TextView)mDetailView.findViewById(R.id.address_desc);
+        mOperMode     = (TextView)mDetailView.findViewById(R.id.opermode_desc);
+        mExtraDetail  = (TextView)mDetailView.findViewById(R.id.place_desc);
 
         TextView mShowMap      = (TextView)mDetailView.findViewById(R.id.show_map_id);
         mShowMap.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +56,7 @@ public class DetailMode extends Fragment implements Mode {
             public void onClick(View view) {
                 String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", mDataManager.getCurrentItem().getLatitude(),
                         mDataManager.getCurrentItem().getLongitude(),
-                        mDataManager.getCurrentItem().getBankName()+", "+
+                        mDataManager.getCurrentItem().getBankName() + ", " +
                                 mDataManager.getCurrentItem().getAddress());
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
@@ -100,6 +104,8 @@ public class DetailMode extends Fragment implements Mode {
             mBankNameView.setText(currentItem.getBankName());
             mBankLogo.setImageResource(currentItem.getIconId());
             mAddressView.setText(currentItem.getFullAddress());
+            mOperMode.setText(currentItem.getWorkingTime());
+            mExtraDetail.setText(currentItem.getDescription());
         }
     }
 }
