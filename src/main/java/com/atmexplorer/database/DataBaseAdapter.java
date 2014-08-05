@@ -8,11 +8,9 @@ import android.provider.BaseColumns;
 import com.atmexplorer.R;
 import com.atmexplorer.model.ATMItem;
 import com.atmexplorer.model.DataProvider;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import com.atmexplorer.model.dao.BankDao;
@@ -143,8 +141,12 @@ public class DataBaseAdapter implements DataProvider {
                 String cityName = cursor.getString(cursor.getColumnIndex(KEY_CITY_NAME));
                 String address = cursor.getString(cursor.getColumnIndex(KEY_ADDRESS));
                 String bankLogo = cursor.getString(cursor.getColumnIndex(KEY_BANK_LOGO));
+                String workingTime = cursor.getString(cursor.getColumnIndex(KEY_OPERATION_TIME));
+                String atmPosition = cursor.getString(cursor.getColumnIndex(KEY_POSITION));
+                String description = cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION));
                 int logoId = mContext.getResources().getIdentifier(bankLogo, "drawable", mContext.getPackageName());
-                ATMItem item = new ATMItem(atmId, cityName, address, bankName, logoId, latitude, longitude);
+                ATMItem item = new ATMItem(atmId, cityName, address, bankName, logoId, latitude, longitude, workingTime,
+                        atmPosition, description);
                 mATMList.add(item);
             } while (cursor.moveToNext());
         }

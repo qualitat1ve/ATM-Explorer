@@ -11,7 +11,7 @@ import com.atmexplorer.mode.ModesManager;
  * @author Aleksandr Stetsko (alexandr.stetsko@outlook.com)
  * @brief Use for build detail mode
  */
-public class DetailBuilder extends  ModeBuilder {
+public class DetailBuilder extends ModeBuilder {
 
     public DetailBuilder(View rootView, DataManager dataManager, ModesManager.ModeChangeRequester modeChangeRequester) {
         super(rootView, dataManager, modeChangeRequester);

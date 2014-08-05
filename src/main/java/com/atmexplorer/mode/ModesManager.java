@@ -58,6 +58,18 @@ public class ModesManager {
     }
 
     public void activate(ModeIndex modeId) {
+        //TODO: setup action bar for each mode
+        switch (modeId) {
+            case DETAIL:
+                mActionBar.setDisplayHomeAsUpEnabled(true);
+                break;
+            case LIST:
+                mActionBar.setDisplayHomeAsUpEnabled(false);
+                break;
+            case MAP:
+                break;
+            default: throw new UnsupportedOperationException("Unknown mode: " + modeId);
+        }
         mActiveMode.onChangeState(Mode.ActiveState.INACTIVE);
         mActiveMode = mModes[modeId.index()];
         mActiveMode.onChangeState(Mode.ActiveState.ACTIVE);
