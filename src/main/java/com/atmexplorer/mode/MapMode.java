@@ -24,34 +24,25 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 public class MapMode extends MapFragment implements Mode {
     public static final int ZOOM_LEVEL = 13;
-    private OnMapReadyListener mOnMapReadyListener;
     private LocationTracker mLocationTracker;
     private DataManager mDataManager;
 
-    public MapMode(DataManager dataManager, OnMapReadyListener listener, LocationTracker locationTracker) {
+    public MapMode(DataManager dataManager, LocationTracker locationTracker) {
         super();
-        mOnMapReadyListener = listener;
         mLocationTracker = locationTracker;
         mDataManager = dataManager;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle bundle) {
         View view = super.onCreateView(inflater, viewGroup, bundle);
-        if (mOnMapReadyListener != null){
-            mOnMapReadyListener.onMapReady();
-        }
+        setup();
         return view;
-    }
-
-    public interface OnMapReadyListener {
-        void onMapReady();
     }
 
     @Override
     public void onChangeState(ActiveState state) {
         switch (state) {
             case ACTIVE:
-                setup();
                 break;
             case INACTIVE:
                 break;
@@ -60,7 +51,7 @@ public class MapMode extends MapFragment implements Mode {
         }
     }
 
-    public void setup() {
+    private void setup() {
         GoogleMap mGoogleMap = getMap();
         if (mGoogleMap == null) {
             return;

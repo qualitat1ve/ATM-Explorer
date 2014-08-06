@@ -18,7 +18,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * @author Aleksandr Stetsko (alexandr.stetsko@outlook.com)
  * @brief Use for build map mode
  */
-public class MapModeBuilder extends  ModeBuilder implements MapMode.OnMapReadyListener {
+public class MapModeBuilder extends  ModeBuilder {
 
     private MapMode mMapFragment;
     private Context mContext;
@@ -35,13 +35,8 @@ public class MapModeBuilder extends  ModeBuilder implements MapMode.OnMapReadyLi
 
     @Override
     public Mode build() {
-        mMapFragment = new MapMode(mDataManager, this, mLocationTracker);
+        mMapFragment = new MapMode(mDataManager, mLocationTracker);
         mMapFragment.setRetainInstance(true);
         return mMapFragment;
-    }
-
-    @Override
-    public void onMapReady() {
-        mMapFragment.setup();
     }
 }
