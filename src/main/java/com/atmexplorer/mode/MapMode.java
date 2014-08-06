@@ -12,20 +12,21 @@ import com.atmexplorer.R;
 import com.atmexplorer.model.ATMItem;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * @author Maks Kukushkin(maks.kukushkin@gmail.com)
- * @brief MapMode wrapper which provides callback that
- * notifies subscribers that fragment view already created
+ * @brief Fragment which contains MapView
  */
-public class MapMode extends MapFragment implements Mode {
+public class MapMode extends BaseMode {
     public static final int ZOOM_LEVEL = 13;
     private LocationTracker mLocationTracker;
     private DataManager mDataManager;
+    private MapView mMapView;
 
     public MapMode(DataManager dataManager, LocationTracker locationTracker) {
         super();
@@ -34,28 +35,19 @@ public class MapMode extends MapFragment implements Mode {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle bundle) {
-        View view = super.onCreateView(inflater, viewGroup, bundle);
-        setup();
+        View view = inflater.inflate(R.layout.map_layout, viewGroup, false);
+        mMapView = (MapView) view.findViewById(R.id.mapview);
+        mMapView.onCreate(bundle);
+        setupMap();
         return view;
     }
 
-    @Override
-    public void onChangeState(ActiveState state) {
-        switch (state) {
-            case ACTIVE:
-                break;
-            case INACTIVE:
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void setup() {
-        GoogleMap mGoogleMap = getMap();
+    private void setupMap() {
+        GoogleMap mGoogleMap = mMapView.getMap();
         if (mGoogleMap == null) {
             return;
         }
+        MapsInitializer.initialize(this.getActivity());
 
         ATMItem currentItem = mDataManager.getCurrentItem();
         if(currentItem !=null) {
@@ -70,13 +62,36 @@ public class MapMode extends MapFragment implements Mode {
         mGoogleMap.setMyLocationEnabled(true);
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
         mGoogleMap.getUiSettings().setCompassEnabled(true);
+    }
 
+    public void onResume() {
+        mMapView.onResume();
+        super.onResume();
+    }
 
+    public void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
+    }
+
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
     }
 
     @Override
     public Fragment getModeFragment() {
         return this;
+    }
+
+    @Override
+    protected void setupMode() {
+
+    }
+
+    @Override
+    protected void deactivateMode() {
+
     }
 
     @Override

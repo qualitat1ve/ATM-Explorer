@@ -33,30 +33,19 @@ public class AtmExplorer extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        mModesManager = new ModesManager(this);
         mActionBar = getActionBar();
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setHomeButtonEnabled(true);
         setUpDrawer();
+        mModesManager = new ModesManager(this);
     }
 
 
     private void setUpDrawer() {
         mDrawerMenu = findViewById(R.id.left_drawer);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
-                R.string.drawer_open_title, R.string.drawer_close_title) {
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                mActionBar.setIcon(getResources().getDrawable(R.drawable.ic_logo));
-                mActionBar.setTitle(getString(R.string.drawer_close_title));
-                invalidateOptionsMenu();
-            }
-
-            public void onDrawerOpened(View view) {
-                super.onDrawerOpened(view);
-                mActionBar.setTitle(getString(R.string.drawer_open_title));
-                invalidateOptionsMenu();
-            }
-        };
+        mDrawerToggle = new CustomDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
+                R.string.drawer_open_title, R.string.drawer_close_title);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
@@ -124,6 +113,29 @@ public class AtmExplorer extends Activity {
         } else {
             mModesManager.onBackPressed();
             super.onBackPressed();
+        }
+    }
+
+    public final ActionBarDrawerToggle getDrawerToggle() {
+        return mDrawerToggle;
+    }
+
+    private class CustomDrawerToggle extends ActionBarDrawerToggle {
+
+        public CustomDrawerToggle(Activity activity, DrawerLayout drawerLayout, int drawerImageRes, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
+            super(activity, drawerLayout, drawerImageRes, openDrawerContentDescRes, closeDrawerContentDescRes);
+        }
+
+        public void onDrawerClosed(View view) {
+            super.onDrawerClosed(view);
+            mActionBar.setTitle(getString(R.string.drawer_close_title));
+            invalidateOptionsMenu();
+        }
+
+        public void onDrawerOpened(View view) {
+            super.onDrawerOpened(view);
+            mActionBar.setTitle(getString(R.string.drawer_open_title));
+            invalidateOptionsMenu();
         }
     }
 }

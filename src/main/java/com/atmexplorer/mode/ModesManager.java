@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.view.View;
 import com.atmexplorer.DataManager;
@@ -17,7 +18,7 @@ import com.atmexplorer.utils.Should;
 
 /**
  * @author Aleksandr Stetsko (alexandr.stetsko@outlook.com)
- * @brief Main Entity
+ * @brief Responsible for changing application states: LIST-MAP-DETAIL
  */
 public class ModesManager {
     enum  ModeIndex{
@@ -58,15 +59,19 @@ public class ModesManager {
     }
 
     public void activate(ModeIndex modeId) {
-        //TODO: setup action bar for each mode
         switch (modeId) {
             case DETAIL:
-                mActionBar.setDisplayHomeAsUpEnabled(true);
+                if (!mActionBar.isShowing()) {
+                    mActionBar.show();
+                }
                 break;
             case LIST:
-                mActionBar.setDisplayHomeAsUpEnabled(false);
+                if (!mActionBar.isShowing()) {
+                    mActionBar.show();
+                }
                 break;
             case MAP:
+                mActionBar.hide();
                 break;
             default: throw new UnsupportedOperationException("Unknown mode: " + modeId);
         }

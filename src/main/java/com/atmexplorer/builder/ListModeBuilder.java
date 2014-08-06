@@ -12,7 +12,7 @@ import com.atmexplorer.mode.ModesManager;
  * @author Aleksandr Stetsko (alexandr.stetsko@outlook.com)
  * @brief Use for build list mode
  */
-public class ListModeBuilder extends  ModeBuilder {
+public class ListModeBuilder extends ModeBuilder {
 
     private ListMode mATMListFragment = null;
     private LocationTracker mLocationTracker;

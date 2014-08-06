@@ -17,17 +17,16 @@ public class FilterCursorWrapper extends CursorWrapper{
     private int mCount = 0;
     private int mPosition = 0;
 
-    public FilterCursorWrapper(Cursor cursor, String filter, int column1, int column2) {
+    public FilterCursorWrapper(Cursor cursor, String filter, int column1) {
         super(cursor);
         mFilter = filter.toLowerCase();
-        mColumn = new int[] {column1, column2};
+        mColumn = new int[] {column1};
         if (mFilter.isEmpty()) {
             mCount = super.getCount();
             mIndex = new int[mCount];
             for (int i = 0; i < mCount; i++) {
                 super.moveToPosition(i);
-                if (getString(mColumn[0]).toLowerCase().contains(mFilter) ||
-                        getString(mColumn[1]).toLowerCase().contains(mFilter)) {
+                if (getString(mColumn[0]).toLowerCase().contains(mFilter)) {
                     mIndex[mPosition++] = i;
                 }
             }

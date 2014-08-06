@@ -2,7 +2,6 @@ package com.atmexplorer.mode;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.ListFragment;
 import android.app.LoaderManager;
 import android.app.SearchManager;
 import android.content.Context;
@@ -14,6 +13,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import com.atmexplorer.CustomATMLoader;
 import com.atmexplorer.DataManager;
@@ -31,7 +31,7 @@ import java.util.List;
  * @author Maks Kukushkin (maks.kukushkin@gmail.com)
  * @brief class should display list of ATM
  */
-public class ListMode extends ListFragment implements LoaderManager.LoaderCallbacks<List<ATMItem>>, Mode {
+public class ListMode extends BaseMode implements LoaderManager.LoaderCallbacks<List<ATMItem>> {
 
     private static final String LOG_TAG = ListMode.class.getSimpleName();
     private DataBaseAdapter mDataBaseAdapter;
@@ -40,6 +40,7 @@ public class ListMode extends ListFragment implements LoaderManager.LoaderCallba
     private LocationTracker mLocationTracker;
     private DataManager mDataManager;
     private ModesManager.ModeChangeRequester mModeChangeRequester;
+    private ListView mListView;
 
     public ListMode(DataManager dataManager, LocationTracker locationTracker, ModesManager.ModeChangeRequester modeChangeRequester) {
         mLocationTracker = locationTracker;
@@ -49,6 +50,7 @@ public class ListMode extends ListFragment implements LoaderManager.LoaderCallba
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.atm_list_fragment_layout, null);
+        mListView = (ListView) view.findViewById(R.id.atm_list);
         return view;
     }
 
@@ -59,19 +61,20 @@ public class ListMode extends ListFragment implements LoaderManager.LoaderCallba
         mDataBaseAdapter.createDatabase();
         mDataBaseAdapter.open();
         mItemAdapter = new ATMItemListAdapter(mContext, mLocationTracker);
-        setListAdapter(mItemAdapter);
+        mListView.setAdapter(mItemAdapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ATMItem item = (ATMItem) adapterView.getItemAtPosition(i);
+                mDataManager.setCurrentItem(item);
+                mModeChangeRequester.onModeChange(ModesManager.ModeIndex.DETAIL);
+            }
+        });
         getLoaderManager().initLoader(0, null, this);
     }
 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-    }
-
-    public void onListItemClick(ListView listView, View view, int position, long id) {
-        super.onListItemClick(listView, view, position, id);
-        ATMItem item = (ATMItem) getListAdapter().getItem(position);
-        mDataManager.setCurrentItem(item);
-        mModeChangeRequester.onModeChange(ModesManager.ModeIndex.DETAIL);
     }
 
     @Override
@@ -118,10 +121,6 @@ public class ListMode extends ListFragment implements LoaderManager.LoaderCallba
     @Override
     public void onResume() {
         super.onResume();
-        if(getListView()!=null) {
-            getListView().clearChoices();
-            mDataManager.clearAll();
-        }
     }
 
     @Override
@@ -134,10 +133,19 @@ public class ListMode extends ListFragment implements LoaderManager.LoaderCallba
     }
 
     @Override
+    protected void setupMode() {
+
+    }
+
+    @Override
+    protected void deactivateMode() {
+
+    }
+
+    @Override
     public void onNewIntent(Intent intent) {
         handleIntent(intent);
     }
-
 
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
