@@ -9,7 +9,7 @@ import com.atmexplorer.mode.ModesManager;
  * @author Aleksandr Stetsko (alexandr.stetsko@outlook.com)
  * @brief Base class for build mode
  */
-public abstract class  ModeBuilder {
+public abstract class ModeBuilder {
 
     protected  View mRootView;
     protected Data mData = null;

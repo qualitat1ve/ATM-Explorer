@@ -1,6 +1,5 @@
 package com.atmexplorer.mode;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.app.SearchManager;
@@ -8,13 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import com.atmexplorer.CustomATMLoader;
 import com.atmexplorer.Data;
 import com.atmexplorer.LocationTracker;
@@ -22,9 +23,6 @@ import com.atmexplorer.R;
 import com.atmexplorer.adapter.ATMItemListAdapter;
 import com.atmexplorer.database.DataBaseAdapter;
 import com.atmexplorer.model.ATMItem;
-import com.atmexplorer.utils.GeoUtils;
-
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -50,6 +48,7 @@ public class MainMode extends BaseMode implements LoaderManager.LoaderCallbacks<
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.atm_list_fragment_layout, null);
         mListView = (ListView) view.findViewById(R.id.atm_list);
+        setHasOptionsMenu(true);
         return view;
     }
 
@@ -72,8 +71,27 @@ public class MainMode extends BaseMode implements LoaderManager.LoaderCallbacks<
         getLoaderManager().initLoader(0, null, this);
     }
 
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        SearchManager searchManager = (SearchManager) mContext.getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setIconifiedByDefault(false);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                getLoaderManager().restartLoader(0, null, MainMode.this);
+                return true;
+            }
+        });
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -83,24 +101,11 @@ public class MainMode extends BaseMode implements LoaderManager.LoaderCallbacks<
 
     @Override
     public void onLoadFinished(Loader<List<ATMItem>> listLoader, List<ATMItem> atmItems) {
-        mItemAdapter.setData(atmItems, false);
-    }
-
-    private void fillCoordinates(List<ATMItem> atmItems) {
-        for (ATMItem item : atmItems) {
-            try {
-                Pair<Double, Double> value = GeoUtils.getInstance(getActivity().getBaseContext()).getCoordinates(item.getFullAddress());
-                item.setLatitude(value.first);
-                item.setLongitude(value.second);
-                Log.i(LOG_TAG, "ID = " + item.getId() + "; lat " + value.first + " long " + value.second);
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "Something went wrong with coordinates ", e);
-            }
-        }
+        mItemAdapter.setData(atmItems);
     }
 
     public void doSearch(String query) {
-        mItemAdapter.setData(mDataBaseAdapter.getFilteredData(query), true);
+        mItemAdapter.filterListByAddress(query);
     }
 
     @Override
@@ -109,7 +114,7 @@ public class MainMode extends BaseMode implements LoaderManager.LoaderCallbacks<
     }
 
     public void onBackPressed() {
-        mItemAdapter.releaseSearchResult();
+        getLoaderManager().restartLoader(0, null, this);
     }
 
     public void onDestroy() {
@@ -127,23 +132,10 @@ public class MainMode extends BaseMode implements LoaderManager.LoaderCallbacks<
     }
 
     @Override
-    public void onChangeState(ActiveState state) {
-    }
-
-    @Override
     public Fragment getModeFragment() {
         return this;
     }
 
-    @Override
-    protected void setupMode() {
-
-    }
-
-    @Override
-    protected void deactivateMode() {
-
-    }
 
     @Override
     public void onNewIntent(Intent intent) {
@@ -156,4 +148,13 @@ public class MainMode extends BaseMode implements LoaderManager.LoaderCallbacks<
             doSearch(query);
         }
     }
+
+    @Override
+    public void onChangeState(ActiveState state) {}
+
+    @Override
+    protected void setupMode() {}
+
+    @Override
+    protected void deactivateMode() {}
 }

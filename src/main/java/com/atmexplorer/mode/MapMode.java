@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.atmexplorer.Data;
-import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
 import com.atmexplorer.model.ATMItem;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,6 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * @brief Fragment which contains MapView
  */
 public class MapMode extends BaseMode {
+
     public static final int ZOOM_LEVEL = 13;
     private MapView mMapView;
     private ModesManager.ModeChangeRequester mModeChangeRequester;

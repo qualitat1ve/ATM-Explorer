@@ -45,7 +45,7 @@ public class DataBaseAdapter implements DataProvider {
     private CashMachineDao mCashMachineDao;
     private BankDao mBankDao;
     private CityDao mCityDao;
-    private List<ATMItem> mATMList;
+    private List<ATMItem> mATMList = new ArrayList<ATMItem>();
 
     private final Context mContext;
     private SQLiteDatabase mDb;
@@ -71,17 +71,8 @@ public class DataBaseAdapter implements DataProvider {
 
     public List<ATMItem> getAllData() {
         Cursor cursor = mDb.rawQuery(mContext.getResources().getString(R.string.sql_select_all), null);
-        return prepareDataToShow(cursor);
-    }
-
-    public List<ATMItem> getFilteredData(String constraint) {
-        ArrayList<ATMItem> filteredList = new ArrayList<ATMItem>();
-        for (ATMItem item : mATMList) {
-            if (item.getAddress().toLowerCase().contains(constraint)) {
-                filteredList.add(item);
-            }
-        }
-        return filteredList;
+        mATMList = prepareDataToShow(cursor);
+        return mATMList;
     }
 
     public void close() {
@@ -135,7 +126,7 @@ public class DataBaseAdapter implements DataProvider {
     }
 
     private List<ATMItem> prepareDataToShow(Cursor cursor) {
-        mATMList = new ArrayList<ATMItem>();
+        mATMList.clear();
         if (cursor.moveToFirst()) {
             do {
                 int atmId = cursor.getInt(cursor.getColumnIndex(KEY_ID));

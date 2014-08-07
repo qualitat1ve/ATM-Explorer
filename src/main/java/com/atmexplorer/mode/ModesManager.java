@@ -2,6 +2,7 @@ package com.atmexplorer.mode;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -118,7 +119,8 @@ public class ModesManager {
     public void activateDefaultMode() {
         FragmentTransaction fragmentTransaction = mActivity.getFragmentManager().beginTransaction();
         if(fragmentTransaction.isEmpty()) {
-            fragmentTransaction.add(R.id.fragment_container, mModes[mDefaultModeIndex].getModeFragment());
+            Fragment targetFragment = mModes[mDefaultModeIndex].getModeFragment();
+            fragmentTransaction.add(R.id.fragment_container, targetFragment);
         }else{
             //TODO
         }
@@ -167,6 +169,7 @@ public class ModesManager {
 
     public void onPrepareOptionsMenu(Menu menu) {
         boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerMenu);
+        //TODO: if search view is expanded = collapse it 1st
         menu.findItem(R.id.action_search).setVisible(!isDrawerOpen);
     }
 
@@ -182,7 +185,7 @@ public class ModesManager {
     }
 
     private int findModeIndex(Mode mode) {
-        for(int i=0; i< mModes.length; i++) {
+        for(int i = 0; i < mModes.length; i++) {
             Mode m = mModes[i];
             if(m.equals(mode)) {
                 return i;

@@ -2,15 +2,12 @@ package com.atmexplorer;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.SearchView;
 import com.atmexplorer.mode.ModesManager;
 
 /**
@@ -34,26 +31,6 @@ public class AtmExplorer extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
-
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                mModesManager.onBackPressed();
-                return true;
-            }
-        });
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -90,6 +67,4 @@ public class AtmExplorer extends Activity {
             finish();
         }
     }
-
-
 }

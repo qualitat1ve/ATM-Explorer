@@ -30,7 +30,6 @@ public class ATMItemListAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<ATMItem> mATMList = new ArrayList<ATMItem>();
-    private List<ATMItem> mTempList = new ArrayList<ATMItem>();
     private ViewHolder mViewHolder;
     private Location mCurrentLocation;
 
@@ -55,11 +54,8 @@ public class ATMItemListAdapter extends BaseAdapter {
         return i;
     }
 
-    public void setData(List<ATMItem> list, boolean requiredSaving) {
+    public void setData(List<ATMItem> list) {
         Should.beNotNull(list, LOG_TAG + "; ATM list should be not null!");
-        if(requiredSaving){
-            saveMainContent();
-        }
         LinkedList<Pair<ATMItem, Float>> sortedList = new LinkedList<Pair<ATMItem, Float>>();
         for (ATMItem item : list) {
             sortedList.add(new Pair<ATMItem, Float>(item, mCurrentLocation.distanceTo(item.getLocation())));
@@ -72,14 +68,15 @@ public class ATMItemListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    private void saveMainContent() {
-        mTempList.addAll(mATMList);
-    }
-
-    public void releaseSearchResult() {
+    public void filterListByAddress(String filterByAddress) {
+        ArrayList<ATMItem> filteredList = new ArrayList<ATMItem>();
+        for (ATMItem item : mATMList) {
+            if (item.getAddress().toLowerCase().contains(filterByAddress)) {
+                filteredList.add(item);
+            }
+        }
         mATMList.clear();
-        mATMList.addAll(mTempList);
-        mTempList.clear();
+        mATMList.addAll(filteredList);
         notifyDataSetChanged();
     }
 
