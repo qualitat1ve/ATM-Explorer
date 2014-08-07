@@ -20,7 +20,7 @@ public class MapModeBuilder extends  ModeBuilder {
 
     @Override
     public Mode build() {
-        MapMode mapFragment = new MapMode(mData);
+        MapMode mapFragment = new MapMode(mData, mModeChangeRequester);
         mapFragment.setRetainInstance(true);
         return mapFragment;
     }

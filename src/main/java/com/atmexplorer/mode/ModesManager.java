@@ -80,6 +80,10 @@ public class ModesManager {
     }
 
     public void activate(ModeIndex modeId) {
+        activate(modeId, true);
+    }
+
+    public void activate(ModeIndex modeId, boolean isAddToBackStack) {
         switch (modeId) {
             case DETAIL:
                 if (!mActionBar.isShowing()) {
@@ -96,7 +100,9 @@ public class ModesManager {
                 break;
             default: throw new UnsupportedOperationException("Unknown mode: " + modeId);
         }
-        addToBackStack(modeId);
+        if(isAddToBackStack) {
+            addToBackStack(modeId);
+        }
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mActiveMode.onChangeState(Mode.ActiveState.INACTIVE);
         mActiveMode = mModes[modeId.index()];
@@ -144,15 +150,8 @@ public class ModesManager {
                 return false;
             } else {
                 mActiveMode.onBackPressed();
-                int currentIndex = mStack.indexOf(mActiveMode);
                 mStack.remove(mActiveMode);
-                Mode mode = mStack.get(--currentIndex);
-                int modeIndex = findModeIndex(mode);
-                if (modeIndex >= 0) {
-                    activate(ModeIndex.values()[modeIndex]);
-                } else {
-                    return false;
-                }
+                activate(ModeIndex.values()[findModeIndex(mStack.get(mStack.size()-1))]);
             }
         }
         return true;
@@ -172,8 +171,13 @@ public class ModesManager {
     }
 
     public final class ModeChangeRequester {
-        public void onModeChange(ModeIndex index) {
-            activate(index);
+        /**
+         *
+         * @param index request index of mode for switch to front
+         * @param isAddToBackStack determine opportunity add to backstack
+         */
+        public void onModeChange(ModeIndex index, boolean isAddToBackStack) {
+            activate(index, isAddToBackStack);
         }
     }
 

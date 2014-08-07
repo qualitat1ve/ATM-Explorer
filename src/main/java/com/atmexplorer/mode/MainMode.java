@@ -66,7 +66,7 @@ public class MainMode extends BaseMode implements LoaderManager.LoaderCallbacks<
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 ATMItem item = (ATMItem) adapterView.getItemAtPosition(i);
                 mData.setCurrentItem(item);
-                mModeChangeRequester.onModeChange(ModesManager.ModeIndex.DETAIL);
+                mModeChangeRequester.onModeChange(ModesManager.ModeIndex.DETAIL, true);
             }
         });
         getLoaderManager().initLoader(0, null, this);

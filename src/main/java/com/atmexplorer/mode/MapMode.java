@@ -16,6 +16,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
@@ -25,9 +26,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapMode extends BaseMode {
     public static final int ZOOM_LEVEL = 13;
     private MapView mMapView;
+    private ModesManager.ModeChangeRequester mModeChangeRequester;
 
-    public MapMode(Data data) {
+    public MapMode(Data data, ModesManager.ModeChangeRequester modeChangeRequester) {
         super(data);
+        mModeChangeRequester = modeChangeRequester;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle bundle) {
@@ -58,6 +61,12 @@ public class MapMode extends BaseMode {
         mGoogleMap.setMyLocationEnabled(true);
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
         mGoogleMap.getUiSettings().setCompassEnabled(true);
+        mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                mModeChangeRequester.onModeChange(ModesManager.ModeIndex.DETAIL, false);
+            }
+        });
     }
 
     public void onResume() {

@@ -49,7 +49,7 @@ public class DetailMode extends BaseMode {
         mShowMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                modeChangeRequester.onModeChange(ModesManager.ModeIndex.MAP);
+                modeChangeRequester.onModeChange(ModesManager.ModeIndex.MAP, false);
             }
         });
 
