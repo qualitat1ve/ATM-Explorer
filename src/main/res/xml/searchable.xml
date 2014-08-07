@@ -4,9 +4,12 @@
     android:label="@string/app_name"
     android:hint="@string/search_hint"
     android:searchMode="queryRewriteFromText"
-    android:searchSuggestSelection=" ?"
-    android:searchSuggestThreshold="1"
-    android:includeInGlobalSearch="true"
-    android:searchSuggestIntentData="content://com.atmexplorer.AddressSuggestionProvider/atms"
-    android:searchSuggestAuthority="com.atmexplorer.AddressSuggestionProvider">
+    android:includeInGlobalSearch="true">
+
+    <!-- ======== Disabled  until it will  be possible to carry out a case-insensitive search in database========== -->
+    <!--android:searchSuggestThreshold="1"-->
+    <!--android:searchSuggestSelection=" ?"-->
+    <!--android:searchSuggestAuthority="com.atmexplorer.AddressSuggestionProvider"-->
+    <!--android:searchSuggestIntentData="content://com.atmexplorer.AddressSuggestionProvider/atms"-->
+
 </searchable>

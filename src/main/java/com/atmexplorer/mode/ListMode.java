@@ -121,6 +121,10 @@ public class ListMode extends BaseMode implements LoaderManager.LoaderCallbacks<
     @Override
     public void onResume() {
         super.onResume();
+        if (mListView != null) {
+            mListView.clearChoices();
+            mDataManager.clearAll();
+        }
     }
 
     @Override

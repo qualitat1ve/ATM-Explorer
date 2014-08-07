@@ -21,7 +21,7 @@ public class FilterCursorWrapper extends CursorWrapper{
         super(cursor);
         mFilter = filter.toLowerCase();
         mColumn = new int[] {column1};
-        if (mFilter.isEmpty()) {
+        if (!mFilter.isEmpty()) {
             mCount = super.getCount();
             mIndex = new int[mCount];
             for (int i = 0; i < mCount; i++) {

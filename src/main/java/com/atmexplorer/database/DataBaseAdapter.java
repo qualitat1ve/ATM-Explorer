@@ -75,9 +75,13 @@ public class DataBaseAdapter implements DataProvider {
     }
 
     public List<ATMItem> getFilteredData(String constraint) {
-        String[] selection = new String[]{"%" + constraint + "%"};
-        Cursor cursor = mDb.rawQuery(mContext.getString(R.string.sql_filter_by_address), selection);
-        return prepareDataToShow(cursor);
+        ArrayList<ATMItem> filteredList = new ArrayList<ATMItem>();
+        for (ATMItem item : mATMList) {
+            if (item.getAddress().toLowerCase().contains(constraint)) {
+                filteredList.add(item);
+            }
+        }
+        return filteredList;
     }
 
     public void close() {
@@ -145,6 +149,7 @@ public class DataBaseAdapter implements DataProvider {
                 String atmPosition = cursor.getString(cursor.getColumnIndex(KEY_POSITION));
                 String description = cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION));
                 int logoId = mContext.getResources().getIdentifier(bankLogo, "drawable", mContext.getPackageName());
+
                 ATMItem item = new ATMItem(atmId, cityName, address, bankName, logoId, latitude, longitude, workingTime,
                         atmPosition, description);
                 mATMList.add(item);

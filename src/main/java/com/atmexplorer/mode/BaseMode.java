@@ -3,8 +3,6 @@ package com.atmexplorer.mode;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import com.atmexplorer.AtmExplorer;
 
 /**
  * @author Maks Kukushkin (maks.kukushkin@gmail.com)
@@ -27,7 +25,6 @@ public abstract class BaseMode extends Fragment implements Mode {
             default:
                 throw new UnsupportedOperationException("Unknown state: " + state);
         }
-
     }
 
     public abstract void onNewIntent(Intent intent);
