@@ -3,12 +3,21 @@ package com.atmexplorer.mode;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import com.atmexplorer.Data;
+import com.atmexplorer.utils.Should;
+
 
 /**
  * @author Maks Kukushkin (maks.kukushkin@gmail.com)
  * @brief Base fragment for any mode
  */
 public abstract class BaseMode extends Fragment implements Mode {
+
+    protected Data mData = null;
+    protected BaseMode(final Data data) {
+        Should.beNotNull(data, "Data must be not null!");
+        mData = data;
+    }
 
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);

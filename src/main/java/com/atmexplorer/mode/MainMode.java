@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.atmexplorer.CustomATMLoader;
-import com.atmexplorer.DataManager;
+import com.atmexplorer.Data;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
 import com.atmexplorer.adapter.ATMItemListAdapter;
@@ -31,20 +31,19 @@ import java.util.List;
  * @author Maks Kukushkin (maks.kukushkin@gmail.com)
  * @brief class should display list of ATM
  */
-public class ListMode extends BaseMode implements LoaderManager.LoaderCallbacks<List<ATMItem>> {
+public class MainMode extends BaseMode implements LoaderManager.LoaderCallbacks<List<ATMItem>> {
 
-    private static final String LOG_TAG = ListMode.class.getSimpleName();
+    private static final String LOG_TAG = MainMode.class.getSimpleName();
     private DataBaseAdapter mDataBaseAdapter;
     private ATMItemListAdapter mItemAdapter;
     private Context mContext;
     private LocationTracker mLocationTracker;
-    private DataManager mDataManager;
     private ModesManager.ModeChangeRequester mModeChangeRequester;
     private ListView mListView;
 
-    public ListMode(DataManager dataManager, LocationTracker locationTracker, ModesManager.ModeChangeRequester modeChangeRequester) {
+    public MainMode(Data data, LocationTracker locationTracker, ModesManager.ModeChangeRequester modeChangeRequester) {
+        super(data);
         mLocationTracker = locationTracker;
-        mDataManager = dataManager;
         mModeChangeRequester = modeChangeRequester;
     }
 
@@ -66,7 +65,7 @@ public class ListMode extends BaseMode implements LoaderManager.LoaderCallbacks<
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 ATMItem item = (ATMItem) adapterView.getItemAtPosition(i);
-                mDataManager.setCurrentItem(item);
+                mData.setCurrentItem(item);
                 mModeChangeRequester.onModeChange(ModesManager.ModeIndex.DETAIL);
             }
         });
@@ -123,7 +122,7 @@ public class ListMode extends BaseMode implements LoaderManager.LoaderCallbacks<
         super.onResume();
         if (mListView != null) {
             mListView.clearChoices();
-            mDataManager.clearAll();
+            mData.clearAll();
         }
     }
 

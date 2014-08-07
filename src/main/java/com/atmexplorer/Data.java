@@ -9,7 +9,7 @@ import java.util.List;
  * @author Aleksandr Stetsko (alexandr.stetsko@outlook.com)
  * @brief Use for share data between modes.
  */
-public class DataManager {
+public class Data {
 
     private List<ATMItem> mItems = new ArrayList<ATMItem>();
     private ATMItem mCurrentItem = null;

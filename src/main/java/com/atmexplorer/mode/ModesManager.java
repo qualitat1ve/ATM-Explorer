@@ -2,7 +2,6 @@ package com.atmexplorer.mode;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -13,7 +12,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import com.atmexplorer.DataManager;
+import com.atmexplorer.Data;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
 import com.atmexplorer.builder.DetailBuilder;
@@ -50,7 +49,7 @@ public class ModesManager {
         Should.beNotNull(activity, "Main activity is null!");
         mActivity = activity;
         mActionBar = mActivity.getActionBar();
-        DataManager dataManager = new DataManager();
+        Data dataManager = new Data();
 
         LocationTracker locationTracker =  new LocationTracker(activity.getApplicationContext());
         ModeChangeRequester modeChangeRequester = new ModeChangeRequester();
@@ -60,7 +59,7 @@ public class ModesManager {
         ListModeBuilder listModeBuilder =  new ListModeBuilder(rootView, dataManager, locationTracker, modeChangeRequester);
         mModes[ModeIndex.LIST.index()] = listModeBuilder.build();
 
-        MapModeBuilder mapModeBuilder =  new MapModeBuilder(rootView, dataManager, activity.getApplicationContext(), locationTracker, modeChangeRequester);
+        MapModeBuilder mapModeBuilder =  new MapModeBuilder(rootView, dataManager, modeChangeRequester);
         mModes[ModeIndex.MAP.index()] = mapModeBuilder.build();
         mActiveMode = mModes[mDefaultModeIndex];
 

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.atmexplorer.DataManager;
+import com.atmexplorer.Data;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
 import com.atmexplorer.model.ATMItem;
@@ -24,14 +24,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 public class MapMode extends BaseMode {
     public static final int ZOOM_LEVEL = 13;
-    private LocationTracker mLocationTracker;
-    private DataManager mDataManager;
     private MapView mMapView;
 
-    public MapMode(DataManager dataManager, LocationTracker locationTracker) {
-        super();
-        mLocationTracker = locationTracker;
-        mDataManager = dataManager;
+    public MapMode(Data data) {
+        super(data);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle bundle) {
@@ -49,7 +45,7 @@ public class MapMode extends BaseMode {
         }
         MapsInitializer.initialize(this.getActivity());
 
-        ATMItem currentItem = mDataManager.getCurrentItem();
+        ATMItem currentItem = mData.getCurrentItem();
         if(currentItem !=null) {
             MarkerOptions marker = new MarkerOptions().position(new LatLng(currentItem.getLatitude(), currentItem.getLongitude())).
                     title(currentItem.getBankName() + ", " + currentItem.getAddress());

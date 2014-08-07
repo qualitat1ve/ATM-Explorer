@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.atmexplorer.DataManager;
+import com.atmexplorer.Data;
 import com.atmexplorer.R;
 import com.atmexplorer.model.ATMItem;
 
@@ -27,7 +27,6 @@ public class DetailMode extends BaseMode {
         Google, Yandex;
     }
 
-    private  DataManager mDataManager = null;
     private View mDetailView;
     private ImageView mBankLogo;
     private TextView mBankNameView;
@@ -36,9 +35,8 @@ public class DetailMode extends BaseMode {
     private TextView mExtraDetail;
     private MapType mMapType = MapType.Google;
 
-    public DetailMode(View rootView, DataManager dataManager, final ModesManager.ModeChangeRequester modeChangeRequester) {
-        super();
-        mDataManager = dataManager;
+    public DetailMode(View rootView, Data data, final ModesManager.ModeChangeRequester modeChangeRequester) {
+        super(data);
         LayoutInflater layoutInflater = LayoutInflater.from(rootView.getContext());
         mDetailView =  layoutInflater.inflate(R.layout.detail_fragment, (ViewGroup) rootView, false);
         mBankNameView = (TextView)mDetailView.findViewById(R.id.bank_id);
@@ -61,17 +59,17 @@ public class DetailMode extends BaseMode {
             public void onClick(View view) {
                 Intent intent = null;
                 if (mMapType == MapType.Google) {
-                    String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", mDataManager.getCurrentItem().getLatitude(),
-                            mDataManager.getCurrentItem().getLongitude(),
-                            mDataManager.getCurrentItem().getBankName() + ", " +
-                                    mDataManager.getCurrentItem().getAddress());
+                    String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", mData.getCurrentItem().getLatitude(),
+                            mData.getCurrentItem().getLongitude(),
+                            mData.getCurrentItem().getBankName() + ", " +
+                                    mData.getCurrentItem().getAddress());
                     intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                     intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                 } else {
                     intent = new Intent("ru.yandex.yandexnavi.action.BUILD_ROUTE_ON_MAP");
                     intent.setPackage("ru.yandex.yandexnavi");
-                    intent.putExtra("lat_to", mDataManager.getCurrentItem().getLatitude());
-                    intent.putExtra("lon_to", mDataManager.getCurrentItem().getLongitude());
+                    intent.putExtra("lat_to", mData.getCurrentItem().getLatitude());
+                    intent.putExtra("lon_to", mData.getCurrentItem().getLongitude());
                 }
                 startActivity(intent);
             }
@@ -90,7 +88,7 @@ public class DetailMode extends BaseMode {
 
     @Override
     protected void setupMode() {
-        ATMItem currentItem = mDataManager.getCurrentItem();
+        ATMItem currentItem = mData.getCurrentItem();
         if(currentItem!=null) {
             Log.i("detail", "setupInfo current name " + currentItem.getBankName());
             mBankNameView.setText(currentItem.getBankName());
