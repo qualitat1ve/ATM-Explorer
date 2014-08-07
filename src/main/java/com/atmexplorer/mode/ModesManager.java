@@ -5,7 +5,12 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import com.atmexplorer.DataManager;
@@ -15,6 +20,9 @@ import com.atmexplorer.builder.DetailBuilder;
 import com.atmexplorer.builder.ListModeBuilder;
 import com.atmexplorer.builder.MapModeBuilder;
 import com.atmexplorer.utils.Should;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Aleksandr Stetsko (alexandr.stetsko@outlook.com)
@@ -33,6 +41,10 @@ public class ModesManager {
     private Mode[] mModes =  new Mode[3];
     private int mDefaultModeIndex = ModeIndex.LIST.index();
     private Mode mActiveMode;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private View mDrawerMenu;
+    private final List<Mode> mStack = new ArrayList<Mode>(mModes.length);
 
     public ModesManager(Activity activity) {
         Should.beNotNull(activity, "Main activity is null!");
@@ -56,6 +68,16 @@ public class ModesManager {
         mModes[ModeIndex.DETAIL.index()] = detailBuilder.build();
 
         activateDefaultMode();
+
+        setUpDrawer();
+    }
+
+    private void setUpDrawer() {
+        mDrawerMenu = mActivity.findViewById(R.id.left_drawer);
+        mDrawerLayout = (DrawerLayout) mActivity.findViewById(R.id.drawer_layout);
+        mDrawerToggle = new CustomDrawerToggle(mActivity, mDrawerLayout, R.drawable.ic_drawer,
+                R.string.drawer_open_title, R.string.drawer_close_title);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
     public void activate(ModeIndex modeId) {
@@ -75,6 +97,8 @@ public class ModesManager {
                 break;
             default: throw new UnsupportedOperationException("Unknown mode: " + modeId);
         }
+        addToBackStack(modeId);
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
         mActiveMode.onChangeState(Mode.ActiveState.INACTIVE);
         mActiveMode = mModes[modeId.index()];
         mActiveMode.onChangeState(Mode.ActiveState.ACTIVE);
@@ -83,16 +107,18 @@ public class ModesManager {
         fragmentTransaction.replace(R.id.fragment_container, mModes[modeId.index()].getModeFragment());
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+        mDrawerToggle.setDrawerIndicatorEnabled(false);
     }
 
     public void activateDefaultMode() {
         FragmentTransaction fragmentTransaction = mActivity.getFragmentManager().beginTransaction();
         if(fragmentTransaction.isEmpty()) {
-            fragmentTransaction.add(R.id.fragment_container, (Fragment)mModes[mDefaultModeIndex]);
+            fragmentTransaction.add(R.id.fragment_container, mModes[mDefaultModeIndex].getModeFragment());
         }else{
             //TODO
         }
         fragmentTransaction.commit();
+        addToBackStack(ModeIndex.values()[mDefaultModeIndex]);
     }
 
     public Mode getActiveMode() {
@@ -100,6 +126,9 @@ public class ModesManager {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         return false;
     }
 
@@ -107,13 +136,80 @@ public class ModesManager {
         mActiveMode.onNewIntent(intent);
     }
 
-    public void onBackPressed() {
-        mActiveMode.onBackPressed();
+    public boolean onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(mDrawerMenu)) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+        } else {
+            if (mStack.size() <= 1) {
+                mStack.clear();
+                return false;
+            } else {
+                mActiveMode.onBackPressed();
+                int currentIndex = mStack.indexOf(mActiveMode);
+                mStack.remove(mActiveMode);
+                Mode mode = mStack.get(--currentIndex);
+                int modeIndex = findModeIndex(mode);
+                if (modeIndex >= 0) {
+                    activate(ModeIndex.values()[modeIndex]);
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public void onPostCreate(Bundle savedInstanceState) {
+        mDrawerToggle.syncState();
+    }
+
+    public void onConfigurationChanged(Configuration newConfig) {
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    public void onPrepareOptionsMenu(Menu menu) {
+        boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerMenu);
+        menu.findItem(R.id.action_search).setVisible(!isDrawerOpen);
     }
 
     public final class ModeChangeRequester {
         public void onModeChange(ModeIndex index) {
             activate(index);
+        }
+    }
+
+    private int findModeIndex(Mode mode) {
+        for(int i=0; i< mModes.length; i++) {
+            Mode m = mModes[i];
+            if(m.equals(mode)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void addToBackStack(ModeIndex modeId) {
+        if(!mStack.contains(mModes[modeId.index()])) {
+            mStack.add(mModes[modeId.index()]);
+        }
+    }
+
+    private class CustomDrawerToggle extends ActionBarDrawerToggle {
+
+        public CustomDrawerToggle(Activity activity, DrawerLayout drawerLayout, int drawerImageRes, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
+            super(activity, drawerLayout, drawerImageRes, openDrawerContentDescRes, closeDrawerContentDescRes);
+        }
+
+        public void onDrawerClosed(View view) {
+            super.onDrawerClosed(view);
+            mActionBar.setTitle(mActivity.getString(R.string.drawer_close_title));
+            mActivity.invalidateOptionsMenu();
+        }
+
+        public void onDrawerOpened(View view) {
+            super.onDrawerOpened(view);
+            mActionBar.setTitle(mActivity.getString(R.string.drawer_open_title));
+            mActivity.invalidateOptionsMenu();
         }
     }
 }

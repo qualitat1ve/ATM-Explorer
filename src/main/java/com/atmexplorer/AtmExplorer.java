@@ -24,9 +24,6 @@ import com.atmexplorer.mode.ModesManager;
 public class AtmExplorer extends Activity {
 
     private ActionBar mActionBar;
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private View mDrawerMenu;
     private ModesManager mModesManager;
 
     @Override
@@ -36,17 +33,7 @@ public class AtmExplorer extends Activity {
         mActionBar = getActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
-        setUpDrawer();
         mModesManager = new ModesManager(this);
-    }
-
-
-    private void setUpDrawer() {
-        mDrawerMenu = findViewById(R.id.left_drawer);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new CustomDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
-                R.string.drawer_open_title, R.string.drawer_close_title);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -76,15 +63,11 @@ public class AtmExplorer extends Activity {
     }
 
     public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerMenu);
-        menu.findItem(R.id.action_search).setVisible(!isDrawerOpen);
+        mModesManager.onPrepareOptionsMenu(menu);
         return super.onPrepareOptionsMenu(menu);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
         return mModesManager.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
@@ -95,47 +78,23 @@ public class AtmExplorer extends Activity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+        mModesManager.onPostCreate(savedInstanceState);
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+        mModesManager.onConfigurationChanged(newConfig);
     }
 
     public void onBackPressed() {
         if (!mActionBar.isShowing()) {
             mActionBar.show();
         }
-        if (mDrawerLayout.isDrawerOpen(mDrawerMenu)) {
-            mDrawerLayout.closeDrawer(Gravity.LEFT);
-        } else {
-            mModesManager.onBackPressed();
-            super.onBackPressed();
+        if(!mModesManager.onBackPressed()) {
+            finish();
         }
     }
 
-    public final ActionBarDrawerToggle getDrawerToggle() {
-        return mDrawerToggle;
-    }
 
-    private class CustomDrawerToggle extends ActionBarDrawerToggle {
-
-        public CustomDrawerToggle(Activity activity, DrawerLayout drawerLayout, int drawerImageRes, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
-            super(activity, drawerLayout, drawerImageRes, openDrawerContentDescRes, closeDrawerContentDescRes);
-        }
-
-        public void onDrawerClosed(View view) {
-            super.onDrawerClosed(view);
-            mActionBar.setTitle(getString(R.string.drawer_close_title));
-            invalidateOptionsMenu();
-        }
-
-        public void onDrawerOpened(View view) {
-            super.onDrawerOpened(view);
-            mActionBar.setTitle(getString(R.string.drawer_open_title));
-            invalidateOptionsMenu();
-        }
-    }
 }

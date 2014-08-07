@@ -12,28 +12,22 @@ import com.atmexplorer.AtmExplorer;
  */
 public abstract class BaseMode extends Fragment implements Mode {
 
-    protected ActionBarDrawerToggle drawerToggle;
-
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
-        drawerToggle = ((AtmExplorer)getActivity()).getDrawerToggle();
     }
     @Override
     public void onChangeState(ActiveState state) {
-        boolean showHomeButton;
         switch (state) {
             case ACTIVE:
-                showHomeButton = true;
                 setupMode();
                 break;
             case INACTIVE:
-                showHomeButton = false;
                 deactivateMode();
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown state: " + state);
         }
-        drawerToggle.setDrawerIndicatorEnabled(!showHomeButton);
+
     }
 
     public abstract void onNewIntent(Intent intent);
