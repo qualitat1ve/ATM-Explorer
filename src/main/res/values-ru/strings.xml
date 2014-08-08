@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="distance_meter">м</string>
+    <string name="distance_kilometer">км</string>
+    <string name="btn_show_text">Показать на карте</string>
+    <string name="btn_navi_text">Навигация</string>
+    <string name="lbl_operationmode_text">Время работы</string>
+    <string name="lbl_desc_text">Дополнительная информация</string>
+</resources>

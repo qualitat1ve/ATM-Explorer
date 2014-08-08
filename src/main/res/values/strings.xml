@@ -18,6 +18,9 @@
     <string name="btn_show_all_text">Show all on map</string>
     <string name="search_hint">Search address</string>
     <string name="detail_message">Info about atm</string>
+    <string name="btn_navi_text">Navigation</string>
+    <string name="lbl_operationmode_text">Operation mode</string>
+    <string name="lbl_desc_text">Description</string>
 
     <!--<SQL raw queries>-->
     <string name="sql_select_all">SELECT Atm._id, Bank.bank_name, City.name, Atm.address, Bank.logo, Atm.latitude,
