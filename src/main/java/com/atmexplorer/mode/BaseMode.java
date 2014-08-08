@@ -19,9 +19,6 @@ public abstract class BaseMode extends Fragment implements Mode {
         mData = data;
     }
 
-    public void onActivityCreated(Bundle bundle) {
-        super.onActivityCreated(bundle);
-    }
     @Override
     public void onChangeState(ActiveState state) {
         switch (state) {
@@ -40,7 +37,9 @@ public abstract class BaseMode extends Fragment implements Mode {
 
     public abstract void onBackPressed();
 
-    public abstract Fragment getModeFragment();
+    public final Fragment getModeFragment() {
+        return this;
+    }
 
     protected abstract void setupMode();
 

@@ -1,6 +1,5 @@
 package com.atmexplorer.mode;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -82,11 +81,6 @@ public class MapMode extends BaseMode {
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
-    }
-
-    @Override
-    public Fragment getModeFragment() {
-        return this;
     }
 
     @Override

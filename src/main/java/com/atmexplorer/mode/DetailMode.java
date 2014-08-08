@@ -82,11 +82,6 @@ public class DetailMode extends BaseMode {
     }
 
     @Override
-    public Fragment getModeFragment() {
-        return this;
-    }
-
-    @Override
     protected void setupMode() {
         ATMItem currentItem = mData.getCurrentItem();
         if(currentItem!=null) {

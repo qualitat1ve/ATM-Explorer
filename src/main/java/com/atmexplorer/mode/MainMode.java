@@ -79,18 +79,20 @@ public class MainMode extends BaseMode implements LoaderManager.LoaderCallbacks<
         searchView.setIconifiedByDefault(false);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                return true;
-            }
+        if (searchItem != null) {
+            searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+                @Override
+                public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                    return true;
+                }
 
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                getLoaderManager().restartLoader(0, null, MainMode.this);
-                return true;
-            }
-        });
+                @Override
+                public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                    getLoaderManager().restartLoader(0, null, MainMode.this);
+                    return true;
+                }
+            });
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -130,12 +132,6 @@ public class MainMode extends BaseMode implements LoaderManager.LoaderCallbacks<
             mData.clearAll();
         }
     }
-
-    @Override
-    public Fragment getModeFragment() {
-        return this;
-    }
-
 
     @Override
     public void onNewIntent(Intent intent) {
