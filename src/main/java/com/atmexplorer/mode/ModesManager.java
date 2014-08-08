@@ -104,7 +104,6 @@ public class ModesManager {
         if(isAddToBackStack) {
             addToBackStack(modeId);
         }
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
         mActiveMode.onChangeState(Mode.ActiveState.INACTIVE);
         mActiveMode = mModes[modeId.index()];
         mActiveMode.onChangeState(Mode.ActiveState.ACTIVE);
@@ -113,7 +112,8 @@ public class ModesManager {
         fragmentTransaction.replace(R.id.fragment_container, mModes[modeId.index()].getModeFragment());
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-        mDrawerToggle.setDrawerIndicatorEnabled(false);
+        //Set state for toggleButton of drawer.
+        mDrawerToggle.setDrawerIndicatorEnabled(mActiveMode.equals(mModes[mDefaultModeIndex]));
     }
 
     public void activateDefaultMode() {
@@ -135,6 +135,11 @@ public class ModesManager {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
+        }
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
         return false;
     }
