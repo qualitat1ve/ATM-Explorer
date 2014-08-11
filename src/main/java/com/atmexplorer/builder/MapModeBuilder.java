@@ -1,9 +1,8 @@
 package com.atmexplorer.builder;
 
-import android.content.Context;
 import android.view.View;
-import com.atmexplorer.Data;
-import com.atmexplorer.LocationTracker;
+import com.atmexplorer.SharedData;
+import com.atmexplorer.content.MapModeFragment;
 import com.atmexplorer.mode.MapMode;
 import com.atmexplorer.mode.Mode;
 import com.atmexplorer.mode.ModesManager;
@@ -14,14 +13,16 @@ import com.atmexplorer.mode.ModesManager;
  */
 public class MapModeBuilder extends  ModeBuilder {
 
-    public MapModeBuilder(View rootView, Data data, ModesManager.ModeChangeRequester modeChangeRequester) {
-        super(rootView, data, modeChangeRequester);
+    private MapModeFragment mFragment;
+
+    public MapModeBuilder(View rootView, SharedData sharedData, ModesManager.ModeChangeRequester modeChangeRequester) {
+        super(rootView, sharedData, modeChangeRequester);
+        mFragment = new MapModeFragment(modeChangeRequester, sharedData);
     }
 
     @Override
     public Mode build() {
-        MapMode mapFragment = new MapMode(mData, mModeChangeRequester);
-        mapFragment.setRetainInstance(true);
-        return mapFragment;
+        MapMode mapMode = new MapMode(mSharedData, mFragment);
+        return mapMode;
     }
 }

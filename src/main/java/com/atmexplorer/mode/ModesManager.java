@@ -13,12 +13,13 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import com.atmexplorer.Data;
+import com.atmexplorer.SharedData;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
 import com.atmexplorer.builder.DetailBuilder;
-import com.atmexplorer.builder.ListModeBuilder;
+import com.atmexplorer.builder.MainModeBuilder;
 import com.atmexplorer.builder.MapModeBuilder;
+import com.atmexplorer.builder.PreferencesModeBuilder;
 import com.atmexplorer.utils.Should;
 
 import java.util.ArrayList;
@@ -29,8 +30,8 @@ import java.util.List;
  * @brief Responsible for changing application states: LIST-MAP-DETAIL
  */
 public class ModesManager {
-    enum  ModeIndex{
-        LIST, MAP, DETAIL;
+    public enum  ModeIndex{
+        LIST, MAP, DETAIL, SETTINGS;
         public int index() {
             return ordinal();
         }
@@ -38,7 +39,7 @@ public class ModesManager {
 
     private ActionBar mActionBar;
     private Activity mActivity;
-    private Mode[] mModes =  new Mode[3];
+    private Mode[] mModes =  new Mode[4];
     private int mDefaultModeIndex = ModeIndex.LIST.index();
     private Mode mActiveMode;
     private DrawerLayout mDrawerLayout;
@@ -50,22 +51,25 @@ public class ModesManager {
         Should.beNotNull(activity, "Main activity is null!");
         mActivity = activity;
         mActionBar = mActivity.getActionBar();
-        Data dataManager = new Data();
+        SharedData sharedDataManager = new SharedData();
 
         LocationTracker locationTracker =  new LocationTracker(activity.getApplicationContext());
         ModeChangeRequester modeChangeRequester = new ModeChangeRequester();
 
         View rootView  = activity.findViewById(R.id.fragment_container);
 
-        ListModeBuilder listModeBuilder =  new ListModeBuilder(rootView, dataManager, locationTracker, modeChangeRequester);
-        mModes[ModeIndex.LIST.index()] = listModeBuilder.build();
+        MainModeBuilder mainModeBuilder =  new MainModeBuilder(rootView, sharedDataManager, locationTracker, modeChangeRequester);
+        mModes[ModeIndex.LIST.index()] = mainModeBuilder.build();
 
-        MapModeBuilder mapModeBuilder =  new MapModeBuilder(rootView, dataManager, modeChangeRequester);
+        MapModeBuilder mapModeBuilder =  new MapModeBuilder(rootView, sharedDataManager, modeChangeRequester);
         mModes[ModeIndex.MAP.index()] = mapModeBuilder.build();
         mActiveMode = mModes[mDefaultModeIndex];
 
-        DetailBuilder detailBuilder =  new DetailBuilder(rootView, dataManager, modeChangeRequester);
+        DetailBuilder detailBuilder =  new DetailBuilder(rootView, sharedDataManager, modeChangeRequester);
         mModes[ModeIndex.DETAIL.index()] = detailBuilder.build();
+
+        PreferencesModeBuilder preferencesModeBuilder = new PreferencesModeBuilder(rootView, sharedDataManager, modeChangeRequester);
+        mModes[ModeIndex.SETTINGS.index()] = preferencesModeBuilder.build();
 
         activateDefaultMode();
 
@@ -99,6 +103,9 @@ public class ModesManager {
             case MAP:
                 mActionBar.hide();
                 break;
+            case SETTINGS:
+                break;
+
             default: throw new UnsupportedOperationException("Unknown mode: " + modeId);
         }
         if(isAddToBackStack) {
@@ -140,6 +147,10 @@ public class ModesManager {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.action_settings:
+                activate(ModeIndex.SETTINGS);
+                break;
+
         }
         return false;
     }

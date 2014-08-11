@@ -4,7 +4,7 @@ import android.location.Location;
 
 /**
  * @author Maks Kukushkin (maks.kukushkin@gmail.com)
- * @brief bean class to keep up ListFragment's elements
+ * @brief bean class to keep up MainModeFragment's elements
  */
 public class ATMItem {
 
