@@ -21,6 +21,7 @@
     <string name="btn_navi_text">Navigation</string>
     <string name="lbl_operationmode_text">Operation mode</string>
     <string name="lbl_desc_text">Description</string>
+    <string name="menu_settings">Settings</string>
 
     <!--<SQL raw queries>-->
     <string name="sql_select_all">SELECT Atm._id, Bank.bank_name, City.name, Atm.address, Bank.logo, Atm.latitude,
@@ -30,4 +31,19 @@
         Atm.latitude, Atm.longitude, Atm.time, Atm.position, Atm.description FROM Atm INNER JOIN Bank ON
         Bank._id=Atm.id_bank INNER JOIN City
         ON City._id=Atm.id_city WHERE Atm.address LIKE ?</string>
+
+
+    <!-- Preferences -->
+
+    <string-array name="pref_list1">
+        <item>one</item>
+        <item>two</item>
+        <item>three</item>
+    </string-array>
+
+    <string-array name="pref_list2">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>

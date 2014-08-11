@@ -6,4 +6,7 @@
           android:title="@string/action_search"
           android:showAsAction="collapseActionView|ifRoom"
           android:actionViewClass="android.widget.SearchView"/>
+    <item android:id="@+id/action_settings"
+          android:title="@string/menu_settings"
+          android:showAsAction="never"/>
 </menu>

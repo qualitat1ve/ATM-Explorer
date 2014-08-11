@@ -2,7 +2,8 @@ package com.atmexplorer.builder;
 
 
 import android.view.View;
-import com.atmexplorer.Data;
+import com.atmexplorer.SharedData;
+import com.atmexplorer.content.DetailModeFragment;
 import com.atmexplorer.mode.DetailMode;
 import com.atmexplorer.mode.Mode;
 import com.atmexplorer.mode.ModesManager;
@@ -13,12 +14,15 @@ import com.atmexplorer.mode.ModesManager;
  */
 public class DetailBuilder extends ModeBuilder {
 
-    public DetailBuilder(View rootView, Data data, ModesManager.ModeChangeRequester modeChangeRequester) {
-        super(rootView, data, modeChangeRequester);
+    private DetailModeFragment mDetailModeFragment;
+
+    public DetailBuilder(View rootView, SharedData sharedData, ModesManager.ModeChangeRequester modeChangeRequester) {
+        super(rootView, sharedData, modeChangeRequester);
+        mDetailModeFragment = new DetailModeFragment(rootView, modeChangeRequester, sharedData);
     }
 
     @Override
     public Mode build() {
-        return new DetailMode(mRootView, mData, mModeChangeRequester);
+        return new DetailMode(mSharedData, mDetailModeFragment);
     }
 }

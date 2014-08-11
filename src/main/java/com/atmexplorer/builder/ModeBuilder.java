@@ -1,7 +1,7 @@
 package com.atmexplorer.builder;
 
 import android.view.View;
-import com.atmexplorer.Data;
+import com.atmexplorer.SharedData;
 import com.atmexplorer.mode.Mode;
 import com.atmexplorer.mode.ModesManager;
 
@@ -12,15 +12,15 @@ import com.atmexplorer.mode.ModesManager;
 public abstract class ModeBuilder {
 
     protected  View mRootView;
-    protected Data mData = null;
+    protected SharedData mSharedData = null;
     protected  ModesManager.ModeChangeRequester mModeChangeRequester = null;
     /**
      * Constructor
-     * @param data - data for share between modes
+     * @param sharedData - sharedData for share between modes
      */
-    ModeBuilder(View rootView, Data data, ModesManager.ModeChangeRequester modeChangeRequester) {
+    ModeBuilder(View rootView, SharedData sharedData, ModesManager.ModeChangeRequester modeChangeRequester) {
         mRootView = rootView;
-        mData = data;
+        mSharedData = sharedData;
         mModeChangeRequester = modeChangeRequester;
     }
 
