@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference
-            android:key="checkbox1"
-            android:summary="Checkbox example"
-            android:title="Checkbox title"/>
-    <EditTextPreference
-            android:key="edittext1"
-            android:summary="Edit text example"
-            android:title="Edit text title"/>
+
+    <PreferenceCategory
+            android:key="map_settings_category"
+            android:title="@string/map_settings_category_title"
+            android:summary="Description of maps settings category">
+
     <ListPreference
-            android:entries="@array/pref_list1"
-            android:entryValues="@array/pref_list2"
-            android:key="list"
-            android:title="List title"/>
+            android:entries="@array/navigation_types_list_key"
+            android:entryValues="@array/navigation_types_list_value"
+            android:key="navi_type"
+            android:defaultValue="2"
+            android:summary="%s"
+            android:title="@string/navigation_type_title"/>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

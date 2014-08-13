@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class SharedData {
 
+    public static final String NAVIGATION_TYPE_PREFERENCE = "navi_type";
+
     private List<ATMItem> mItems = new ArrayList<ATMItem>();
     private ATMItem mCurrentItem = null;
 

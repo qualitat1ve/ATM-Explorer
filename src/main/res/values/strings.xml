@@ -23,7 +23,7 @@
     <string name="lbl_desc_text">Description</string>
     <string name="menu_settings">Settings</string>
 
-    <!--<SQL raw queries>-->
+    <!--<SQL raw queries START>-->
     <string name="sql_select_all">SELECT Atm._id, Bank.bank_name, City.name, Atm.address, Bank.logo, Atm.latitude,
         Atm.time, Atm.position, Atm.description, Atm.longitude FROM Atm INNER JOIN Bank ON Bank._id=Atm.id_bank
         INNER JOIN City ON City._id=Atm.id_city</string>
@@ -31,19 +31,23 @@
         Atm.latitude, Atm.longitude, Atm.time, Atm.position, Atm.description FROM Atm INNER JOIN Bank ON
         Bank._id=Atm.id_bank INNER JOIN City
         ON City._id=Atm.id_city WHERE Atm.address LIKE ?</string>
+    <!--<SQL raw queries END>-->
 
-
-    <!-- Preferences -->
-
-    <string-array name="pref_list1">
-        <item>one</item>
-        <item>two</item>
-        <item>three</item>
+    <!-- Preferences START-->
+    <string-array name="navigation_types_list_key">
+        <item>Yandex</item>
+        <item>Google</item>
     </string-array>
 
-    <string-array name="pref_list2">
+    <string-array name="navigation_types_list_value">
         <item>1</item>
         <item>2</item>
-        <item>3</item>
     </string-array>
+
+    <string name="map_settings_category_title">Maps settings</string>
+    <string name="navigation_type_title">Choose navigation type:</string>
+    <string name="navigation_type_summary">Expanded list with possible services</string>
+    <!-- Preferences END-->
+
+
 </resources>
