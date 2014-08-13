@@ -71,7 +71,7 @@ public class ATMItemListAdapter extends BaseAdapter {
     public void filterListByAddress(String filterByAddress) {
         ArrayList<ATMItem> filteredList = new ArrayList<ATMItem>();
         for (ATMItem item : mATMList) {
-            if (item.getAddress().toLowerCase().contains(filterByAddress)) {
+            if (item.getAddress().toLowerCase().contains(filterByAddress.toLowerCase())) {
                 filteredList.add(item);
             }
         }
@@ -112,7 +112,7 @@ public class ATMItemListAdapter extends BaseAdapter {
             int newDistance = (int)distance;
             dist = newDistance + " "  + mContext.getResources().getString(R.string.distance_meter);
         } else {
-            float newDistance = Utils.round(distance / 1000,1);
+            float newDistance = Utils.round(distance / 1000, 1);
             dist = newDistance + " "  + mContext.getResources().getString(R.string.distance_kilometer);
         }
         mViewHolder.distanceView.setText(dist);
