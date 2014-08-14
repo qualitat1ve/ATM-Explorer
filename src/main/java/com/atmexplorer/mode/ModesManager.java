@@ -11,6 +11,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import com.atmexplorer.SharedData;
@@ -114,6 +115,9 @@ public class ModesManager {
         mActiveMode.onChangeState(Mode.ActiveState.INACTIVE);
         mActiveMode = mModes[modeId.index()];
         mActiveMode.onChangeState(Mode.ActiveState.ACTIVE);
+        if(mActionBar.isShowing()){
+            mActivity.invalidateOptionsMenu();
+        }
         FragmentTransaction fragmentTransaction = mActivity.getFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.replace(R.id.fragment_container, mModes[modeId.index()].getModeFragment());
@@ -186,7 +190,10 @@ public class ModesManager {
     public void onPrepareOptionsMenu(Menu menu) {
         boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerMenu);
         //TODO: if search view is expanded = collapse it 1st
-        menu.findItem(R.id.action_search).setVisible(!isDrawerOpen);
+        MenuItem item = menu.findItem(R.id.action_search);
+        if(item!=null) {
+            item.setVisible(!isDrawerOpen);
+        }
     }
 
     public final class ModeChangeRequester {

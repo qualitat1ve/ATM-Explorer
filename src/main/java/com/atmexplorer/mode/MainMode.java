@@ -49,5 +49,4 @@ public class MainMode extends BaseMode {
     @Override
     protected void deactivateMode() {}
 
-
 }

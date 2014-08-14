@@ -73,6 +73,7 @@ public class MainModeFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main_menu, menu);
 
         SearchManager searchManager = (SearchManager) mContext.getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();

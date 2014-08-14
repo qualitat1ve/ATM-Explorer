@@ -28,12 +28,6 @@ public class AtmExplorer extends Activity {
         mModesManager = new ModesManager(this);
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
     public boolean onPrepareOptionsMenu(Menu menu) {
         mModesManager.onPrepareOptionsMenu(menu);
         return super.onPrepareOptionsMenu(menu);
