@@ -40,8 +40,8 @@
     </string-array>
 
     <string-array name="navigation_types_list_value">
-        <item>1</item>
-        <item>2</item>
+        <item>Yandex</item>
+        <item>Google</item>
     </string-array>
 
     <string name="map_settings_category_title">Maps settings</string>

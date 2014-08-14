@@ -17,8 +17,8 @@ public abstract class BaseMode <T extends Fragment> implements Mode {
 
     protected BaseMode(final SharedData sharedData, T fragment) {
         Should.beNotNull(sharedData, "SharedData must be not null!");
-        mSharedData = sharedData;
         Should.beNotNull(fragment, "Mode's fragment wasn't initialized properly, fragment is: " + fragment);
+        mSharedData = sharedData;
         this.fragment = fragment;
     }
 

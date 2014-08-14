@@ -11,7 +11,7 @@
             android:entries="@array/navigation_types_list_key"
             android:entryValues="@array/navigation_types_list_value"
             android:key="navi_type"
-            android:defaultValue="2"
+            android:defaultValue="Google"
             android:summary="%s"
             android:title="@string/navigation_type_title"/>
 

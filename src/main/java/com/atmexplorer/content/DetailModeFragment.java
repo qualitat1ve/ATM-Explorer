@@ -1,9 +1,11 @@
 package com.atmexplorer.content;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import com.atmexplorer.R;
 import com.atmexplorer.SharedData;
 import com.atmexplorer.mode.ModesManager;
 import com.atmexplorer.model.ATMItem;
+import com.atmexplorer.utils.Should;
 
 import java.util.Locale;
 
@@ -33,10 +36,12 @@ public class DetailModeFragment extends Fragment {
     private TextView mAddressView;
     private TextView mOperMode;
     private TextView mExtraDetail;
-    private MapType mMapType = MapType.Google;
     private SharedData mSharedData;
 
-    public DetailModeFragment(View rootView, final ModesManager.ModeChangeRequester requesting, SharedData data) {
+    public DetailModeFragment(final View rootView, final ModesManager.ModeChangeRequester requesting, SharedData data) {
+        Should.beNotNull(data, "SharedData must be not null!");
+        Should.beNotNull(rootView, "Root view must be not null!");
+        Should.beNotNull(requesting, "ModeChangeRequester must be not null!");
         mSharedData = data;
         LayoutInflater layoutInflater = LayoutInflater.from(rootView.getContext());
         mDetailView = layoutInflater.inflate(R.layout.detail_fragment, (ViewGroup) rootView, false);
@@ -58,8 +63,9 @@ public class DetailModeFragment extends Fragment {
         mNavigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = null;
-                if (mMapType == MapType.Google) {
+               Intent intent = null;
+               String settingValue = PreferenceManager.getDefaultSharedPreferences(rootView.getContext()).getString(SharedData.NAVIGATION_TYPE_PREFERENCE, null);
+               if (MapType.Google.name().equals(settingValue)) {
                     String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", mSharedData.getCurrentItem().getLatitude(),
                             mSharedData.getCurrentItem().getLongitude(),
                             mSharedData.getCurrentItem().getBankName() + ", " +
