@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:custom="http://schemas.android.com/apk/res/com.atmexplorer">
 
     <PreferenceCategory
             android:key="map_settings_category"
             android:title="@string/map_settings_category_title"
-            android:summary="Description of maps settings category">
+            android:summary="@string/map_settings_category_summary">
 
     <ListPreference
             android:entries="@array/navigation_types_list_key"
@@ -14,6 +16,23 @@
             android:defaultValue="Google"
             android:summary="%s"
             android:title="@string/navigation_type_title"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:key="atm_list_settings_category"
+            android:title="@string/atm_list_category_title"
+            android:summary="@string/atm_list_category_summary">
+
+        <com.atmexplorer.SeekBarPreference
+                android:key="seek_bar_distance"
+                android:title="@string/seek_bar_distance_title"
+                android:dialogTitle="@string/seek_bar_distance_dialog_title"
+                android:summary="@string/seek_bar_distance_summary"
+                android:persistent="true"
+                android:defaultValue="@integer/seek_bar_distance_default_value"
+                custom:minValue="@integer/seek_bar_distance_min_value"
+                custom:maxValue="@integer/seek_bar_distance_max_value">
+        </com.atmexplorer.SeekBarPreference>
 
     </PreferenceCategory>
 

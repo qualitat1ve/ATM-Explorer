@@ -12,6 +12,7 @@ import java.util.List;
 public class SharedData {
 
     public static final String NAVIGATION_TYPE_PREFERENCE = "navi_type";
+    public static final String LIMIT_DISTANCE = "seek_bar_distance";
 
     private List<ATMItem> mItems = new ArrayList<ATMItem>();
     private ATMItem mCurrentItem = null;
@@ -30,6 +31,10 @@ public class SharedData {
 
     public void clearAll() {
         mItems.clear();
+    }
+
+    public void setItemList(List<ATMItem> items) {
+        mItems = items;
     }
 
     public void setCurrentItem(ATMItem item) {

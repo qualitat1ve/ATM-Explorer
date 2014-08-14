@@ -2,6 +2,7 @@ package com.atmexplorer.adapter;
 
 import android.content.Context;
 import android.location.Location;
+import android.preference.PreferenceManager;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
+import com.atmexplorer.SharedData;
 import com.atmexplorer.model.ATMItem;
 import com.atmexplorer.utils.Should;
 import com.atmexplorer.utils.Utils;
@@ -55,10 +57,13 @@ public class ATMItemListAdapter extends BaseAdapter {
     }
 
     public void setData(List<ATMItem> list) {
+        int settingValue = PreferenceManager.getDefaultSharedPreferences(mContext).getInt(SharedData.LIMIT_DISTANCE, 0);
         Should.beNotNull(list, LOG_TAG + "; ATM list should be not null!");
         LinkedList<Pair<ATMItem, Float>> sortedList = new LinkedList<Pair<ATMItem, Float>>();
         for (ATMItem item : list) {
-            sortedList.add(new Pair<ATMItem, Float>(item, mCurrentLocation.distanceTo(item.getLocation())));
+            float distance = mCurrentLocation.distanceTo(item.getLocation());
+            if (distance > settingValue) continue;
+            sortedList.add(new Pair<ATMItem, Float>(item, distance));
         }
         Collections.sort(sortedList, new DistanceComparator());
         mATMList = new ArrayList<ATMItem>(sortedList.size());

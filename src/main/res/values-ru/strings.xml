@@ -7,5 +7,13 @@
     <string name="lbl_operationmode_text">Время работы</string>
     <string name="lbl_desc_text">Дополнительная информация</string>
     <string name="menu_settings">Настройки</string>
+    <string name="map_settings_category_title">Настройки карт</string>
+    <string name="navigation_type_title">Выберите сервис для навигации:</string>
+
+    <string name="atm_list_category_title">Настройки списка</string>
+    <string name="atm_list_category_summary">Установка опций относящихся к списку банкоматов</string>
+    <string name="seek_bar_distance_title">Область видимости банкоматов</string>
+    <string name="seek_bar_distance_dialog_title">Установите расстояние</string>
+    <string name="seek_bar_distance_summary">Радиус видимой области</string>
 
 </resources>

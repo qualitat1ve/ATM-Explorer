@@ -45,8 +45,13 @@
     </string-array>
 
     <string name="map_settings_category_title">Maps settings</string>
+    <string name="map_settings_category_summary">Setup options related to map</string>
     <string name="navigation_type_title">Choose navigation type:</string>
-    <string name="navigation_type_summary">Expanded list with possible services</string>
+    <string name="atm_list_category_title">List settings</string>
+    <string name="atm_list_category_summary">Setup options related to ATM list</string>
+    <string name="seek_bar_distance_title">Setup the area of visible ATMs</string>
+    <string name="seek_bar_distance_dialog_title">Set the distance</string>
+    <string name="seek_bar_distance_summary">Maximum radius of area</string>
     <!-- Preferences END-->
 
 

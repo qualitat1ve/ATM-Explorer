@@ -21,4 +21,12 @@
     <style name="CustomTextAppearance.White">
         <item name="android:textColor">@android:color/white</item>
     </style>
+
+    <style name="PreferenceDialogTextAppearance">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:layout_marginBottom">@dimen/limit_value_label_margin_bottom</item>
+        <item name="android:layout_marginTop">@dimen/limit_value_label_margin_top</item>
+    </style>
 </resources>
