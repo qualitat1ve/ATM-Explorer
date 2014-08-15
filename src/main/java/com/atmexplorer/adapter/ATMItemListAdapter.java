@@ -94,7 +94,7 @@ public class ATMItemListAdapter extends BaseAdapter {
         View convertedView = view;
         if (convertedView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertedView = inflater.inflate(R.layout.list_view_item_layout, null);
+            convertedView = inflater.inflate(R.layout.layout_list_view_item, null);
             mViewHolder = new ViewHolder();
             mViewHolder.addressHolder = (TextView) convertedView.findViewById(R.id.atm_address);
             mViewHolder.bankLogoHolder = (ImageView) convertedView.findViewById(R.id.atm_logo);

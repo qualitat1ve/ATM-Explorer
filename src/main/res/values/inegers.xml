@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="seek_bar_distance_default_value">500</integer>
-    <integer name="seek_bar_distance_min_value">50</integer>
-    <integer name="seek_bar_distance_max_value">5000</integer>
+    <integer name="distance_default_value">2000</integer>
 </resources>

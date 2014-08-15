@@ -28,9 +28,8 @@
     <dimen name="btn_show_height">80dp</dimen>
 
     <!-- Preference distance dialog -->
-    <dimen name="current_value_label_margin_top">15dp</dimen>
-    <dimen name="limit_value_label_margin_bottom">2dp</dimen>
-    <dimen name="limit_value_label_margin_top">100dp</dimen>
-    <dimen name="limit_value_label_side_margin">20dp</dimen>
+    <dimen name="pref_left_margin">80dp</dimen>
+    <dimen name="pref_right_margin">80dp</dimen>
+    <dimen name="pref_top_margin">10dp</dimen>
 
 </resources>

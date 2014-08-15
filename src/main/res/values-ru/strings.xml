@@ -2,6 +2,8 @@
 <resources>
     <string name="distance_meter">м</string>
     <string name="distance_kilometer">км</string>
+    <string name="distance_meter_full">метры</string>
+    <string name="distance_kilometer_full">километры</string>
     <string name="btn_show_text">Показать на карте</string>
     <string name="btn_navi_text">Навигация</string>
     <string name="lbl_operationmode_text">Время работы</string>
@@ -12,8 +14,8 @@
 
     <string name="atm_list_category_title">Настройки списка</string>
     <string name="atm_list_category_summary">Установка опций относящихся к списку банкоматов</string>
-    <string name="seek_bar_distance_title">Область видимости банкоматов</string>
-    <string name="seek_bar_distance_dialog_title">Установите расстояние</string>
-    <string name="seek_bar_distance_summary">Радиус видимой области</string>
+    <string name="distance_title">Область видимости банкоматов</string>
+    <string name="distance_dialog_title">Установите расстояние</string>
+    <string name="distance_summary">Радиус видимой области</string>
 
 </resources>

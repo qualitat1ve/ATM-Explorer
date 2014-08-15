@@ -1,7 +1,6 @@
 package com.atmexplorer.content;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,7 +43,7 @@ public class DetailModeFragment extends Fragment {
         Should.beNotNull(requesting, "ModeChangeRequester must be not null!");
         mSharedData = data;
         LayoutInflater layoutInflater = LayoutInflater.from(rootView.getContext());
-        mDetailView = layoutInflater.inflate(R.layout.detail_fragment, (ViewGroup) rootView, false);
+        mDetailView = layoutInflater.inflate(R.layout.layout_detail_fragment, (ViewGroup) rootView, false);
         mBankNameView = (TextView) mDetailView.findViewById(R.id.bank_id);
         mBankLogo = (ImageView) mDetailView.findViewById(R.id.logo_id);
         mAddressView = (TextView) mDetailView.findViewById(R.id.address_desc);

@@ -12,7 +12,7 @@
 
     <string name="atm_list_category_title">Налаштування списку</string>
     <string name="atm_list_category_summary">Опції, які налаштовують список банкоматів</string>
-    <string name="seek_bar_distance_title">Область видимості банкоматів</string>
-    <string name="seek_bar_distance_dialog_title">Вкажіть відстань</string>
-    <string name="seek_bar_distance_summary">Максимальний радіус видимої зони</string>
+    <string name="distance_title">Область видимості банкоматів</string>
+    <string name="distance_dialog_title">Вкажіть відстань</string>
+    <string name="distance_summary">Максимальний радіус видимої зони</string>
 </resources>

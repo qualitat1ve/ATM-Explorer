@@ -23,17 +23,13 @@
             android:title="@string/atm_list_category_title"
             android:summary="@string/atm_list_category_summary">
 
-        <com.atmexplorer.SeekBarPreference
-                android:key="seek_bar_distance"
-                android:title="@string/seek_bar_distance_title"
-                android:dialogTitle="@string/seek_bar_distance_dialog_title"
-                android:summary="@string/seek_bar_distance_summary"
+        <com.atmexplorer.DistanceDialog
+                android:key="pref_distance_key"
+                android:title="@string/distance_title"
+                android:dialogTitle="@string/distance_dialog_title"
+                android:summary="@string/distance_summary"
                 android:persistent="true"
-                android:defaultValue="@integer/seek_bar_distance_default_value"
-                custom:minValue="@integer/seek_bar_distance_min_value"
-                custom:maxValue="@integer/seek_bar_distance_max_value">
-        </com.atmexplorer.SeekBarPreference>
-
+                android:defaultValue="@integer/distance_default_value"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

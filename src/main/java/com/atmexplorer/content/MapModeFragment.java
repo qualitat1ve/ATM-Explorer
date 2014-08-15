@@ -35,7 +35,7 @@ public class MapModeFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle bundle) {
-        View view = inflater.inflate(R.layout.map_layout, viewGroup, false);
+        View view = inflater.inflate(R.layout.layout_map, viewGroup, false);
         mMapView = (MapView) view.findViewById(R.id.mapview);
         mMapView.onCreate(bundle);
         setupMap();

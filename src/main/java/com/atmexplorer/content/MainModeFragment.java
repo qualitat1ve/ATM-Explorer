@@ -47,7 +47,7 @@ public class MainModeFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.atm_list_fragment_layout, null);
+        View view = inflater.inflate(R.layout.layout_atm_list_fragment, null);
         mListView = (ListView) view.findViewById(R.id.atm_list);
         setHasOptionsMenu(true);
         return view;
