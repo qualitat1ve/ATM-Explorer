@@ -57,7 +57,8 @@ public class ATMItemListAdapter extends BaseAdapter {
     }
 
     public void setData(List<ATMItem> list) {
-        int settingValue = PreferenceManager.getDefaultSharedPreferences(mContext).getInt(SharedData.LIMIT_DISTANCE, 0);
+        int defaultDistance = mContext.getResources().getInteger(R.integer.distance_default_value);
+        int settingValue = PreferenceManager.getDefaultSharedPreferences(mContext).getInt(SharedData.LIMIT_DISTANCE, defaultDistance);
         Should.beNotNull(list, LOG_TAG + "; ATM list should be not null!");
         LinkedList<Pair<ATMItem, Float>> sortedList = new LinkedList<Pair<ATMItem, Float>>();
         for (ATMItem item : list) {

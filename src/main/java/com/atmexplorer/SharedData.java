@@ -12,7 +12,7 @@ import java.util.List;
 public class SharedData {
 
     public static final String NAVIGATION_TYPE_PREFERENCE = "navi_type";
-    public static final String LIMIT_DISTANCE = "seek_bar_distance";
+    public static final String LIMIT_DISTANCE = "pref_distance_key";
 
     private List<ATMItem> mItems = new ArrayList<ATMItem>();
     private ATMItem mCurrentItem = null;
