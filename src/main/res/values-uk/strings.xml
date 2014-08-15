@@ -2,6 +2,8 @@
 <resources>
     <string name="distance_meter">м</string>
     <string name="distance_kilometer">км</string>
+    <string name="distance_meter_full">метри</string>
+    <string name="distance_kilometer_full">кілометри</string>
     <string name="btn_show_text">Показати на мапі</string>
     <string name="btn_navi_text">Навігація</string>
     <string name="lbl_operationmode_text">Робочий час</string>
