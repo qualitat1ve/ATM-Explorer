@@ -128,6 +128,12 @@ public class MainModeFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<List<ATMItem>> listLoader, List<ATMItem> atmItems) {
         mItemAdapter.setData(atmItems);
+        int size = mItemAdapter.getCount();
+        mSharedData.clearAll();
+        for (int i = 0; i < size; i++) {
+            ATMItem item = (ATMItem) mItemAdapter.getItem(i);
+            mSharedData.addItem(item);
+        }
     }
 
     @Override

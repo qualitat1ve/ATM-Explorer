@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import com.atmexplorer.SharedData;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
@@ -62,7 +63,7 @@ public class ModesManager {
         MainModeBuilder mainModeBuilder =  new MainModeBuilder(rootView, sharedDataManager, locationTracker, modeChangeRequester);
         mModes[ModeIndex.LIST.index()] = mainModeBuilder.build();
 
-        MapModeBuilder mapModeBuilder =  new MapModeBuilder(rootView, sharedDataManager, modeChangeRequester);
+        MapModeBuilder mapModeBuilder =  new MapModeBuilder(rootView, sharedDataManager, locationTracker, modeChangeRequester);
         mModes[ModeIndex.MAP.index()] = mapModeBuilder.build();
         mActiveMode = mModes[mDefaultModeIndex];
 
@@ -83,6 +84,15 @@ public class ModesManager {
         mDrawerToggle = new CustomDrawerToggle(mActivity, mDrawerLayout, R.drawable.ic_drawer,
                 R.string.drawer_open_title, R.string.drawer_close_title);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        Button buttonShow = (Button)mDrawerLayout.findViewById(R.id.show_on_map);
+        buttonShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawerLayout.closeDrawers();
+                activate(ModeIndex.MAP);
+            }
+        });
     }
 
     public void activate(ModeIndex modeId) {

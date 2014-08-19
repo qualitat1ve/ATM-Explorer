@@ -2,8 +2,9 @@ package com.atmexplorer;
 
 import com.atmexplorer.model.ATMItem;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Aleksandr Stetsko (alexandr.stetsko@outlook.com)
@@ -14,8 +15,13 @@ public class SharedData {
     public static final String NAVIGATION_TYPE_PREFERENCE = "navi_type";
     public static final String LIMIT_DISTANCE = "pref_distance_key";
 
-    private List<ATMItem> mItems = new ArrayList<ATMItem>();
+    private Set<ATMItem> mItems = new HashSet<ATMItem>();
     private ATMItem mCurrentItem = null;
+
+    public void addItems(final Collection<ATMItem> items) {
+        mItems.clear();
+        mItems.addAll(items);
+    }
 
     public void addItem(ATMItem item) {
         mItems.add(item);
@@ -33,10 +39,6 @@ public class SharedData {
         mItems.clear();
     }
 
-    public void setItemList(List<ATMItem> items) {
-        mItems = items;
-    }
-
     public void setCurrentItem(ATMItem item) {
         mCurrentItem = item;
     }
@@ -45,7 +47,7 @@ public class SharedData {
         return mCurrentItem;
     }
 
-    public final List<ATMItem> getItems (){
+    public final Set<ATMItem> getItems (){
         return mItems;
     }
 }
