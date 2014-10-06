@@ -19,10 +19,48 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="#ffff">
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/filter_title"
+              android:text="@string/title_bankgroup"
+              style="@style/CustomTextAppearance.Big"
+              android:layout_margin="@dimen/filter_bankgroup_margin"/>
+
+    <RelativeLayout
+            android:id="@+id/filter_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_below="@+id/filter_title"
+            android:background="@android:color/darker_gray">
+        <Switch
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/filter_atm"
+                 android:layout_alignParentTop="true"
+                 android:layout_marginTop="@dimen/filter_bank_margin_outer"
+                 android:layout_marginBottom="@dimen/filter_bank_margin_inner"
+                 android:padding="@dimen/filter_bank_padding"
+                 android:text="@string/title_group_atmosphere"
+                 android:checked="true"
+                 android:background="@android:color/white"/>
+        <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/filter_ukrcard"
+                android:layout_below="@+id/filter_atm"
+                android:layout_marginBottom="@dimen/filter_bank_margin_outer"
+                android:padding="@dimen/filter_bank_padding"
+                android:text="@string/title_group_ukrcard"
+                android:checked="false"
+                android:background="@android:color/white"/>
+    </RelativeLayout>
+
     <Button android:layout_width="@dimen/btn_show_width"
             android:layout_height="@dimen/btn_show_height"
             android:id="@+id/show_on_map"
-            android:text="@string/btn_show_text"/>
+            android:text="@string/btn_show_text"
+            android:layout_below="@+id/filter_items"/>
     </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>

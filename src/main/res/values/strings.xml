@@ -25,6 +25,11 @@
     <string name="lbl_desc_text">Description</string>
     <string name="menu_settings">Settings</string>
 
+    <!--Bank group's values-->
+    <string name="title_bankgroup">Bank group</string>
+    <string name="title_group_atmosphere">Atmosphere</string>
+    <string name="title_group_ukrcard">UkrCard</string>
+
     <!--<SQL raw queries START>-->
     <string name="sql_select_all">SELECT Atm._id, Bank.bank_name, City.name, Atm.address, Bank.logo, Atm.latitude,
         Atm.time, Atm.position, Atm.description, Atm.longitude FROM Atm INNER JOIN Bank ON Bank._id=Atm.id_bank
