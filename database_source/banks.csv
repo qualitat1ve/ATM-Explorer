@@ -1,0 +1,61 @@
+_id,name,id_bank_group,logo_name
+1,Сбербанк России,1,sberbank_rossii_logo
+2,Правекс-Банк,1,praveks_bank_logo
+3,Дельта,1,delta_logo
+4,БМ Банк,1,bm_bank_logo
+5,ВиЭйБи Банк,1,vieibi_bank_logo
+6,ФИДОБАНК,1,fido_bank_logo
+7,Укринбанк,1,ukrin_bank_logo
+8,Креди Агриколь,1,kredi_agrikol_logo
+9,ОТП Банк,1,otp_bank_logo
+10,Платинум,1,platinum_logo
+11,Пиреус,1,pireus_logo
+12,Укргазпромбанк,1,ukrgazprom_bank_logo
+13,ВиЭс Банк,1,vies_bank_logo
+14,Альфа Банк,1,alfa_bank_logo
+15,Пивденный,1,pivdennui_logo
+16,Банк инвестиций и сбережений,1,bank_investicii_zberegenii_logo
+17,Диамант,1,diamant_logo
+18,БТА Банк,1,bta_bank_logo
+19,Актив Банк,1,aktiv_bank_logo
+20,Идея Банк,1,ideya_bank_logo
+21,Банк Первый,1,bank_pervui_logo
+22,АКБ Банк,1,akb_bank_logo
+23,Банк Камбио,1,bank_kambio_logo
+24,Михайловский,1,mihailovskii_logo
+25,Киев,1,kiev_logo
+26,Золотые Ворота,1,zolotue_vorota_logo
+27,Кредитпромбанк,1,kreditprom_bank_logo
+28,Легбанк,1,legbank_logo
+29,Авант,1,avant_logo
+30,Украинский капитал,1,ukrainskii_kapital_logo
+31,Национальные инвестиции,1,nacionalnue_investicii_logo
+32,Сич,2,sich_logo
+33,Альпари,2,alpari_logo
+34,Богуслав,2,boguslav_logo
+35,Велес,2,veles_logo
+36,Вернум Банк,2,vernum_bank_logo
+37,Глобус,2,globus_logo
+38,Еврогазбанк,2,evrogaz_bank_logo
+39,Инвестбанк,2,invest_bank
+40,Интеграл,2,integral_logo
+41,Киевская Русь,2,kievskaya_rus_logo
+42,Коммерческий Индустриальный Банк,2,komercheskii_industrialnui_bank_logo
+43,КомИнвестБанк,2,kom_invest_bank_logo
+44,Контракт,2,kontrakt_logo
+45,Городской Коммерческий Банк,2,commerce_city_bank_logo
+46,Народный Капитал,2,narodnui_kapital_logo
+47,Национальный Кредит,2,nacionalnui_kredit_logo
+48,ОКСИ БАНК,2,oksi_bank_logo
+49,Полтава-Банк,2,poltava_bank_logo
+50,Радикал,2,radikal_logo
+51,Регион-банк,2,region_bank_logo
+52,Рыночные Технологии,2,runochnue_tehnologii_logo
+53,СП Банк,2,sp_bank_logo
+54,Траст-Капитал,2,trast_kapital_logo
+55,Украинский Профессиональный Банк,2,ukrainskii_professionalbui_bank_logo
+56,Укргазбанк,2,ukr_gaz_bank_logo
+57,Укркомунбанк,2,ukr_komyn_bank_logo
+58,Укрплат,2,ukr_plat_logo
+59,Финансовый Партнер,2,finansovui_partner_logo
+60,Юнекс,2,yneks_logo
