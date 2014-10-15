@@ -31,13 +31,12 @@
     <string name="title_group_ukrcard">UkrCard</string>
 
     <!--<SQL raw queries START>-->
-    <string name="sql_select_all">SELECT Atm._id, Bank.bank_name, City.name, Atm.address, Bank.logo, Atm.latitude,
-        Atm.time, Atm.position, Atm.description, Atm.longitude FROM Atm INNER JOIN Bank ON Bank._id=Atm.id_bank
-        INNER JOIN City ON City._id=Atm.id_city</string>
-    <string name="sql_filter_by_address">SELECT Atm._id, Bank.bank_name, City.name, Atm.address, Bank.logo,
-        Atm.latitude, Atm.longitude, Atm.time, Atm.position, Atm.description FROM Atm INNER JOIN Bank ON
-        Bank._id=Atm.id_bank INNER JOIN City
-        ON City._id=Atm.id_city WHERE Atm.address LIKE ?</string>
+    <string name="sql_select_all">SELECT atms._id, banks.name, cities.name, atms.address, banks.logo_name, atms.latitude,
+        atms.time, atms.position, atms.type, atms.longitude FROM atms INNER JOIN banks ON banks._id=atms.id_bank
+        INNER JOIN cities ON cities._id=atms.id_city</string>
+    <string name="sql_filter_by_address">SELECT atms._id, banks.name, cities.name, atms.address, bank.logo_name,
+        atms.latitude, atms.longitude, atms.time, atms.position, atms.type FROM atms INNER JOIN banks ON
+        banks._id=atms.id_bank INNER JOIN cities ON cities._id=atms.id_city WHERE atms.address LIKE ?</string>
     <!--<SQL raw queries END>-->
 
     <!-- Preferences START-->
