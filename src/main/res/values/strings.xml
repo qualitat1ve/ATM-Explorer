@@ -41,7 +41,7 @@
     </string>
     <string name="sql_select_banks_from_group">SELECT atms._id, banks.bank_name, cities.city_name, atms.address, banks.logo_name, atms.latitude,
         atms.time, atms.position, atms.type, atms.longitude FROM atms INNER JOIN banks ON banks._id=atms.id_bank
-        INNER JOIN cities ON cities._id=atms.id_city INNER JOIN bank_groups ON bank_groups._id=banks.id_bank_groups WHERE
+        INNER JOIN cities ON cities._id=atms.id_city INNER JOIN bank_groups ON bank_groups._id=banks.id_bank_group WHERE
         bank_groups._id LIKE ?
     </string>
     <!--<SQL raw queries END>-->

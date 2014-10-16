@@ -78,7 +78,7 @@ public class DataBaseAdapter implements DataProvider {
     }
 
     public List<ATMItem> getBanksFromGroup(int groupId){
-        Cursor cursor = mDb.rawQuery(mContext.getResources().getString(R.string.sql_select_all), null);
+        Cursor cursor = mDb.rawQuery(mContext.getResources().getString(R.string.sql_select_banks_from_group), new String[]{String.valueOf(groupId)});
         return prepareDataToShow(cursor);
     }
 

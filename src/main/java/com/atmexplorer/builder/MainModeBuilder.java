@@ -1,6 +1,10 @@
 package com.atmexplorer.builder;
 
+import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import com.atmexplorer.R;
 import com.atmexplorer.SharedData;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.content.MainModeFragment;
@@ -20,6 +24,8 @@ public class MainModeBuilder extends ModeBuilder {
     public MainModeBuilder(View rootView, SharedData sharedData, LocationTracker locationTracker, ModesManager.ModeChangeRequester modeChangeRequester) {
         super(rootView, sharedData, modeChangeRequester);
         mMainModeFragment = new MainModeFragment(locationTracker, modeChangeRequester, sharedData);
+
+
     }
 
     @Override

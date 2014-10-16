@@ -16,9 +16,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import com.atmexplorer.CustomATMLoader;
-import com.atmexplorer.SharedData;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
+import com.atmexplorer.SharedData;
 import com.atmexplorer.adapter.ATMItemListAdapter;
 import com.atmexplorer.database.DataBaseAdapter;
 import com.atmexplorer.mode.ModesManager;
@@ -139,5 +139,14 @@ public class MainModeFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoaderReset(Loader<List<ATMItem>> listLoader) {
         mItemAdapter.cleatData();
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public void updateList(int id) {
+        List<ATMItem> list = mDataBaseAdapter.getBanksFromGroup(id);
+        mItemAdapter.setData(list);
     }
 }

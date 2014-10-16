@@ -9,12 +9,15 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import com.atmexplorer.SharedData;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
@@ -22,6 +25,7 @@ import com.atmexplorer.builder.DetailBuilder;
 import com.atmexplorer.builder.MainModeBuilder;
 import com.atmexplorer.builder.MapModeBuilder;
 import com.atmexplorer.builder.PreferencesModeBuilder;
+import com.atmexplorer.content.MainModeFragment;
 import com.atmexplorer.utils.Should;
 
 import java.util.ArrayList;
@@ -93,6 +97,25 @@ public class ModesManager {
                 activate(ModeIndex.MAP);
             }
         });
+
+        final Switch switcherAtm = (Switch)mDrawerLayout.findViewById(R.id.filter_atm);
+        final Switch switcherUkrCard = (Switch)mDrawerLayout.findViewById(R.id.filter_ukrcard);
+        CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b) {
+                    if(switcherAtm.equals(compoundButton)) {
+                        ((MainModeFragment)mActiveMode.getModeFragment()).updateList(1);
+                    }else {
+                        ((MainModeFragment)mActiveMode.getModeFragment()).updateList(2);
+                    }
+                }else {
+
+                }
+            }
+        };
+        switcherAtm.setOnCheckedChangeListener(onCheckedChangeListener);
+        switcherUkrCard.setOnCheckedChangeListener(onCheckedChangeListener);
     }
 
     public void activate(ModeIndex modeId) {
