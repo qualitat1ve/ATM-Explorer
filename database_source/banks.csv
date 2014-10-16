@@ -1,4 +1,4 @@
-_id,name,id_bank_group,logo_name
+_id,bank_name,id_bank_group,logo_name
 1,Сбербанк России,1,sberbank_rossii_logo
 2,Правекс-Банк,1,praveks_bank_logo
 3,Дельта,1,delta_logo
@@ -37,7 +37,7 @@ _id,name,id_bank_group,logo_name
 36,Вернум Банк,2,vernum_bank_logo
 37,Глобус,2,globus_logo
 38,Еврогазбанк,2,evrogaz_bank_logo
-39,Инвестбанк,2,invest_bank
+39,Инвестбанк,2,invest_bank_logo
 40,Интеграл,2,integral_logo
 41,Киевская Русь,2,kievskaya_rus_logo
 42,Коммерческий Индустриальный Банк,2,komercheskii_industrialnui_bank_logo

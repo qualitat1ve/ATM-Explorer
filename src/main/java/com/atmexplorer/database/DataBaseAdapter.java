@@ -29,9 +29,9 @@ public class DataBaseAdapter implements DataProvider {
     protected static final String TAG = "DataAdapter";
 
     public static final String KEY_ID = "_id";
-    public static final String KEY_CITY_NAME = "name";
+    public static final String KEY_CITY_NAME = "city_name";
     public static final String KEY_ADDRESS = "address";
-    public static final String KEY_BANK_NAME = "name";
+    public static final String KEY_BANK_NAME = "bank_name";
     public static final String KEY_BANK_LOGO = "logo_name";
     public static final String KEY_OPERATION_TIME = "time";
     public static final String KEY_POSITION = "position";
@@ -77,6 +77,11 @@ public class DataBaseAdapter implements DataProvider {
         return mATMList;
     }
 
+    public List<ATMItem> getBanksFromGroup(int groupId){
+        Cursor cursor = mDb.rawQuery(mContext.getResources().getString(R.string.sql_select_all), null);
+        return prepareDataToShow(cursor);
+    }
+
     public void close() {
         mDbHelper.close();
     }
@@ -103,7 +108,7 @@ public class DataBaseAdapter implements DataProvider {
         builder.setTables(ATM_TABLE_NAME);
         builder.setProjectionMap(mColumnMap);
 
-        Cursor cursor = builder.query(mDbHelper.getReadableDatabase(), columns, selection, selectionArgs, null, null, null);
+        final Cursor cursor = builder.query(mDbHelper.getReadableDatabase(), columns, selection, selectionArgs, null, null, null);
         if (cursor == null) {
             return null;
         } else if (!cursor.moveToFirst()) {
