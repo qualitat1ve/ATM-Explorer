@@ -1,13 +1,12 @@
 package com.atmexplorer.builder;
 
-import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.Switch;
-import com.atmexplorer.R;
-import com.atmexplorer.SharedData;
+import com.atmexplorer.CustomATMLoader;
 import com.atmexplorer.LocationTracker;
+import com.atmexplorer.SharedData;
+import com.atmexplorer.adapter.ATMItemListAdapter;
 import com.atmexplorer.content.MainModeFragment;
+import com.atmexplorer.database.DataBaseAdapter;
 import com.atmexplorer.mode.MainMode;
 import com.atmexplorer.mode.Mode;
 import com.atmexplorer.mode.ModesManager;
@@ -21,11 +20,11 @@ public class MainModeBuilder extends ModeBuilder {
 
     private MainModeFragment mMainModeFragment;
 
-    public MainModeBuilder(View rootView, SharedData sharedData, LocationTracker locationTracker, ModesManager.ModeChangeRequester modeChangeRequester) {
+    public MainModeBuilder(View rootView, SharedData sharedData, LocationTracker locationTracker, ModesManager.ModeChangeRequester modeChangeRequester, DataBaseAdapter dataAdapter) {
         super(rootView, sharedData, modeChangeRequester);
-        mMainModeFragment = new MainModeFragment(locationTracker, modeChangeRequester, sharedData);
-
-
+        CustomATMLoader customATMLoader = new CustomATMLoader(rootView.getContext(), dataAdapter);
+        ATMItemListAdapter  itemAdapter = new ATMItemListAdapter(rootView.getContext(), locationTracker);
+        mMainModeFragment = new MainModeFragment(itemAdapter, modeChangeRequester, sharedData, customATMLoader);
     }
 
     @Override

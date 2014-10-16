@@ -9,23 +9,23 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import com.atmexplorer.SharedData;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
+import com.atmexplorer.SharedData;
 import com.atmexplorer.builder.DetailBuilder;
 import com.atmexplorer.builder.MainModeBuilder;
 import com.atmexplorer.builder.MapModeBuilder;
 import com.atmexplorer.builder.PreferencesModeBuilder;
 import com.atmexplorer.content.MainModeFragment;
+import com.atmexplorer.database.DataBaseAdapter;
+import com.atmexplorer.model.ATMItem;
 import com.atmexplorer.utils.Should;
 
 import java.util.ArrayList;
@@ -43,6 +43,13 @@ public class ModesManager {
         }
     }
 
+    public enum  BankGroupId{
+        NONE, ATMOSPHERE, UKRCARD, ALL;
+        public int index() {
+            return ordinal();
+        }
+    }
+
     private ActionBar mActionBar;
     private Activity mActivity;
     private Mode[] mModes =  new Mode[4];
@@ -52,6 +59,8 @@ public class ModesManager {
     private ActionBarDrawerToggle mDrawerToggle;
     private View mDrawerMenu;
     private final List<Mode> mStack = new ArrayList<Mode>(mModes.length);
+    private DataBaseAdapter mDataBaseAdapter;
+
 
     public ModesManager(Activity activity) {
         Should.beNotNull(activity, "Main activity is null!");
@@ -59,12 +68,16 @@ public class ModesManager {
         mActionBar = mActivity.getActionBar();
         SharedData sharedDataManager = new SharedData();
 
+        mDataBaseAdapter = new DataBaseAdapter(activity);
+        mDataBaseAdapter.createDatabase();
+        mDataBaseAdapter.open();
+
         LocationTracker locationTracker =  new LocationTracker(activity.getApplicationContext());
         ModeChangeRequester modeChangeRequester = new ModeChangeRequester();
 
         View rootView  = activity.findViewById(R.id.fragment_container);
 
-        MainModeBuilder mainModeBuilder =  new MainModeBuilder(rootView, sharedDataManager, locationTracker, modeChangeRequester);
+        MainModeBuilder mainModeBuilder =  new MainModeBuilder(rootView, sharedDataManager, locationTracker, modeChangeRequester, mDataBaseAdapter);
         mModes[ModeIndex.LIST.index()] = mainModeBuilder.build();
 
         MapModeBuilder mapModeBuilder =  new MapModeBuilder(rootView, sharedDataManager, locationTracker, modeChangeRequester);
@@ -105,12 +118,20 @@ public class ModesManager {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b) {
                     if(switcherAtm.equals(compoundButton)) {
-                        ((MainModeFragment)mActiveMode.getModeFragment()).updateList(1);
-                    }else {
-                        ((MainModeFragment)mActiveMode.getModeFragment()).updateList(2);
+                        updateListData(BankGroupId.ATMOSPHERE);
+                        switcherUkrCard.setChecked(!b);
+                    }else if(switcherUkrCard.equals(compoundButton)) {
+                        updateListData(BankGroupId.UKRCARD);
+                        switcherAtm.setChecked(!b);
                     }
                 }else {
-
+                    if(switcherAtm.equals(compoundButton)) {
+                        updateListData(BankGroupId.UKRCARD);
+                        switcherUkrCard.setChecked(!b);
+                    }else if(switcherUkrCard.equals(compoundButton)) {
+                        updateListData(BankGroupId.ATMOSPHERE);
+                        switcherAtm.setChecked(!b);
+                    }
                 }
             }
         };
@@ -273,5 +294,15 @@ public class ModesManager {
             mActionBar.setTitle(mActivity.getString(R.string.drawer_open_title));
             mActivity.invalidateOptionsMenu();
         }
+    }
+
+    public void destroy(){
+        mDataBaseAdapter.close();
+    }
+
+
+    private void updateListData(BankGroupId bankId) {
+        List<ATMItem> list = mDataBaseAdapter.getBanksFromGroup(bankId.index());
+        ((MainModeFragment)mActiveMode.getModeFragment()).updateData(list);
     }
 }

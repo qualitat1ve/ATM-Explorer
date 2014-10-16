@@ -4,6 +4,7 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import com.atmexplorer.database.DataBaseAdapter;
 import com.atmexplorer.database.DataBaseObserver;
+import com.atmexplorer.mode.ModesManager;
 import com.atmexplorer.model.ATMItem;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class CustomATMLoader extends AsyncTaskLoader<List<ATMItem>> {
     }
 
     public List<ATMItem> loadInBackground() {
-        return mDataBaseAdapter.getAllData();
+        return mDataBaseAdapter.getBanksFromGroup(ModesManager.BankGroupId.ATMOSPHERE.index());
     }
 
     public void deliverResult(List<ATMItem> itemsList) {

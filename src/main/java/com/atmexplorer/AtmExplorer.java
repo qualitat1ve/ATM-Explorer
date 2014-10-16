@@ -61,4 +61,10 @@ public class AtmExplorer extends Activity {
             finish();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        mModesManager.destroy();
+        super.onDestroy();
+    }
 }

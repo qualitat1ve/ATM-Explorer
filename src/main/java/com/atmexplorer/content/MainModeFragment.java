@@ -16,11 +16,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import com.atmexplorer.CustomATMLoader;
-import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
 import com.atmexplorer.SharedData;
 import com.atmexplorer.adapter.ATMItemListAdapter;
-import com.atmexplorer.database.DataBaseAdapter;
 import com.atmexplorer.mode.ModesManager;
 import com.atmexplorer.model.ATMItem;
 
@@ -32,18 +30,18 @@ import java.util.List;
  */
 public class MainModeFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<ATMItem>>{
 
-    private DataBaseAdapter mDataBaseAdapter;
+
     private ATMItemListAdapter mItemAdapter;
-    private Context mContext;
-    private LocationTracker mLocationTracker;
     private ModesManager.ModeChangeRequester mModeChangeRequester;
     private ListView mListView;
     private SharedData mSharedData;
+    private CustomATMLoader mCustomATMLoader;
 
-    public MainModeFragment(LocationTracker locationTracker, ModesManager.ModeChangeRequester requesting, SharedData data) {
-        mLocationTracker = locationTracker;
+    public MainModeFragment(ATMItemListAdapter adapter, ModesManager.ModeChangeRequester requesting, SharedData data, CustomATMLoader loader) {
+        mItemAdapter = adapter;
         mModeChangeRequester = requesting;
         mSharedData = data;
+        mCustomATMLoader = loader;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,11 +53,6 @@ public class MainModeFragment extends Fragment implements LoaderManager.LoaderCa
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mContext = getActivity().getApplicationContext();
-        mDataBaseAdapter = new DataBaseAdapter(getActivity());
-        mDataBaseAdapter.createDatabase();
-        mDataBaseAdapter.open();
-        mItemAdapter = new ATMItemListAdapter(mContext, mLocationTracker);
         mListView.setAdapter(mItemAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -75,7 +68,7 @@ public class MainModeFragment extends Fragment implements LoaderManager.LoaderCa
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main_menu, menu);
 
-        SearchManager searchManager = (SearchManager) mContext.getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getActivity().getApplicationContext().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setIconifiedByDefault(false);
@@ -98,11 +91,6 @@ public class MainModeFragment extends Fragment implements LoaderManager.LoaderCa
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void onDestroy() {
-        super.onDestroy();
-        mDataBaseAdapter.close();
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -122,7 +110,7 @@ public class MainModeFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public Loader<List<ATMItem>> onCreateLoader(int i, Bundle bundle) {
-        return new CustomATMLoader(mContext, mDataBaseAdapter);
+        return mCustomATMLoader;
     }
 
     @Override
@@ -141,12 +129,7 @@ public class MainModeFragment extends Fragment implements LoaderManager.LoaderCa
         mItemAdapter.cleatData();
     }
 
-    /**
-     *
-     * @param id
-     */
-    public void updateList(int id) {
-        List<ATMItem> list = mDataBaseAdapter.getBanksFromGroup(id);
+    public void updateData(List<ATMItem> list) {
         mItemAdapter.setData(list);
     }
 }
