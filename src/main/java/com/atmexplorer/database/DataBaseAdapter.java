@@ -31,11 +31,19 @@ public class DataBaseAdapter implements DataProvider {
     public static final String KEY_ID = "_id";
     public static final String KEY_CITY_NAME = "city_name";
     public static final String KEY_ADDRESS = "address";
+    public static final String KEY_ADDRESS_UA = "address_ua";
+    public static final String KEY_ADDRESS_EN = "address_en";
     public static final String KEY_BANK_NAME = "bank_name";
     public static final String KEY_BANK_LOGO = "logo_name";
     public static final String KEY_OPERATION_TIME = "time";
+    public static final String KEY_OPERATION_TIME_UA = "time_ua";
+    public static final String KEY_OPERATION_TIME_EN = "time_en";
     public static final String KEY_POSITION = "position";
+    public static final String KEY_POSITION_UA = "position_ua";
+    public static final String KEY_POSITION_EN = "position_en";
     public static final String KEY_DESCRIPTION = "type";
+    public static final String KEY_DESCRIPTION_UA = "type_ua";
+    public static final String KEY_DESCRIPTION_EN = "type_en";
     public static final String KEY_LATITUDE = "latitude";
     public static final String KEY_LONGITUDE = "longitude";
     public static final String KEY_COMMENT = "comment";
@@ -44,6 +52,19 @@ public class DataBaseAdapter implements DataProvider {
     private static final String CITY_TABLE_NAME = "cities";
     private static final String BANK_TABLE_NAME = "banks";
     private static final String BANK_GROUP_TABLE_NAME = "bank_groups";
+    private static final String SELECT_ALL_QUERY = "SELECT atms._id, banks.bank_name, cities.city_name, atms.address, " +
+            "banks.logo_name, atms.latitude, atms.time, atms.position, atms.type, atms.longitude FROM atms " +
+            "INNER JOIN banks ON banks._id=atms.id_bank INNER JOIN cities ON cities._id=atms.id_city";
+    private static final String FILTER_BY_ADDRESS_QUERY = "SELECT atms._id, banks.bank_name, cities.city_name, " +
+            "atms.address, bank.logo_name,    atms.latitude, atms.longitude, atms.time, atms.position, atms.type " +
+            "FROM atms INNER JOIN banks ON banks._id=atms.id_bank INNER JOIN cities ON cities._id=atms.id_city" +
+            " WHERE atms.address LIKE ?";
+
+    private static final String SELECT_BANKS_FROM_GROUP_QUERY = "SELECT atms._id, banks.bank_name, cities.city_name, " +
+            "atms.address, banks.logo_name, atms.latitude, atms.time, atms.position, atms.type, atms.longitude " +
+            "FROM atms INNER JOIN banks ON banks._id=atms.id_bank INNER JOIN cities ON cities._id=atms.id_city " +
+            "INNER JOIN bank_groups ON bank_groups._id=banks.id_bank_group WHERE bank_groups._id LIKE ?";
+
     private CashMachineDao mCashMachineDao;
     private BankDao mBankDao;
     private CityDao mCityDao;
@@ -72,13 +93,13 @@ public class DataBaseAdapter implements DataProvider {
     }
 
     public List<ATMItem> getAllData() {
-        Cursor cursor = mDb.rawQuery(mContext.getResources().getString(R.string.sql_select_all), null);
+        Cursor cursor = mDb.rawQuery(SELECT_ALL_QUERY, null);
         mATMList = prepareDataToShow(cursor);
         return mATMList;
     }
 
     public List<ATMItem> getBanksFromGroup(int groupId){
-        Cursor cursor = mDb.rawQuery(mContext.getResources().getString(R.string.sql_select_banks_from_group), new String[]{String.valueOf(groupId)});
+        Cursor cursor = mDb.rawQuery(SELECT_BANKS_FROM_GROUP_QUERY, null);
         return prepareDataToShow(cursor);
     }
 

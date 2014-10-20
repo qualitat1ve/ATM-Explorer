@@ -76,6 +76,7 @@ public class ATMItemListAdapter extends BaseAdapter {
     }
 
     public void filterListByAddress(String filterByAddress) {
+        //TODO: should be changed to database query
         ArrayList<ATMItem> filteredList = new ArrayList<ATMItem>();
         for (ATMItem item : mATMList) {
             if (item.getAddress().toLowerCase().contains(filterByAddress.toLowerCase())) {
