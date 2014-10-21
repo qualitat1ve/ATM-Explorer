@@ -63,7 +63,7 @@ public class ATMItemListAdapter extends BaseAdapter {
         LinkedList<Pair<ATMItem, Float>> sortedList = new LinkedList<Pair<ATMItem, Float>>();
         for (ATMItem item : list) {
             float distance = mCurrentLocation.distanceTo(item.getLocation());
-//            if (distance > settingValue) continue;
+            if (distance > settingValue) continue;
             sortedList.add(new Pair<ATMItem, Float>(item, distance));
         }
         Collections.sort(sortedList, new DistanceComparator());

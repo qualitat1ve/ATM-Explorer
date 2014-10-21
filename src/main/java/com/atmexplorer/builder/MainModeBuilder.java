@@ -20,9 +20,10 @@ public class MainModeBuilder extends ModeBuilder {
 
     private MainModeFragment mMainModeFragment;
 
-    public MainModeBuilder(View rootView, SharedData sharedData, LocationTracker locationTracker, ModesManager.ModeChangeRequester modeChangeRequester, DataBaseAdapter dataAdapter) {
+    public MainModeBuilder(View rootView, SharedData sharedData, LocationTracker locationTracker, ModesManager.ModeChangeRequester modeChangeRequester,
+                           DataBaseAdapter dataAdapter, int currentGroupIndex) {
         super(rootView, sharedData, modeChangeRequester);
-        CustomATMLoader customATMLoader = new CustomATMLoader(rootView.getContext(), dataAdapter);
+        CustomATMLoader customATMLoader = new CustomATMLoader(rootView.getContext(), dataAdapter, currentGroupIndex);
         ATMItemListAdapter  itemAdapter = new ATMItemListAdapter(rootView.getContext(), locationTracker);
         mMainModeFragment = new MainModeFragment(itemAdapter, modeChangeRequester, sharedData, customATMLoader);
     }

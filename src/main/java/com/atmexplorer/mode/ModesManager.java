@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -36,6 +37,11 @@ import java.util.List;
  * @brief Responsible for changing application states: LIST-MAP-DETAIL
  */
 public class ModesManager {
+
+    private static final String PREF_NAME_FILE = "atm_explorer_prefs";
+    //Prefs values
+    private static final String PREF_CURRENT_BANK_GROUP = "current_bankgroup";
+
     public enum  ModeIndex{
         LIST, MAP, DETAIL, SETTINGS;
         public int index() {
@@ -61,11 +67,20 @@ public class ModesManager {
     private final List<Mode> mStack = new ArrayList<Mode>(mModes.length);
     private DataBaseAdapter mDataBaseAdapter;
 
+    private SharedPreferences mPrefs;
+
+    private int mCurrentTitleRes = R.string.title_group_atmosphere;
+    private int mCurrentBankGroupIndex;
+
 
     public ModesManager(Activity activity) {
         Should.beNotNull(activity, "Main activity is null!");
         mActivity = activity;
         mActionBar = mActivity.getActionBar();
+
+        mPrefs = activity.getSharedPreferences(PREF_NAME_FILE, Activity.MODE_PRIVATE);
+        readPrefs();
+
         SharedData sharedDataManager = new SharedData();
 
         mDataBaseAdapter = new DataBaseAdapter(activity);
@@ -77,7 +92,7 @@ public class ModesManager {
 
         View rootView  = activity.findViewById(R.id.fragment_container);
 
-        MainModeBuilder mainModeBuilder =  new MainModeBuilder(rootView, sharedDataManager, locationTracker, modeChangeRequester, mDataBaseAdapter);
+        MainModeBuilder mainModeBuilder =  new MainModeBuilder(rootView, sharedDataManager, locationTracker, modeChangeRequester, mDataBaseAdapter, mCurrentBankGroupIndex);
         mModes[ModeIndex.LIST.index()] = mainModeBuilder.build();
 
         MapModeBuilder mapModeBuilder =  new MapModeBuilder(rootView, sharedDataManager, locationTracker, modeChangeRequester);
@@ -95,11 +110,13 @@ public class ModesManager {
         setUpDrawer();
     }
 
+
+
     private void setUpDrawer() {
         mDrawerMenu = mActivity.findViewById(R.id.left_drawer);
         mDrawerLayout = (DrawerLayout) mActivity.findViewById(R.id.drawer_layout);
         mDrawerToggle = new CustomDrawerToggle(mActivity, mDrawerLayout, R.drawable.ic_drawer,
-                R.string.drawer_open_title, R.string.drawer_close_title);
+                R.string.title_bankgroup, R.string.title_group_atmosphere);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         Button buttonShow = (Button)mDrawerLayout.findViewById(R.id.show_on_map);
@@ -118,18 +135,20 @@ public class ModesManager {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b) {
                     if(switcherAtm.equals(compoundButton)) {
-                        updateListData(BankGroupId.ATMOSPHERE);
+                        mCurrentBankGroupIndex = BankGroupId.ATMOSPHERE.index();
                         switcherUkrCard.setChecked(!b);
+                        mCurrentTitleRes = R.string.title_group_atmosphere;
                     }else if(switcherUkrCard.equals(compoundButton)) {
-                        updateListData(BankGroupId.UKRCARD);
+                        mCurrentBankGroupIndex = BankGroupId.UKRCARD.index();
                         switcherAtm.setChecked(!b);
+                        mCurrentTitleRes = R.string.title_group_ukrcard;
                     }
                 }else {
                     if(switcherAtm.equals(compoundButton)) {
-                        updateListData(BankGroupId.UKRCARD);
+                        mCurrentBankGroupIndex = BankGroupId.UKRCARD.index();
                         switcherUkrCard.setChecked(!b);
                     }else if(switcherUkrCard.equals(compoundButton)) {
-                        updateListData(BankGroupId.ATMOSPHERE);
+                        mCurrentBankGroupIndex = BankGroupId.ATMOSPHERE.index();
                         switcherAtm.setChecked(!b);
                     }
                 }
@@ -285,13 +304,24 @@ public class ModesManager {
 
         public void onDrawerClosed(View view) {
             super.onDrawerClosed(view);
-            mActionBar.setTitle(mActivity.getString(R.string.drawer_close_title));
+            updateListData(BankGroupId.values()[mCurrentBankGroupIndex]);
+            mActionBar.setTitle(mActivity.getString(mCurrentTitleRes));
             mActivity.invalidateOptionsMenu();
+            savePrefs();
         }
 
         public void onDrawerOpened(View view) {
             super.onDrawerOpened(view);
-            mActionBar.setTitle(mActivity.getString(R.string.drawer_open_title));
+            readPrefs();
+            final Switch switcherAtm = (Switch)mDrawerLayout.findViewById(R.id.filter_atm);
+            final Switch switcherUkrCard = (Switch)mDrawerLayout.findViewById(R.id.filter_ukrcard);
+
+            if(mCurrentBankGroupIndex == BankGroupId.ATMOSPHERE.index()) {
+                switcherAtm.setChecked(true);
+            }else if(mCurrentBankGroupIndex == BankGroupId.UKRCARD.index()){
+                switcherUkrCard.setChecked(true);
+            }
+            mActionBar.setTitle(mActivity.getString(R.string.title_bankgroup));
             mActivity.invalidateOptionsMenu();
         }
     }
@@ -304,5 +334,15 @@ public class ModesManager {
     private void updateListData(BankGroupId bankId) {
         List<ATMItem> list = mDataBaseAdapter.getBanksFromGroup(bankId.index());
         ((MainModeFragment)mActiveMode.getModeFragment()).updateData(list);
+    }
+
+    private void savePrefs() {
+        SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putInt(PREF_CURRENT_BANK_GROUP, mCurrentBankGroupIndex);
+        editor.commit();
+    }
+
+    private void readPrefs() {
+        mCurrentBankGroupIndex = mPrefs.getInt(PREF_CURRENT_BANK_GROUP, BankGroupId.ATMOSPHERE.index());
     }
 }
