@@ -80,7 +80,6 @@ public class ModesManager {
 
         mPrefs = activity.getSharedPreferences(PREF_NAME_FILE, Activity.MODE_PRIVATE);
         readPrefs();
-
         SharedData sharedDataManager = new SharedData();
 
         mDataBaseAdapter = new DataBaseAdapter(activity);
@@ -130,6 +129,7 @@ public class ModesManager {
 
         final Switch switcherAtm = (Switch)mDrawerLayout.findViewById(R.id.filter_atm);
         final Switch switcherUkrCard = (Switch)mDrawerLayout.findViewById(R.id.filter_ukrcard);
+
         CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -156,6 +156,13 @@ public class ModesManager {
         };
         switcherAtm.setOnCheckedChangeListener(onCheckedChangeListener);
         switcherUkrCard.setOnCheckedChangeListener(onCheckedChangeListener);
+        initDrawerValues();
+        if(mCurrentBankGroupIndex == BankGroupId.ATMOSPHERE.index()){
+            mCurrentTitleRes = R.string.title_group_atmosphere;
+        }else if(mCurrentBankGroupIndex == BankGroupId.UKRCARD.index()) {
+            mCurrentTitleRes = R.string.title_group_ukrcard;
+        }
+        mActionBar.setTitle(mCurrentTitleRes);
     }
 
     public void activate(ModeIndex modeId) {
@@ -308,19 +315,13 @@ public class ModesManager {
             mActionBar.setTitle(mActivity.getString(mCurrentTitleRes));
             mActivity.invalidateOptionsMenu();
             savePrefs();
+            initDrawerValues();
         }
 
         public void onDrawerOpened(View view) {
             super.onDrawerOpened(view);
             readPrefs();
-            final Switch switcherAtm = (Switch)mDrawerLayout.findViewById(R.id.filter_atm);
-            final Switch switcherUkrCard = (Switch)mDrawerLayout.findViewById(R.id.filter_ukrcard);
-
-            if(mCurrentBankGroupIndex == BankGroupId.ATMOSPHERE.index()) {
-                switcherAtm.setChecked(true);
-            }else if(mCurrentBankGroupIndex == BankGroupId.UKRCARD.index()){
-                switcherUkrCard.setChecked(true);
-            }
+            initDrawerValues();
             mActionBar.setTitle(mActivity.getString(R.string.title_bankgroup));
             mActivity.invalidateOptionsMenu();
         }
@@ -330,6 +331,15 @@ public class ModesManager {
         mDataBaseAdapter.close();
     }
 
+    private void initDrawerValues() {
+        final Switch switcherAtm = (Switch)mDrawerLayout.findViewById(R.id.filter_atm);
+        final Switch switcherUkrCard = (Switch)mDrawerLayout.findViewById(R.id.filter_ukrcard);
+        if(mCurrentBankGroupIndex == BankGroupId.ATMOSPHERE.index()) {
+            switcherAtm.setChecked(true);
+        }else if(mCurrentBankGroupIndex == BankGroupId.UKRCARD.index()){
+            switcherUkrCard.setChecked(true);
+        }
+    }
 
     private void updateListData(BankGroupId bankId) {
         List<ATMItem> list = mDataBaseAdapter.getBanksFromGroup(bankId.index());
