@@ -31,4 +31,19 @@
                 android:defaultValue="@integer/distance_default_value"/>
     </PreferenceCategory>
 
+    <PreferenceCategory
+            android:key="language_settings"
+            android:title="@string/language_settings_title"
+            android:summary="@string/language_settings_summary">
+        <ListPreference
+                android:entries="@array/language_types_list_key"
+                android:entryValues="@array/language_types_list_value"
+                android:key="language_type"
+                android:defaultValue="English"
+                android:summary="%s"
+                android:title="@string/language_settings_summary">
+        </ListPreference>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

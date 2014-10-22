@@ -41,6 +41,18 @@
         <item>Google</item>
     </string-array>
 
+    <string-array name="language_types_list_value">
+        <item>en</item>
+        <item>ua</item>
+        <item>ru</item>
+    </string-array>
+
+    <string-array name="language_types_list_key">
+        <item>English</item>
+        <item>Українська</item>
+        <item>Русский</item>
+    </string-array>
+
     <string name="map_settings_category_title">Maps settings</string>
     <string name="map_settings_category_summary">Setup options related to map</string>
     <string name="navigation_type_title">Choose navigation type:</string>
@@ -49,6 +61,8 @@
     <string name="distance_title">Setup the area of visible ATMs</string>
     <string name="distance_dialog_title">Set the distance</string>
     <string name="distance_summary">Maximum radius of area</string>
+    <string name="language_settings_title">Language settings</string>
+    <string name="language_settings_summary">Chose your language</string>
     <!-- Preferences END-->
 
 

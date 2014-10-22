@@ -17,4 +17,6 @@
     <string name="distance_title">Область видимості банкоматів</string>
     <string name="distance_dialog_title">Вкажіть відстань</string>
     <string name="distance_summary">Максимальний радіус видимої зони</string>
+    <string name="language_settings_title">Налаштування мови</string>
+    <string name="language_settings_summary">Оберіть мову</string>
 </resources>

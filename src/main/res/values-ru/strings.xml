@@ -17,5 +17,7 @@
     <string name="distance_title">Область видимости банкоматов</string>
     <string name="distance_dialog_title">Установите расстояние</string>
     <string name="distance_summary">Радиус видимой области</string>
+    <string name="language_settings_title">Настройки языка</string>
+    <string name="language_settings_summary">Выберите язык</string>
 
 </resources>
