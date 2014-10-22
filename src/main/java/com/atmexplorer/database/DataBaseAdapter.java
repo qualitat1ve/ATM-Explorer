@@ -99,7 +99,7 @@ public class DataBaseAdapter implements DataProvider {
     }
 
     public List<ATMItem> getBanksFromGroup(int groupId){
-        Cursor cursor = mDb.rawQuery(SELECT_BANKS_FROM_GROUP_QUERY, null);
+        Cursor cursor = mDb.rawQuery(SELECT_BANKS_FROM_GROUP_QUERY, new String[]{String.valueOf(groupId)});
         return prepareDataToShow(cursor);
     }
 
