@@ -47,6 +47,7 @@ public class MainModeFragment extends Fragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_atm_list_fragment, null);
         mListView = (ListView) view.findViewById(R.id.atm_list);
+        mItemAdapter.setListView(mListView);
         setHasOptionsMenu(true);
         return view;
     }
@@ -126,7 +127,7 @@ public class MainModeFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoaderReset(Loader<List<ATMItem>> listLoader) {
-        mItemAdapter.cleatData();
+        mItemAdapter.clearData();
     }
 
     public void updateData(List<ATMItem> list) {

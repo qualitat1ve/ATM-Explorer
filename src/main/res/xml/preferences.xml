@@ -39,7 +39,7 @@
                 android:entries="@array/language_types_list_key"
                 android:entryValues="@array/language_types_list_value"
                 android:key="language_type"
-                android:defaultValue="English"
+                android:defaultValue="ru"
                 android:summary="%s"
                 android:title="@string/language_settings_summary">
         </ListPreference>

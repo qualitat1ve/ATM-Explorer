@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
@@ -34,6 +35,7 @@ public class ATMItemListAdapter extends BaseAdapter {
     private List<ATMItem> mATMList = new ArrayList<ATMItem>();
     private ViewHolder mViewHolder;
     private Location mCurrentLocation;
+    private ListView mListView;
 
 
     public ATMItemListAdapter(Context context, LocationTracker locationTracker) {
@@ -73,6 +75,7 @@ public class ATMItemListAdapter extends BaseAdapter {
             mATMList.add(pair.first);
         }
         notifyDataSetChanged();
+        mListView.smoothScrollToPosition(0);
     }
 
     public void filterListByAddress(String filterByAddress) {
@@ -88,7 +91,7 @@ public class ATMItemListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void cleatData() {
+    public void clearData() {
         mATMList.clear();
     }
 
@@ -133,6 +136,10 @@ public class ATMItemListAdapter extends BaseAdapter {
         TextView bankNameHolder;
         TextView addressHolder;
         TextView distanceView;
+    }
+
+    public void setListView(ListView listView) {
+        mListView = listView;
     }
 
     private class DistanceComparator implements Comparator<Pair<ATMItem, Float> > {
