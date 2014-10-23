@@ -70,6 +70,13 @@ public class CityProvider {
                 System.out.println("ru " + value + " ua " + valueUa);
                 cellUa.setCellValue(valueUa);
             }
+            
+            Cell cellEn = row.createCell(3);
+            String valueEn = translator.translate(value, Language.RUSSIAN, Language.ENGLISH);
+            if (valueEn != null) {
+                System.out.println("en " + valueEn);
+                cellEn.setCellValue(valueEn);
+            }
 
         }
         file.close();
