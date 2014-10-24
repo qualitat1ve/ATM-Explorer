@@ -10,6 +10,13 @@ import com.atmexplorer.R;
  * @brief Fragment that presents Settings Screen
  */
 public class SettingsModeFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private SettingsListener mListener;
+
+    public SettingsModeFragment(SettingsListener listener) {
+        mListener= listener;
+    }
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
@@ -27,6 +34,10 @@ public class SettingsModeFragment extends PreferenceFragment implements SharedPr
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        //TODO: do whatever you want
+        mListener.onLanguageChanged();
+    }
+
+    public interface SettingsListener {
+        void onLanguageChanged();
     }
 }

@@ -28,20 +28,20 @@ import java.util.List;
  * @author Maks Kukushkin (maks.kukushkin@gmail.com)
  * @brief Fragment that presents Main Screen
  */
-public class MainModeFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<ATMItem>>{
+public class MainModeFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<ATMItem>> {
 
 
     private ATMItemListAdapter mItemAdapter;
     private ModesManager.ModeChangeRequester mModeChangeRequester;
     private ListView mListView;
     private SharedData mSharedData;
-    private CustomATMLoader mCustomATMLoader;
+    private LoaderProvider mLoaderProvider;
 
-    public MainModeFragment(ATMItemListAdapter adapter, ModesManager.ModeChangeRequester requesting, SharedData data, CustomATMLoader loader) {
+    public MainModeFragment(ATMItemListAdapter adapter, ModesManager.ModeChangeRequester requesting, SharedData data, LoaderProvider provider) {
         mItemAdapter = adapter;
         mModeChangeRequester = requesting;
         mSharedData = data;
-        mCustomATMLoader = loader;
+        mLoaderProvider = provider;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,7 +101,7 @@ public class MainModeFragment extends Fragment implements LoaderManager.LoaderCa
         }
     }
 
-    public void clearSearchResults() {
+    public void reloadData() {
         getLoaderManager().restartLoader(0, null, this);
     }
 
@@ -111,7 +111,7 @@ public class MainModeFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public Loader<List<ATMItem>> onCreateLoader(int i, Bundle bundle) {
-        return mCustomATMLoader;
+        return mLoaderProvider.getLoader();
     }
 
     @Override
@@ -132,5 +132,9 @@ public class MainModeFragment extends Fragment implements LoaderManager.LoaderCa
 
     public void updateData(List<ATMItem> list) {
         mItemAdapter.setData(list);
+    }
+
+    public interface LoaderProvider {
+        CustomATMLoader getLoader();
     }
 }

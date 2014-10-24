@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import com.atmexplorer.CustomATMLoader;
 import com.atmexplorer.LocationTracker;
 import com.atmexplorer.R;
 import com.atmexplorer.SharedData;
@@ -25,6 +26,7 @@ import com.atmexplorer.builder.MainModeBuilder;
 import com.atmexplorer.builder.MapModeBuilder;
 import com.atmexplorer.builder.PreferencesModeBuilder;
 import com.atmexplorer.content.MainModeFragment;
+import com.atmexplorer.content.SettingsModeFragment;
 import com.atmexplorer.database.DataBaseAdapter;
 import com.atmexplorer.model.ATMItem;
 import com.atmexplorer.utils.Should;
@@ -36,11 +38,16 @@ import java.util.List;
  * @author Aleksandr Stetsko (alexandr.stetsko@outlook.com)
  * @brief Responsible for changing application states: LIST-MAP-DETAIL
  */
-public class ModesManager {
+public class ModesManager implements SettingsModeFragment.SettingsListener {
 
     private static final String PREF_NAME_FILE = "atm_explorer_prefs";
     //Prefs values
     private static final String PREF_CURRENT_BANK_GROUP = "current_bankgroup";
+
+    @Override
+    public void onLanguageChanged() {
+        ((MainMode)mModes[ModeIndex.LIST.index()]).reloadData();
+    }
 
     public enum  ModeIndex{
         LIST, MAP, DETAIL, SETTINGS;
@@ -58,7 +65,7 @@ public class ModesManager {
 
     private ActionBar mActionBar;
     private Activity mActivity;
-    private Mode[] mModes =  new Mode[4];
+    private Mode[] mModes = new Mode[4];
     private int mDefaultModeIndex = ModeIndex.LIST.index();
     private Mode mActiveMode;
     private DrawerLayout mDrawerLayout;
@@ -80,7 +87,7 @@ public class ModesManager {
 
         mPrefs = activity.getSharedPreferences(PREF_NAME_FILE, Activity.MODE_PRIVATE);
         readPrefs();
-        SharedData sharedDataManager = new SharedData();
+        SharedData sharedDataManager = SharedData.getInstance();
 
         mDataBaseAdapter = new DataBaseAdapter(activity);
         mDataBaseAdapter.createDatabase();
@@ -91,7 +98,12 @@ public class ModesManager {
 
         View rootView  = activity.findViewById(R.id.fragment_container);
 
-        MainModeBuilder mainModeBuilder =  new MainModeBuilder(rootView, sharedDataManager, locationTracker, modeChangeRequester, mDataBaseAdapter, mCurrentBankGroupIndex);
+        MainModeBuilder mainModeBuilder =  new MainModeBuilder(rootView, sharedDataManager, locationTracker, modeChangeRequester, new MainModeFragment.LoaderProvider() {
+            @Override
+            public CustomATMLoader getLoader() {
+                return new CustomATMLoader(mActivity.getApplicationContext(), mDataBaseAdapter, mCurrentBankGroupIndex);
+            }
+        });
         mModes[ModeIndex.LIST.index()] = mainModeBuilder.build();
 
         MapModeBuilder mapModeBuilder =  new MapModeBuilder(rootView, sharedDataManager, locationTracker, modeChangeRequester);
@@ -101,15 +113,13 @@ public class ModesManager {
         DetailBuilder detailBuilder =  new DetailBuilder(rootView, sharedDataManager, modeChangeRequester);
         mModes[ModeIndex.DETAIL.index()] = detailBuilder.build();
 
-        PreferencesModeBuilder preferencesModeBuilder = new PreferencesModeBuilder(rootView, sharedDataManager, modeChangeRequester);
+        PreferencesModeBuilder preferencesModeBuilder = new PreferencesModeBuilder(rootView, sharedDataManager, modeChangeRequester, this);
         mModes[ModeIndex.SETTINGS.index()] = preferencesModeBuilder.build();
 
         activateDefaultMode();
 
         setUpDrawer();
     }
-
-
 
     private void setUpDrawer() {
         mDrawerMenu = mActivity.findViewById(R.id.left_drawer);

@@ -12,8 +12,19 @@ import java.util.Set;
  */
 public class SharedData {
 
+    private static SharedData instance = null;
+
+    private SharedData() {
+        instance = this;
+    }
+
+    public static synchronized SharedData getInstance() {
+        return (instance == null) ? new SharedData() : instance;
+    }
+
     public static final String NAVIGATION_TYPE_PREFERENCE = "navi_type";
     public static final String LIMIT_DISTANCE = "pref_distance_key";
+    public static final String LANGUAGE = "language_type";
 
     private Set<ATMItem> mItems = new HashSet<ATMItem>();
     private ATMItem mCurrentItem = null;

@@ -58,18 +58,4 @@ public class Utils {
             Log.e(LOG_TAG, "Export database can't be finished successfully", e);
         }
     }
-
-
-    public static void fillCoordinates(List<ATMItem> atmItems, Context context) {
-        for (ATMItem item : atmItems) {
-            try {
-                Pair<Double, Double> value = GeoUtils.getInstance(context).getCoordinates(item.getFullAddress());
-                item.setLatitude(value.first);
-                item.setLongitude(value.second);
-                Log.i(LOG_TAG, "ID = " + item.getId() + "; lat " + value.first + " long " + value.second);
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "Something went wrong with coordinates ", e);
-            }
-        }
-    }
 }

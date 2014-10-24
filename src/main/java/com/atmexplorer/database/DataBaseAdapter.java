@@ -1,11 +1,11 @@
 package com.atmexplorer.database;
 
 import android.app.SearchManager;
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
-import com.atmexplorer.R;
+import com.atmexplorer.SharedData;
 import com.atmexplorer.model.ATMItem;
 import com.atmexplorer.model.DataProvider;
 import java.util.ArrayList;
@@ -30,10 +30,14 @@ public class DataBaseAdapter implements DataProvider {
 
     public static final String KEY_ID = "_id";
     public static final String KEY_CITY_NAME = "city_name";
+    public static final String KEY_CITY_NAME_UA = "city_name_ua";
+    public static final String KEY_CITY_NAME_EN = "city_name_en";
     public static final String KEY_ADDRESS = "address";
     public static final String KEY_ADDRESS_UA = "address_ua";
     public static final String KEY_ADDRESS_EN = "address_en";
     public static final String KEY_BANK_NAME = "bank_name";
+    public static final String KEY_BANK_NAME_UA = "bank_name_ua";
+    public static final String KEY_BANK_NAME_EN = "bank_name_en";
     public static final String KEY_BANK_LOGO = "logo_name";
     public static final String KEY_OPERATION_TIME = "time";
     public static final String KEY_OPERATION_TIME_UA = "time_ua";
@@ -52,18 +56,19 @@ public class DataBaseAdapter implements DataProvider {
     private static final String CITY_TABLE_NAME = "cities";
     private static final String BANK_TABLE_NAME = "banks";
     private static final String BANK_GROUP_TABLE_NAME = "bank_groups";
-    private static final String SELECT_ALL_QUERY = "SELECT atms._id, banks.bank_name, cities.city_name, atms.address, " +
-            "banks.logo_name, atms.latitude, atms.time, atms.position, atms.type, atms.longitude FROM atms " +
-            "INNER JOIN banks ON banks._id=atms.id_bank INNER JOIN cities ON cities._id=atms.id_city";
-    private static final String FILTER_BY_ADDRESS_QUERY = "SELECT atms._id, banks.bank_name, cities.city_name, " +
-            "atms.address, bank.logo_name,    atms.latitude, atms.longitude, atms.time, atms.position, atms.type " +
-            "FROM atms INNER JOIN banks ON banks._id=atms.id_bank INNER JOIN cities ON cities._id=atms.id_city" +
-            " WHERE atms.address LIKE ?";
-
-    private static final String SELECT_BANKS_FROM_GROUP_QUERY = "SELECT atms._id, banks.bank_name, cities.city_name, " +
-            "atms.address, banks.logo_name, atms.latitude, atms.time, atms.position, atms.type, atms.longitude " +
-            "FROM atms INNER JOIN banks ON banks._id=atms.id_bank INNER JOIN cities ON cities._id=atms.id_city " +
-            "INNER JOIN bank_groups ON bank_groups._id=banks.id_bank_group WHERE bank_groups._id LIKE ?";
+    private static final String SELECT_ALL_QUERY = "SELECT atms._id," +
+            " banks.bank_name, banks.bank_name_ua, banks.bank_name_en," +
+            " cities.city_name, cities.city_name_ua, cities.city_name_en," +
+            " atms.address, atms.address_ua, atms.address_en," +
+            " atms.time, atms.time_ua, atms.time_en," +
+            " atms.position, atms.position_ua, atms.position_en," +
+            " atms.type, atms.type_ua, atms.type_en, " +
+            " atms.latitude, atms.longitude, banks.logo_name FROM atms" +
+            " INNER JOIN banks ON banks._id=atms.id_bank" +
+            " INNER JOIN cities ON cities._id=atms.id_city" +
+            " INNER JOIN bank_groups ON bank_groups._id=banks.id_bank_group";
+    private static final String FILTER_BY_ADDRESS_QUERY = SELECT_ALL_QUERY + " WHERE atms.address LIKE ?";
+    private static final String SELECT_BANKS_FROM_GROUP_QUERY =  SELECT_ALL_QUERY + " WHERE bank_groups._id LIKE ?";
 
     private CashMachineDao mCashMachineDao;
     private BankDao mBankDao;
@@ -139,35 +144,44 @@ public class DataBaseAdapter implements DataProvider {
         return cursor;
     }
 
-    /**
-     * Method updates ATM's coordinates according to their address.
-     * Should be used once after installation of application.
-     * @param item ATMItem
-     */
-    public void updateCoordinates(ATMItem item) {
-        mDb = mDbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(KEY_LATITUDE, item.getLatitude());
-        values.put(KEY_LONGITUDE, item.getLongitude());
-        mDb.update(ATM_TABLE_NAME, values, "_id = ?", new String[] {String.valueOf(item.getId())});
-        close();
-    }
-
     private List<ATMItem> prepareDataToShow(Cursor cursor) {
         mATMList.clear();
+        String language = PreferenceManager.getDefaultSharedPreferences(mContext).getString(SharedData.LANGUAGE, null);
         if (cursor.moveToFirst()) {
             do {
                 int atmId = cursor.getInt(cursor.getColumnIndex(KEY_ID));
                 double latitude = cursor.getDouble(cursor.getColumnIndex(KEY_LATITUDE));
                 double longitude = cursor.getDouble(cursor.getColumnIndex(KEY_LONGITUDE));
-                String bankName = cursor.getString(cursor.getColumnIndex(KEY_BANK_NAME));
-                String cityName = cursor.getString(cursor.getColumnIndex(KEY_CITY_NAME));
-                String address = cursor.getString(cursor.getColumnIndex(KEY_ADDRESS));
                 String bankLogo = cursor.getString(cursor.getColumnIndex(KEY_BANK_LOGO));
-                String workingTime = cursor.getString(cursor.getColumnIndex(KEY_OPERATION_TIME));
-                String atmPosition = cursor.getString(cursor.getColumnIndex(KEY_POSITION));
-                String description = cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION));
+                String bankName;
+                String cityName;
+                String address;
+                String workingTime;
+                String atmPosition;
+                String description;
                 int logoId = mContext.getResources().getIdentifier(bankLogo, "drawable", mContext.getPackageName());
+                if ("ua".equals(language)) {
+                    bankName = cursor.getString(cursor.getColumnIndex(KEY_BANK_NAME_UA));
+                    cityName = cursor.getString(cursor.getColumnIndex(KEY_CITY_NAME_UA));
+                    address = cursor.getString(cursor.getColumnIndex(KEY_ADDRESS_UA));
+                    workingTime = cursor.getString(cursor.getColumnIndex(KEY_OPERATION_TIME_UA));
+                    atmPosition = cursor.getString(cursor.getColumnIndex(KEY_POSITION_UA));
+                    description = cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION_UA));
+                } else if ("en".equals(language)) {
+                    bankName = cursor.getString(cursor.getColumnIndex(KEY_BANK_NAME_EN));
+                    cityName = cursor.getString(cursor.getColumnIndex(KEY_CITY_NAME_EN));
+                    address = cursor.getString(cursor.getColumnIndex(KEY_ADDRESS_EN));
+                    workingTime = cursor.getString(cursor.getColumnIndex(KEY_OPERATION_TIME_EN));
+                    atmPosition = cursor.getString(cursor.getColumnIndex(KEY_POSITION_EN));
+                    description = cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION_EN));
+                } else {
+                    bankName = cursor.getString(cursor.getColumnIndex(KEY_BANK_NAME));
+                    cityName = cursor.getString(cursor.getColumnIndex(KEY_CITY_NAME));
+                    address = cursor.getString(cursor.getColumnIndex(KEY_ADDRESS));
+                    workingTime = cursor.getString(cursor.getColumnIndex(KEY_OPERATION_TIME));
+                    atmPosition = cursor.getString(cursor.getColumnIndex(KEY_POSITION));
+                    description = cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION));
+                }
 
                 ATMItem item = new ATMItem(atmId, cityName, address, bankName, logoId, latitude, longitude, workingTime,
                         atmPosition, description);

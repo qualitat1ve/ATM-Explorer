@@ -1,9 +1,9 @@
 Create atms table:
-CREATE TABLE "atms" ("_id" INTEGER PRIMARY KEY  NOT NULL ,"id_bank" NTEGER NOT NULL  DEFAULT (null) ,"id_city" INTEGER NOT NULL  DEFAULT (null) ,"address" VARCHAR NOT NULL ,"address_ua" VARCHAR NOT NULL ,"address_en" VARCHAR NOT NULL ,"time" VARCHAR,"time_ua" VARCHAR, "time_en" VARCHAR,"position" VARCHAR,"position_ua" VARCHAR,"position_en" VARCHAR,"type" VARCHAR,"type_ua" VARCHAR,"type_en" VARCHAR, "latitude" DOUBLE, "longitude" DOUBLE, "comment" VARCHAR, FOREIGN KEY(id_bank) REFERENCES banks(_id), FOREIGN KEY(id_city) REFERENCES cities(_id))
+CREATE TABLE "atms" ("_id" INTEGER PRIMARY KEY  NOT NULL ,"id_bank" NTEGER NOT NULL, "id_city" INTEGER NOT NULL, "address" VARCHAR NOT NULL ,"address_ua" VARCHAR NOT NULL ,"address_en" VARCHAR NOT NULL ,"time" VARCHAR,"time_ua" VARCHAR, "time_en" VARCHAR,"position" VARCHAR,"position_ua" VARCHAR,"position_en" VARCHAR,"type" VARCHAR,"type_ua" VARCHAR,"type_en" VARCHAR, "latitude" DOUBLE, "longitude" DOUBLE, "comment" VARCHAR, FOREIGN KEY(id_bank) REFERENCES banks(_id), FOREIGN KEY(id_city) REFERENCES cities(_id))
 
 ============================================================================
 Create banks table
-CREATE TABLE "banks" ("_id" INTEGER PRIMARY KEY  NOT NULL ,"bank_name" VARCHAR NOT NULL  DEFAULT (null) ,"id_bank_group" INTEGER NOT NULL  DEFAULT (null) ,"logo_name" VARCHAR NOT NULL , FOREIGN KEY(id_bank_group) REFERENCES bank_groups(_id))
+CREATE TABLE "banks" ("_id" INTEGER PRIMARY KEY  NOT NULL, "id_bank_group" INTEGER NOT NULL, "bank_name" VARCHAR NOT NULL, "bank_name_ua" VARCHAR NOT NULL, "bank_name_en" VARCHAR NOT NULL, "logo_name" VARCHAR NOT NULL, FOREIGN KEY(id_bank_group) REFERENCES bank_groups(_id))
 
 ============================================================================
 

@@ -21,11 +21,15 @@ public class MainMode extends BaseMode {
     }
 
     public void onBackPressed() {
-        mListFragment.clearSearchResults();
+        reloadData();
     }
 
     public void doSearch(String query) {
         mListFragment.filterByString(query);
+    }
+
+    public void reloadData() {
+        mListFragment.reloadData();
     }
 
     @Override
